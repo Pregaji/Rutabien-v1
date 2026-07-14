@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  a{color:#D4562E;text-decoration:none;}
+  a:hover{color:#D4562E;}
+  .rb-scroll::-webkit-scrollbar{width:0;height:0;}
+  .rb-scroll{scrollbar-width:none;}
+  @keyframes rbspin{to{transform:rotate(360deg);}}
+  @keyframes rbpulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.12);opacity:.75;}}
+  @keyframes rbfade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#F5F2EC;font-family:Figtree,sans-serif;color:#1A1F24;">
+
+  <!-- ============ LANDING (marketing web page) ============ -->
+  <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:rbfade .4s ease;">
+
+      <div style="background:#1B3A3E;">
+        <div style="max-width:1160px;margin:0 auto;padding:0 48px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:28px 0;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="{{ pinMarkLight }}"></span>
+              <span style="font:600 22px Spectral,serif;color:#F5F2EC;">Rutabien</span>
+            </div>
+            <button onClick="{{ goQ }}" style="background:transparent;border:1.5px solid rgba(247,241,232,.4);color:#F5F2EC;border-radius:10px;padding:11px 20px;font:600 14px Figtree,sans-serif;cursor:pointer;">Get my roadmap</button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:64px;padding:36px 0 76px;">
+            <div style="flex:1 1 480px;max-width:560px;">
+              <p style="font:600 13px Figtree,sans-serif;letter-spacing:2.5px;text-transform:uppercase;color:#F0A98C;margin:0;">You've got this</p>
+              <h1 style="font:600 56px/1.08 Spectral,serif;color:#F5F2EC;margin:18px 0 0;letter-spacing:-1px;">Every step, mapped.</h1>
+              <p style="font:400 18px/1.6 Figtree,sans-serif;color:#D9E6E4;margin:22px 0 0;max-width:460px;">Rutabien turns Spain's visa and paperwork maze into a clear, personal roadmap — built for international students moving to Barcelona.</p>
+              <div style="display:flex;align-items:center;gap:9px;margin-top:22px;">
+                <span style="color:#D4562E;font-size:13px;">★★★★★</span>
+                <span style="font:500 13.5px Figtree,sans-serif;color:#9FC0BC;">Built with immigration lawyers practicing in Barcelona</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:22px;margin-top:34px;">
+                <button onClick="{{ goQ }}" style="background:#D4562E;color:#fff;border:none;border-radius:14px;padding:17px 26px;font:600 17px Figtree,sans-serif;cursor:pointer;box-shadow:0 16px 34px -14px rgba(0,0,0,.55);">Get my roadmap →</button>
+                <button onClick="{{ goSample }}" style="background:transparent;border:none;color:#F0A98C;font:600 15px Figtree,sans-serif;cursor:pointer;padding:6px;">See a sample roadmap</button>
+              </div>
+              <p style="font:500 14px Figtree,sans-serif;color:#9FC0BC;margin:20px 0 0;">Free roadmap, no card required · about 2 minutes</p>
+              <button onClick="{{ goAccess }}" style="background:none;border:none;color:#D9E6E4;font:600 13px Figtree,sans-serif;cursor:pointer;padding:0;margin-top:14px;">Already started? Access your roadmap →</button>
+            </div>
+
+            <div style="flex:1 1 380px;max-width:420px;position:relative;height:300px;display:flex;align-items:center;justify-content:center;">
+              <svg width="100%" height="260" viewBox="0 0 380 260" fill="none" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;">
+                <path d="M30 220 C 110 220 80 150 170 150 C 260 150 235 70 340 46" stroke="#7FA5A2" stroke-width="2.5" stroke-dasharray="7 8" fill="none"/>
+              </svg>
+              <span style="position:absolute;left:14px;top:204px;width:34px;height:34px;border-radius:999px;background:#F5F2EC;color:#1B3A3E;display:flex;align-items:center;justify-content:center;font:600 15px Figtree,sans-serif;">1</span>
+              <span style="position:absolute;left:150px;top:132px;width:34px;height:34px;border-radius:999px;background:#F5F2EC;color:#1B3A3E;display:flex;align-items:center;justify-content:center;font:600 15px Figtree,sans-serif;">2</span>
+              <span style="position:absolute;left:316px;top:14px;">{{ pinIconLg }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width:1160px;margin:0 auto;padding:76px 48px;">
+        <p style="font:600 13px Figtree,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#D4562E;margin:0 0 30px;text-align:center;">How it works</p>
+        <div style="display:flex;gap:28px;justify-content:center;flex-wrap:wrap;">
+          <div style="flex:1 1 280px;max-width:320px;background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 18px 40px -26px rgba(27,58,62,.35);">
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(27,58,62,.07);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:19px;">🧭</span>
+            <h3 style="font:600 20px Spectral,serif;color:#1A1F24;margin:20px 0 8px;">Understand your visa path</h3>
+            <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:0;">See exactly which visa route applies to your nationality, program and dates.</p>
+          </div>
+          <div style="flex:1 1 280px;max-width:320px;background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 18px 40px -26px rgba(27,58,62,.35);">
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(27,58,62,.07);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:19px;">📄</span>
+            <h3 style="font:600 20px Spectral,serif;color:#1A1F24;margin:20px 0 8px;">Track your documents</h3>
+            <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:0;">Every form and file you need, checked off as you gather them.</p>
+          </div>
+          <div style="flex:1 1 280px;max-width:320px;background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 18px 40px -26px rgba(27,58,62,.35);">
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(212,86,46,.1);color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:19px;">⚖️</span>
+            <h3 style="font:600 20px Spectral,serif;color:#1A1F24;margin:20px 0 8px;">Talk to a lawyer when needed</h3>
+            <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:0;">Book a vetted immigration lawyer only for the steps that truly call for it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#1B3A3E;padding:64px 48px;">
+        <p style="max-width:720px;margin:0 auto;text-align:center;font:600 30px/1.4 Spectral,serif;color:#F5F2EC;letter-spacing:-.3px;">See your personalized roadmap in minutes. Talk to a lawyer only when you actually need one.</p>
+      </div>
+
+      <div style="padding:36px 48px;">
+        <div style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="{{ pinMark }}"></span>
+            <span style="font:600 15px Figtree,sans-serif;color:#5A6872;">Rutabien · Every step, mapped.</span>
+          </div>
+          <button onClick="{{ goAdminLogin }}" style="background:none;border:none;font:500 13px Figtree,sans-serif;color:#B0A188;cursor:pointer;">Admin</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ QUESTIONNAIRE ============ -->
+  <sc-if value="{{ isQuestionnaire }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;animation:rbfade .35s ease;">
+      <div style="flex:none;width:260px;background:#EFEAE0;border-right:1px solid rgba(34,48,60,.08);padding:32px 26px;display:flex;flex-direction:column;">
+        <button onClick="{{ back }}" style="align-self:flex-start;background:none;border:none;padding:2px 0 24px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+        <div style="flex:1;overflow-y:auto;">
+          <sc-for list="{{ railSteps }}" as="rs" hint-placeholder-count="8">
+            <div style="display:flex;align-items:center;gap:12px;padding:7px 0;">
+              <span style="{{ rs.circleStyle }}">{{ rs.circleGlyph }}</span>
+              <span style="{{ rs.labelStyle }}">{{ rs.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+        <div style="flex:none;padding:24px 48px 0;">
+          <span style="font:600 12px Figtree,sans-serif;color:#8A7C64;letter-spacing:.5px;text-transform:uppercase;">Step {{ qIndex1 }} of {{ qTotal }}</span>
+        </div>
+
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px;">
+        <div style="width:100%;max-width:560px;">
+          <h2 style="font:600 34px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">{{ q.q }}</h2>
+          <sc-if value="{{ q.help }}" hint-placeholder-val="{{ false }}">
+            <p style="font:400 15px/1.5 Figtree,sans-serif;color:#8A7C64;margin:12px 0 0;">{{ q.help }}</p>
+          </sc-if>
+
+          <div style="margin-top:30px;">
+            <sc-if value="{{ isChoiceLike }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-wrap:wrap;gap:12px;">
+                <sc-for list="{{ currentOptions }}" as="opt" hint-placeholder-count="4">
+                  <sc-if value="{{ opt.selected }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ opt.onClick }}" style="text-align:left;padding:15px 18px;border-radius:14px;border:1.5px solid #D4562E;background:rgba(212,86,46,.09);font:500 16px/1.3 Figtree,sans-serif;color:#1A1F24;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;flex:{{ opt.flexBasis }};min-width:170px;">
+                      <span>{{ opt.label }}</span>
+                      <span style="width:20px;height:20px;flex:none;border-radius:999px;background:#D4562E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;">✓</span>
+                    </button>
+                  </sc-if>
+                  <sc-if value="{{ opt.notSelected }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ opt.onClick }}" style="text-align:left;padding:15px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px/1.3 Figtree,sans-serif;color:#1A1F24;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;flex:{{ opt.flexBasis }};min-width:170px;">
+                      <span>{{ opt.label }}</span>
+                      <span style="width:20px;height:20px;flex:none;border-radius:999px;border:1.5px solid #D8CDB8;"></span>
+                    </button>
+                  </sc-if>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ showOtherInput }}" hint-placeholder-val="{{ false }}">
+                <input type="text" value="{{ otherValue }}" onInput="{{ onOtherInput }}" placeholder="Type your country" autoFocus="{{ true }}" style="width:100%;margin-top:14px;padding:15px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px Figtree,sans-serif;color:#1A1F24;">
+              </sc-if>
+            </sc-if>
+
+            <sc-if value="{{ isDate }}" hint-placeholder-val="{{ false }}">
+              <input type="date" value="{{ currentValue }}" onChange="{{ onCurrentInput }}" style="width:100%;padding:16px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px Figtree,sans-serif;color:#1A1F24;">
+            </sc-if>
+
+            <sc-if value="{{ isEmail }}" hint-placeholder-val="{{ false }}">
+              <input type="email" value="{{ currentValue }}" onInput="{{ onCurrentInput }}" placeholder="you@email.com" style="width:100%;padding:16px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px Figtree,sans-serif;color:#1A1F24;">
+            </sc-if>
+
+            <sc-if value="{{ isFamilyDetails }}" hint-placeholder-val="{{ false }}">
+              <p style="font:600 14px Figtree,sans-serif;color:#1A1F24;margin:0 0 10px;">Bringing a spouse or partner?</p>
+              <div style="display:flex;gap:12px;margin-bottom:26px;">
+                <sc-if value="{{ spouseIncluded }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ toggleSpouseYes }}" style="padding:12px 20px;border-radius:12px;border:1.5px solid #D4562E;background:rgba(212,86,46,.09);font:500 14.5px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">Yes</button>
+                  <button onClick="{{ toggleSpouseNo }}" style="padding:12px 20px;border-radius:12px;border:1.5px solid #E2D8C5;background:#fff;font:500 14.5px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">No</button>
+                </sc-if>
+                <sc-if value="{{ notSpouseIncluded }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ toggleSpouseYes }}" style="padding:12px 20px;border-radius:12px;border:1.5px solid #E2D8C5;background:#fff;font:500 14.5px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">Yes</button>
+                  <button onClick="{{ toggleSpouseNo }}" style="padding:12px 20px;border-radius:12px;border:1.5px solid #D4562E;background:rgba(212,86,46,.09);font:500 14.5px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">No</button>
+                </sc-if>
+              </div>
+
+              <p style="font:600 14px Figtree,sans-serif;color:#1A1F24;margin:0 0 10px;">How many children are joining you?</p>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <button onClick="{{ decChildCount }}" style="width:40px;height:40px;border-radius:999px;border:1.5px solid #E2D8C5;background:#fff;font:600 18px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">−</button>
+                <span style="font:600 20px Spectral,serif;color:#1A1F24;min-width:24px;text-align:center;">{{ childCountVal }}</span>
+                <button onClick="{{ incChildCount }}" style="width:40px;height:40px;border-radius:999px;border:1.5px solid #E2D8C5;background:#fff;font:600 18px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">+</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isBeforeApply }}" hint-placeholder-val="{{ false }}">
+              <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 18px;">A few things to sort before a visa application can even start:</p>
+              <ul style="margin:0 0 22px;padding-left:20px;">
+                <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Apply to your chosen Spanish universities and wait for an offer.</li>
+                <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Once accepted, request your official acceptance/admission letter — required for the visa application.</li>
+                <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Start gathering proof of funds and private health insurance in the meantime — both take time to arrange.</li>
+              </ul>
+              <input type="email" value="{{ currentValue }}" onInput="{{ onCurrentInput }}" placeholder="you@email.com" style="width:100%;padding:16px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px Figtree,sans-serif;color:#1A1F24;">
+              <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:10px 0 0;">We'll save this so we can remind you to come back once you have your letter.</p>
+            </sc-if>
+          </div>
+
+          <button onClick="{{ next }}" style="width:100%;margin-top:34px;background:#D4562E;color:#fff;border:none;border-radius:15px;padding:17px;font:600 16px Figtree,sans-serif;cursor:pointer;box-shadow:0 14px 26px -12px rgba(212,86,46,.6);">{{ nextLabel }}</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ ACCESS (passwordless re-entry) ============ -->
+  <sc-if value="{{ isAccess }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px;">
+      <div style="width:100%;max-width:440px;">
+        <button onClick="{{ goLanding }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+        <h2 style="font:600 30px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Access your roadmap</h2>
+        <p style="font:400 15px/1.5 Figtree,sans-serif;color:#8A7C64;margin:12px 0 0;">Enter the email you used before — we'll send a fresh link, no password needed.</p>
+        <input type="email" value="{{ accessEmail }}" onInput="{{ onAccessEmail }}" placeholder="you@email.com" style="width:100%;margin-top:22px;padding:16px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px Figtree,sans-serif;color:#1A1F24;">
+        <button onClick="{{ sendAccessLink }}" style="width:100%;margin-top:18px;background:#D4562E;color:#fff;border:none;border-radius:15px;padding:17px;font:600 16px Figtree,sans-serif;cursor:pointer;">Send me my link</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isAccessSent }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px;text-align:center;">
+      <div style="width:100%;max-width:440px;">
+        <div style="margin:0 auto 20px;display:flex;justify-content:center;">{{ pinIconLg }}</div>
+        <h2 style="font:600 28px Spectral,serif;color:#1A1F24;margin:0;">Check your inbox</h2>
+        <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;">We've sent a link to {{ accessEmail }}. It'll take you straight to your roadmap — no password needed.</p>
+        <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:22px 0 0;">(Demo mode — click below to continue.)</p>
+        <button onClick="{{ goDashboard }}" style="width:100%;margin-top:14px;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Continue to my roadmap</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isEuEmailSent }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px;text-align:center;">
+      <div style="width:100%;max-width:440px;">
+        <div style="margin:0 auto 20px;display:flex;justify-content:center;">{{ pinIconLg }}</div>
+        <h2 style="font:600 28px Spectral,serif;color:#1A1F24;margin:0;">Check your inbox</h2>
+        <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;">We've sent a verification link to {{ answerEmail }}. It'll take you straight to your EU route — no password needed.</p>
+        <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:22px 0 0;">(Demo mode — click below to continue.)</p>
+        <button onClick="{{ goEuChecklist }}" style="width:100%;margin-top:14px;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Continue to my route</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isEuChecklist }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;padding:48px;">
+      <div style="width:100%;max-width:680px;margin:0 auto;">
+        <div style="margin:0 0 18px;display:flex;justify-content:center;">{{ pinIconLg }}</div>
+        <h2 style="font:600 30px Spectral,serif;color:#1A1F24;margin:0;text-align:center;">Good news — you don't need a student visa</h2>
+        <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;text-align:center;">EU/EEA citizens don't need a visa, but there's still a short route to follow — including recognizing your academic credentials in Spain.</p>
+
+        <div style="margin-top:32px;">
+          <div style="border-left:2px dashed #C9BCA4;margin-left:9px;padding-left:26px;">
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:16px;padding:20px 22px;margin-bottom:14px;">
+              <span style="font:600 11px Figtree,sans-serif;letter-spacing:.3px;text-transform:uppercase;color:#8A7C64;">Within 2 weeks of arrival</span>
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:8px 0 6px;">Register your address (empadronamiento)</h3>
+              <p style="font:400 14px/1.5 Figtree,sans-serif;color:#5A6872;margin:0;">Register at your local town hall — you'll need this for almost every next step.</p>
+            </div>
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:16px;padding:20px 22px;margin-bottom:14px;">
+              <span style="font:600 11px Figtree,sans-serif;letter-spacing:.3px;text-transform:uppercase;color:#8A7C64;">Within 90 days of arrival</span>
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:8px 0 6px;">Register with the Oficina de Extranjeros</h3>
+              <p style="font:400 14px/1.5 Figtree,sans-serif;color:#5A6872;margin:0 0 10px;">Bring your passport/ID, proof of address, and proof of funds or enrollment. You'll receive a Certificado de Registro — keep it with your ID for future paperwork.</p>
+            </div>
+            <div style="background:#fff;border:1px solid rgba(212,86,46,.3);border-radius:16px;padding:20px 22px;">
+              <span style="font:600 11px Figtree,sans-serif;letter-spacing:.3px;text-transform:uppercase;color:#D4562E;">Before enrolling</span>
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:8px 0 6px;">Get your academic credentials recognized</h3>
+              <p style="font:400 14px/1.5 Figtree,sans-serif;color:#5A6872;margin:0 0 14px;">Your diploma and transcripts usually need a certified Spanish translation, even for EU credentials — universities ask for this as part of enrollment.</p>
+              <button onClick="{{ goTranslation }}" style="background:#D4562E;color:#fff;border:none;border-radius:11px;padding:11px 18px;font:600 13.5px Figtree,sans-serif;cursor:pointer;">See translation options →</button>
+            </div>
+          </div>
+        </div>
+
+        <p style="font:400 12.5px Figtree,sans-serif;color:#8A7C64;margin:18px 0 0;text-align:center;">No visa, no TIE card, no consulate appointment needed. We've saved this route to {{ answerEmail }}.</p>
+        <button onClick="{{ goLanding }}" style="width:100%;max-width:440px;margin:22px auto 0;display:block;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Back to homepage</button>
+        <button onClick="{{ goAccess }}" style="width:100%;max-width:440px;margin:10px auto 0;display:block;background:none;border:none;font:600 13px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">Already have a roadmap? Access it here</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isBeforeApplySent }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px;text-align:center;">
+      <div style="width:100%;max-width:480px;">
+        <div style="margin:0 auto 20px;display:flex;justify-content:center;">{{ pinIconLg }}</div>
+        <h2 style="font:600 28px Spectral,serif;color:#1A1F24;margin:0;">We'll be in touch</h2>
+        <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;">We've saved your email — we'll follow up once it's a good time to pick this back up. In the meantime:</p>
+        <ul style="text-align:left;margin:18px 0 0;padding-left:20px;">
+          <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Apply to your chosen Spanish universities and wait for an offer.</li>
+          <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Once accepted, request your official acceptance/admission letter.</li>
+          <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Start gathering proof of funds and private health insurance — both take time.</li>
+        </ul>
+        <button onClick="{{ goLanding }}" style="width:100%;margin-top:22px;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Back to homepage</button>
+        <button onClick="{{ goAccess }}" style="width:100%;margin-top:10px;background:none;border:none;font:600 13px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">Already have a roadmap? Access it here</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PAYWALL ============ -->
+  <sc-if value="{{ isPaywall }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px;">
+
+      <sc-if value="{{ showTierPicker }}" hint-placeholder-val="{{ true }}">
+        <div style="width:100%;max-width:820px;">
+          <button onClick="{{ backFromPaywall }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+          <h2 style="font:600 30px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Unlock your full roadmap</h2>
+          <p style="font:400 14.5px Figtree,sans-serif;color:#8A7C64;margin:10px 0 0;">Both plans are a single payment — no auto-renewal, ever.</p>
+
+          <div style="display:flex;gap:20px;margin-top:28px;flex-wrap:wrap;">
+            <div style="flex:1 1 320px;background:#fff;border:1.5px solid #E2D8C5;border-radius:20px;padding:28px;">
+              <h3 style="font:600 19px Spectral,serif;color:#1A1F24;margin:0;">Essential</h3>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-top:12px;"><span style="font:600 34px Spectral,serif;color:#1A1F24;">€39</span><span style="font:500 13px Figtree,sans-serif;color:#8A7C64;">one-time</span></div>
+              <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Full roadmap detail for every step</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Document tracking for every required file</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Deadline & document reminders</span></div>
+              </div>
+              <button onClick="{{ selectEssential }}" style="width:100%;margin-top:24px;background:#fff;border:1.5px solid #1B3A3E;color:#1B3A3E;border-radius:12px;padding:13px;font:600 14.5px Figtree,sans-serif;cursor:pointer;">Choose Essential</button>
+            </div>
+
+            <div style="flex:1 1 320px;background:#fff;border:1.5px solid #D4562E;border-radius:20px;padding:28px;position:relative;">
+              <span style="position:absolute;top:-13px;left:28px;background:#D4562E;color:#fff;padding:5px 12px;border-radius:999px;font:600 11px Figtree,sans-serif;letter-spacing:.3px;">Most popular</span>
+              <h3 style="font:600 19px Spectral,serif;color:#1A1F24;margin:0;">Complete</h3>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-top:12px;"><span style="font:600 34px Spectral,serif;color:#1A1F24;">€89</span><span style="font:500 13px Figtree,sans-serif;color:#8A7C64;">single payment, valid 12 months</span></div>
+              <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(212,86,46,.15);color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Everything in Essential, plus:</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(212,86,46,.15);color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Document Vault — secure storage for originals & translations</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(212,86,46,.15);color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Bienvenido arrival guide</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(212,86,46,.15);color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Extended live support, before and after arrival</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(212,86,46,.15);color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Priority translation referral</span></div>
+              </div>
+              <button onClick="{{ selectComplete }}" style="width:100%;margin-top:24px;background:#D4562E;color:#fff;border:none;border-radius:12px;padding:13px;font:600 14.5px Figtree,sans-serif;cursor:pointer;">Choose Complete</button>
+            </div>
+          </div>
+          <p style="font:400 12.5px Figtree,sans-serif;color:#8A7C64;margin:18px 0 0;">"Valid for 12 months" means single access period, not a recurring charge — nothing renews automatically.</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showPaymentStep }}" hint-placeholder-val="{{ false }}">
+        <div style="width:100%;max-width:460px;">
+          <button onClick="{{ backFromPaywall }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+          <h2 style="font:600 28px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">{{ selectedTierName }} plan</h2>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-top:18px;">
+            <span style="font:600 46px Spectral,serif;color:#1A1F24;">€{{ selectedTierPrice }}</span>
+            <span style="font:500 14px Figtree,sans-serif;color:#8A7C64;">single payment</span>
+          </div>
+          <p style="font:400 13.5px Figtree,sans-serif;color:#8A7C64;margin:6px 0 0;">This is the full price — nothing changes at checkout.</p>
+
+          <p style="font:600 12px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A7C64;margin:28px 0 10px;">Choose how to pay</p>
+          <div style="display:flex;gap:12px;">
+            <button onClick="{{ confirmUnlock }}" style="flex:1;padding:16px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:600 15px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">PayPal</button>
+            <button onClick="{{ confirmUnlock }}" style="flex:1;padding:16px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:600 15px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">Credit / debit card</button>
+          </div>
+          <p style="font:400 12.5px Figtree,sans-serif;color:#8A7C64;margin:16px 0 0;">A receipt is emailed to you. Pay once — no subscription.</p>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <!-- ============ GENERATING ============ -->
+  <sc-if value="{{ isGenerating }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;text-align:center;padding:40px;">
+      <div style="position:relative;width:104px;height:104px;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;inset:0;border-radius:999px;border:3px dashed #A9C3C0;animation:rbspin 3.5s linear infinite;"></div>
+        <div style="animation:rbpulse 1.6s ease-in-out infinite;">{{ pinIconLg }}</div>
+      </div>
+      <h2 style="font:600 28px Spectral,serif;color:#1A1F24;margin:0;">Mapping your route…</h2>
+      <p style="font:400 15px/1.5 Figtree,sans-serif;color:#8A7C64;margin:0;max-width:280px;">Matching your dates and status to Barcelona's requirements.</p>
+    </div>
+  </sc-if>
+
+  <!-- ============ APP SHELL (dashboard / roadmap / documents / lawyer) ============ -->
+  <sc-if value="{{ isAppScreen }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:rbfade .4s ease;">
+      <div style="position:fixed;bottom:28px;right:32px;z-index:50;">
+        <sc-if value="{{ helpMenuOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;bottom:64px;right:0;width:280px;background:#fff;border:1px solid rgba(34,48,60,.1);border-radius:16px;box-shadow:0 16px 40px -12px rgba(34,48,60,.35);padding:10px;">
+            <button onClick="{{ helpChooseChat }}" style="width:100%;text-align:left;background:none;border:none;border-radius:11px;padding:12px 14px;cursor:pointer;">
+              <div style="font:600 14px Figtree,sans-serif;color:#1A1F24;">Chat with support</div>
+              <div style="font:400 12px Figtree,sans-serif;color:#8A7C64;margin-top:2px;">Navigation, document questions, how-to's</div>
+            </button>
+            <button onClick="{{ helpChooseIda }}" style="width:100%;text-align:left;background:none;border:none;border-radius:11px;padding:12px 14px;cursor:pointer;">
+              <div style="font:600 14px Figtree,sans-serif;color:#1A1F24;">Talk to Ida</div>
+              <div style="font:400 12px Figtree,sans-serif;color:#8A7C64;margin-top:2px;">For anything needing real legal judgment</div>
+            </button>
+          </div>
+        </sc-if>
+        <button onClick="{{ toggleHelpMenu }}" style="width:52px;height:52px;border-radius:999px;background:#1B3A3E;color:#F5F2EC;border:none;cursor:pointer;font-size:21px;box-shadow:0 10px 24px -8px rgba(34,48,60,.45);">💬</button>
+      </div>
+      <div style="position:sticky;top:0;z-index:5;background:#F5F2EC;border-bottom:1px solid rgba(34,48,60,.09);">
+        <div style="max-width:1160px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:76px;">
+          <div style="display:flex;align-items:center;gap:44px;">
+            <div style="display:flex;align-items:center;gap:9px;">
+              <span style="{{ pinMark }}"></span>
+              <span style="font:600 18px Spectral,serif;color:#1A1F24;">Rutabien</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="4">
+                <button onClick="{{ nav.onClick }}" style="{{ nav.style }}">{{ nav.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <button onClick="{{ goLanding }}" style="background:none;border:none;font:600 13px Figtree,sans-serif;color:#8A7C64;cursor:pointer;">Restart</button>
+        </div>
+      </div>
+
+      <!-- ---- DASHBOARD ---- -->
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div style="max-width:1160px;margin:0 auto;padding:48px 48px 96px;">
+          <p style="font:600 13px Figtree,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#D4562E;margin:0;">Welcome back</p>
+          <h1 style="font:600 34px Spectral,serif;color:#1A1F24;margin:12px 0 0;letter-spacing:-.3px;">Here's where things stand.</h1>
+          <p style="font:400 15px Figtree,sans-serif;color:#5A6872;margin:8px 0 0;">{{ headerContextLine }}</p>
+          <sc-if value="{{ hasFamilyNote }}" hint-placeholder-val="{{ false }}">
+            <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:4px 0 0;">{{ familyNote }}</p>
+          </sc-if>
+
+          <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:20px;padding:6px 0;margin-top:32px;box-shadow:0 10px 24px -18px rgba(34,48,60,.3);overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 32px 12px;">
+              <span style="font:600 15px Figtree,sans-serif;color:#1A1F24;">Getting started</span>
+              <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;">{{ doneCount }} of {{ totalSteps }} roadmap steps done</span>
+            </div>
+            <sc-for list="{{ checklistItems }}" as="item" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 32px;border-top:1px solid rgba(34,48,60,.06);flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span style="{{ item.circleStyle }}">{{ item.circleGlyph }}</span>
+                  <div>
+                    <h4 style="font:600 15.5px Figtree,sans-serif;color:#1A1F24;margin:0 0 2px;">{{ item.title }}</h4>
+                    <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:0;">{{ item.desc }}</p>
+                  </div>
+                </div>
+                <sc-if value="{{ item.showAction }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ item.onAction }}" style="background:none;border:1.5px solid #1B3A3E;color:#1B3A3E;border-radius:10px;padding:9px 16px;font:600 13px Figtree,sans-serif;cursor:pointer;white-space:nowrap;">{{ item.actionLabel }}</button>
+                </sc-if>
+                <sc-if value="{{ item.showDoneTag }}" hint-placeholder-val="{{ false }}">
+                  <span style="font:600 12.5px Figtree,sans-serif;color:#1B3A3E;">Done</span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">We'll email you before deadlines and if a document needs attention — no need to keep checking back.</p>
+
+          <sc-if value="{{ hasReminders }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:24px;">
+              <span style="font:600 12px Figtree,sans-serif;color:#8A7C64;letter-spacing:.4px;text-transform:uppercase;">Recent email</span>
+              <sc-for list="{{ reminderItems }}" as="rem" hint-placeholder-count="1">
+                <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:16px;padding:18px 22px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                  <div>
+                    <h4 style="font:600 15px Figtree,sans-serif;color:#1A1F24;margin:0 0 3px;">{{ rem.title }}</h4>
+                    <p style="font:400 13.5px Figtree,sans-serif;color:#5A6872;margin:0;">{{ rem.message }}</p>
+                  </div>
+                  <button onClick="{{ rem.onAction }}" style="background:none;border:1.5px solid #1B3A3E;color:#1B3A3E;border-radius:10px;padding:9px 16px;font:600 13px Figtree,sans-serif;cursor:pointer;white-space:nowrap;">{{ rem.ctaLabel }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:22px;">
+            <sc-if value="{{ hasNextStep }}" hint-placeholder-val="{{ true }}">
+              <div onClick="{{ nextStep.onView }}" style="background:rgba(212,86,46,.08);border:1.5px solid rgba(212,86,46,.3);border-radius:20px;padding:26px 32px;cursor:pointer;">
+                <span style="font:600 11px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#D4562E;">Next up · {{ nextStep.due }}</span>
+                <h3 style="font:600 22px Spectral,serif;color:#1A1F24;margin:8px 0 6px;">{{ nextStep.title }}</h3>
+                <p style="font:400 14.5px/1.55 Figtree,sans-serif;color:#5A6872;margin:0;max-width:640px;">{{ nextStep.what }}</p>
+                <span style="display:inline-block;margin-top:14px;font:600 14px Figtree,sans-serif;color:#1B3A3E;">View in roadmap →</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
+              <div style="background:rgba(27,58,62,.08);border:1.5px solid rgba(27,58,62,.25);border-radius:20px;padding:26px 32px;">
+                <h3 style="font:600 22px Spectral,serif;color:#1A1F24;margin:0 0 6px;">You're all set</h3>
+                <p style="font:400 14.5px/1.55 Figtree,sans-serif;color:#5A6872;margin:0;">Every step on your roadmap is marked done. Check back before your renewal window opens.</p>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;gap:22px;margin-top:22px;flex-wrap:wrap;">
+            <div onClick="{{ goRoadmap }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
+              <span style="width:38px;height:38px;border-radius:999px;background:#1B3A3E;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 15px Spectral,serif;">7</span>
+              <h4 style="font:600 18px Spectral,serif;color:#1A1F24;margin:16px 0 4px;">Full roadmap</h4>
+              <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">{{ doneCount }} of {{ totalSteps }} steps done</p>
+            </div>
+            <div onClick="{{ goDocuments }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
+              <span style="width:38px;height:38px;border-radius:999px;border:2px solid #D4562E;color:#D4562E;display:flex;align-items:center;justify-content:center;font:600 15px Spectral,serif;">✓</span>
+              <h4 style="font:600 18px Spectral,serif;color:#1A1F24;margin:16px 0 4px;">Documents</h4>
+              <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">{{ docsDoneTotal }} of {{ docsGrandTotal }} ready</p>
+            </div>
+            <div onClick="{{ goLawyer }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="width:38px;height:38px;flex:none;border-radius:999px;background:#1B3A3E;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">IQ</span>
+                <div>
+                  <div style="font:600 15px Figtree,sans-serif;color:#1A1F24;">Ida Quintián Pacheco</div>
+                  <div style="font:400 12px Figtree,sans-serif;color:#8A7C64;">Immigration lawyer</div>
+                </div>
+              </div>
+              <p style="font:400 14px/1.5 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;">Questions about your case? Book a 30-min consult, only if you'd like.</p>
+            </div>
+            <div onClick="{{ goLiveSupport }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
+              <span style="width:38px;height:38px;border-radius:999px;border:2px solid #D4562E;color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:17px;">💬</span>
+              <h4 style="font:600 18px Spectral,serif;color:#1A1F24;margin:16px 0 4px;">Live support</h4>
+              <sc-if value="{{ isCompletePlanActive }}" hint-placeholder-val="{{ false }}">
+                <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">Chat with our team for navigation and document questions — anything needing legal judgment goes to Ida.</p>
+              </sc-if>
+              <sc-if value="{{ notCompletePlanActive }}" hint-placeholder-val="{{ true }}">
+                <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">Included with the Complete plan.</p>
+              </sc-if>
+            </div>
+            <div onClick="{{ goBienvenido }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
+              <span style="width:38px;height:38px;border-radius:999px;border:2px solid #D4562E;color:#D4562E;display:flex;align-items:center;justify-content:center;font-size:17px;">🌱</span>
+              <h4 style="font:600 18px Spectral,serif;color:#1A1F24;margin:16px 0 4px;">Bienvenido guide</h4>
+              <sc-if value="{{ isCompletePlanActive }}" hint-placeholder-val="{{ false }}">
+                <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">Settling in — language, culture, everyday life.</p>
+              </sc-if>
+              <sc-if value="{{ notCompletePlanActive }}" hint-placeholder-val="{{ true }}">
+                <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">Included with the Complete plan.</p>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ---- BIENVENIDO ---- -->
+      <sc-if value="{{ isBienvenido }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:720px;margin:0 auto;padding:44px 48px 96px;">
+          <h1 style="font:600 30px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Bienvenido a Barcelona</h1>
+          <sc-if value="{{ isCompletePlanActive }}" hint-placeholder-val="{{ false }}">
+            <p style="font:400 14.5px Figtree,sans-serif;color:#5A6872;margin:10px 0 0;">Included with your Complete plan — a short, practical guide for arrival day and the weeks after.</p>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:28px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Getting a SIM card</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0;">Vodafone, Orange, and Movistar all have kiosks in the airport arrivals area — prepaid tourist/data plans are quick to set up with just your passport. Prices are similar to buying in the city, so it's fine to grab one on arrival rather than hunting for a better deal.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Getting to your accommodation</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0;">The Aerobús runs to Plaça Catalunya in about 35 minutes for €6.75. The R2 Nord train is cheaper (~€4.50) and similar in time, but involves a transfer. A taxi is roughly €35–40 and 25–35 minutes, worth it with heavy luggage or a late arrival. Ride-hailing apps work but can be pricier at peak airport times.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Changing money to euros</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0;">Airport currency exchange counters have the worst rates you'll see — avoid changing more than you need for a taxi or snacks there. A debit card with no foreign transaction fees, or withdrawing from a bank-branded ATM (not a standalone "Euronet"-style machine), will get you a fairer rate once you're in the city.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Quick snacks and water at the airport</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0;">There are supermarkets and cafés past security in both terminals if you land hungry — cheaper than the sit-down options. Tap water in Barcelona is safe to drink, so a refillable bottle saves you buying water once you're settled.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Staying aware of your belongings</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0;">Petty theft (mainly pickpocketing) happens more on the metro, Las Ramblas, and around crowded tourist spots than most other parts of the city. Keep bags zipped and in front of you on public transport, keep your phone out of back pockets, and split cash/cards across bags when possible. None of this is unique to Barcelona — normal city awareness is enough.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">What to pack</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0 0 14px;">Barcelona is mild year-round but has a real, damp winter — pack for layers, not extremes.</p>
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px 20px;">
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">• EU plug adapter (type C/F)</span>
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">• A warm layer for Nov–Feb evenings</span>
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">• Comfortable walking shoes</span>
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">• A physical copy of every roadmap document</span>
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">• Printed proof of health insurance</span>
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">• A bank card with no foreign-transaction fees</span>
+              </div>
+            </div>
+
+            <div style="background:#fff;border:1.5px dashed rgba(27,58,62,.3);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Still looking for housing?</h3>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#3A4A54;margin:0 0 14px;">You'll need a signed rental contract or host authorization letter for your empadronamiento — a few pointers before you sign anything:</p>
+              <ul style="margin:0 0 14px;padding-left:20px;">
+                <li style="font:400 13.5px/1.6 Figtree,sans-serif;color:#3A4A54;">Idealista and Badi are the two listing sites most students use — avoid deals that only exist on Facebook groups with no viewing.</li>
+                <li style="font:400 13.5px/1.6 Figtree,sans-serif;color:#3A4A54;">Never wire a deposit before seeing the place in person or on a verified video call.</li>
+                <li style="font:400 13.5px/1.6 Figtree,sans-serif;color:#3A4A54;">Gràcia, Sants, and Poble Sec are popular, well-connected areas within reach of most universities.</li>
+              </ul>
+              <a href="https://www.idealista.com/en/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.08);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Browse listings on Idealista ↗</a>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
+              <h3 style="font:600 18px Spectral,serif;color:#1A1F24;margin:0 0 8px;">Settling in beyond day one</h3>
+              <p style="font:400 14px/1.65 Figtree,sans-serif;color:#3A4A54;margin:0;">Learning enough Spanish (or Catalan, day to day here) to feel at ease takes real time — usually longer than people expect, and it's normal to feel isolated or slow-going at first, even if you studied the language before. That adjustment is a genuine part of moving, not a sign you're doing something wrong. Give it months, not weeks, and lean on structured practice and real conversation rather than trying to push through alone.</p>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:22px 26px;margin-top:14px;">
+              <h4 style="font:600 15.5px Spectral,serif;color:#1A1F24;margin:0 0 6px;">Escuela Oficial de Idiomas (EOI)</h4>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 12px;">Spain's public language school system — low-cost structured Spanish and Catalan courses, official certificates, evening schedules that work around studies.</p>
+              <a href="https://www.eoibd.cat/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">EOI Barcelona — course info ↗</a>
+            </div>
+
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:22px 26px;margin-top:14px;">
+              <h4 style="font:600 15.5px Spectral,serif;color:#1A1F24;margin:0 0 6px;">Language exchange (intercambio) groups</h4>
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 12px;">Informal, usually free meetups pairing you with locals to practice — often the fastest way to build both language and a social circle at the same time.</p>
+              <a href="https://www.meetup.com/find/?keywords=language%20exchange%20barcelona" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Find intercambio meetups ↗</a>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notCompletePlanActive }}" hint-placeholder-val="{{ true }}">
+            <p style="font:400 14.5px/1.6 Figtree,sans-serif;color:#5A6872;margin:12px 0 0;max-width:520px;">The Bienvenido guide is included with the Complete plan — a practical arrival-day guide plus honest guidance on settling in, not just paperwork.</p>
+            <button onClick="{{ goPaywall }}" style="margin-top:20px;background:#D4562E;color:#fff;border:none;border-radius:12px;padding:13px 22px;font:600 14px Figtree,sans-serif;cursor:pointer;">See plans</button>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ---- LIVE SUPPORT ---- -->
+      <sc-if value="{{ isLiveSupport }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:720px;margin:0 auto;padding:44px 48px 96px;">
+          <h1 style="font:600 30px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Live support</h1>
+          <sc-if value="{{ isCompletePlanActive }}" hint-placeholder-val="{{ false }}">
+            <p style="font:400 14.5px Figtree,sans-serif;color:#5A6872;margin:10px 0 0;">Included with your Complete plan — for navigation, document questions, and general how-to's. For anything needing real legal judgment on your case, we'll hand you off to Ida.</p>
+            <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;">
+              <sc-for list="{{ supportSuggestions }}" as="sug" hint-placeholder-count="3">
+                <button onClick="{{ sug.onClick }}" style="background:#fff;border:1px solid rgba(34,48,60,.12);border-radius:999px;padding:9px 15px;font:500 13px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">{{ sug.label }}</button>
+              </sc-for>
+            </div>
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;margin-top:16px;overflow:hidden;">
+              <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;max-height:420px;overflow-y:auto;">
+                <sc-for list="{{ supportThreadRows }}" as="msg" hint-placeholder-count="2">
+                  <div style="{{ msg.rowStyle }}">
+                    <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="border-top:1px solid rgba(34,48,60,.08);padding:16px 20px;display:flex;gap:10px;">
+                <input type="text" value="{{ supportDraft }}" onInput="{{ onSupportDraft }}" placeholder="Type a message…" style="flex:1;padding:12px 16px;border-radius:12px;border:1.5px solid #E2D8C5;background:#EFEAE0;font:500 14px Figtree,sans-serif;color:#1A1F24;">
+                <button onClick="{{ sendSupportMessage }}" style="background:#D4562E;color:#fff;border:none;border-radius:12px;padding:12px 20px;font:600 13.5px Figtree,sans-serif;cursor:pointer;">Send</button>
+              </div>
+            </div>
+            <p style="font:400 12px Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">(Demo thread — a real deployment would connect to a live agent.)</p>
+          </sc-if>
+          <sc-if value="{{ notCompletePlanActive }}" hint-placeholder-val="{{ true }}">
+            <p style="font:400 14.5px/1.6 Figtree,sans-serif;color:#5A6872;margin:12px 0 0;max-width:520px;">Live support is included with the Complete plan — chat access before and after your arrival, for anything that comes up along the way.</p>
+            <button onClick="{{ goPaywall }}" style="margin-top:20px;background:#D4562E;color:#fff;border:none;border-radius:12px;padding:13px 22px;font:600 14px Figtree,sans-serif;cursor:pointer;">See plans</button>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ---- ROADMAP ---- -->
+      <sc-if value="{{ isRoadmap }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:900px;margin:0 auto;padding:44px 48px 96px;">
+          <sc-if value="{{ showLinkBanner }}" hint-placeholder-val="{{ true }}">
+            <div style="background:rgba(27,58,62,.08);border:1px solid rgba(27,58,62,.2);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:26px;flex-wrap:wrap;">
+              <p style="font:500 13.5px Figtree,sans-serif;color:#1B3A3E;margin:0;">No password to remember — request a fresh link to this roadmap anytime from the homepage.</p>
+              <button onClick="{{ dismissBanner }}" style="background:none;border:1px solid rgba(27,58,62,.3);border-radius:8px;padding:7px 13px;font:600 12.5px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">Got it</button>
+            </div>
+          </sc-if>
+
+          <h1 style="font:600 34px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Your roadmap</h1>
+          <p style="font:400 15px Figtree,sans-serif;color:#5A6872;margin:8px 0 0;">{{ headerContextLine }}</p>
+          <sc-if value="{{ isArrivalNear }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ goBienvenido }}" style="background:rgba(27,58,62,.08);border:1px solid rgba(27,58,62,.2);border-radius:14px;padding:16px 20px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;flex-wrap:wrap;">
+              <div>
+                <h4 style="font:600 15px Figtree,sans-serif;color:#1A1F24;margin:0 0 3px;">Arrival is coming up</h4>
+                <p style="font:400 13px Figtree,sans-serif;color:#5A6872;margin:0;">Take a look at the Bienvenido guide — SIM cards, getting into the city, and settling in.</p>
+              </div>
+              <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;white-space:nowrap;">Open guide →</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ hasFamilyNote }}" hint-placeholder-val="{{ false }}">
+            <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:4px 0 0;">{{ familyNote }}</p>
+          </sc-if>
+          <sc-if value="{{ showPilotBadge }}" hint-placeholder-val="{{ true }}">
+            <span style="{{ pilotBadgeStyle }}">{{ pilotBadgeText }}</span>
+          </sc-if>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:20px;">
+            <div style="flex:1;height:8px;border-radius:999px;background:rgba(34,48,60,.09);overflow:hidden;">
+              <div style="{{ roadmapBarStyle }}"></div>
+            </div>
+            <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;white-space:nowrap;">{{ doneCount }} of {{ totalSteps }} done</span>
+          </div>
+          <p style="font:400 12.5px/1.5 Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">Guidance based on officially published requirements — not a guarantee of approval. The consulate makes the final decision.</p>
+
+          <div style="margin-top:12px;">
+            <sc-for list="{{ phasesB }}" as="phase" hint-placeholder-count="4">
+              <div style="display:flex;gap:14px;align-items:center;margin:28px 0 12px;">
+                <span style="{{ phase.dot }}"></span>
+                <span style="font:600 13px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#1B3A3E;">{{ phase.name }}</span>
+              </div>
+              <div style="border-left:2px dashed #C9BCA4;margin-left:9px;padding-left:26px;">
+                <sc-for list="{{ phase.steps }}" as="step" hint-placeholder-count="2">
+                  <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:16px;margin-bottom:14px;box-shadow:0 8px 18px -13px rgba(34,48,60,.3);overflow:hidden;">
+                    <div onClick="{{ step.onToggle }}" style="padding:18px 22px 16px;cursor:pointer;">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                        <span style="font:600 11px Figtree,sans-serif;letter-spacing:.3px;text-transform:uppercase;color:#8A7C64;">{{ step.due }}</span>
+                        <span style="{{ step.chip }}">{{ step.statusLabel }}</span>
+                      </div>
+                      <h3 style="font:600 19px/1.3 Spectral,serif;color:#1A1F24;margin:9px 0 0;">{{ step.title }}</h3>
+                      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+                        <span style="font:500 13px Figtree,sans-serif;color:#8A7C64;">{{ step.docsDone }}/{{ step.docsTotal }} documents ready</span>
+                        <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;">{{ step.toggleLabel }}</span>
+                      </div>
+                    </div>
+
+                    <sc-if value="{{ step.isExpanded }}" hint-placeholder-val="{{ false }}">
+                      <sc-if value="{{ step.locked }}" hint-placeholder-val="{{ false }}">
+                        <div style="padding:20px 22px 24px;border-top:1px solid rgba(34,48,60,.07);">
+                          <div style="background:rgba(34,48,60,.04);border:1.5px dashed #D8CDB8;border-radius:14px;padding:22px;text-align:center;">
+                            <p style="font:600 12px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A7C64;margin:0 0 8px;">Locked</p>
+                            <p style="font:400 14px/1.55 Figtree,sans-serif;color:#5A6872;margin:0 0 18px;">Step-by-step detail and document tracking for this step are part of the full roadmap.</p>
+                            <button onClick="{{ unlockAll }}" style="background:#D4562E;color:#fff;border:none;border-radius:11px;padding:12px 22px;font:600 14px Figtree,sans-serif;cursor:pointer;">See plans — from €{{ unlockPrice }}</button>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ step.unlockedView }}" hint-placeholder-val="{{ true }}">
+                        <div style="padding:2px 22px 22px;border-top:1px solid rgba(34,48,60,.07);">
+                          <p style="font:400 14.5px/1.6 Figtree,sans-serif;color:#4B5A64;margin:14px 0 4px;">{{ step.what }}</p>
+                          <sc-if value="{{ step.hasLegalizationChain }}" hint-placeholder-val="{{ false }}">
+                            <p style="font:600 11px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A7C64;margin:18px 0 4px;">Legalization chain</p>
+                            <sc-for list="{{ step.legalizationChain }}" as="lc" hint-placeholder-count="3">
+                              <div style="display:flex;gap:9px;align-items:flex-start;padding:5px 0;">
+                                <span style="width:20px;height:20px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font:600 11px Figtree,sans-serif;">{{ lc.n }}</span>
+                                <span style="font:400 13.5px/1.4 Figtree,sans-serif;color:#3A4A54;">{{ lc.text }}</span>
+                              </div>
+                            </sc-for>
+                          </sc-if>
+                          <p style="font:600 11px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A7C64;margin:18px 0 4px;">Documents</p>
+                          <sc-for list="{{ step.docs }}" as="doc" hint-placeholder-count="3">
+                            <div onClick="{{ doc.onToggle }}" style="display:flex;gap:11px;align-items:flex-start;padding:8px 0;cursor:pointer;">
+                              <sc-if value="{{ doc.done }}" hint-placeholder-val="{{ false }}">
+                                <span style="width:21px;height:21px;flex:none;border-radius:6px;background:#1B3A3E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;">✓</span>
+                              </sc-if>
+                              <sc-if value="{{ doc.notDone }}" hint-placeholder-val="{{ true }}">
+                                <span style="width:21px;height:21px;flex:none;border-radius:6px;border:1.5px solid #D8CDB8;background:#fff;margin-top:1px;"></span>
+                              </sc-if>
+                              <span style="font:400 14px/1.4 Figtree,sans-serif;color:#3A4A54;">{{ doc.label }}</span>
+                            </div>
+                          </sc-for>
+
+                          <sc-if value="{{ step.hasLink }}" hint-placeholder-val="{{ false }}">
+                            <a href="#" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Official page · {{ step.link }} ↗</a>
+                          </sc-if>
+
+                          <button onClick="{{ step.onCycle }}" style="display:block;width:100%;margin-top:14px;padding:12px;border-radius:12px;border:1.5px solid #E2D8C5;background:#fff;font:600 14px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">Mark as {{ step.nextLabel }}</button>
+
+                          <sc-if value="{{ step.lawyer }}" hint-placeholder-val="{{ false }}">
+                            <div style="margin-top:16px;background:#1B3A3E;border-radius:16px;padding:20px;color:#F5F2EC;">
+                              <div style="display:flex;align-items:center;gap:12px;">
+                                <span style="width:44px;height:44px;flex:none;border-radius:999px;background:rgba(247,241,232,.16);color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 15px Spectral,serif;">IQ</span>
+                                <div><div style="font:600 15px Figtree,sans-serif;">Ida Quintián Pacheco</div><div style="font:400 12px Figtree,sans-serif;color:#B8CFCC;">Immigration lawyer · ICAB Barcelona</div></div>
+                              </div>
+                              <p style="font:400 14px/1.55 Figtree,sans-serif;color:#DCE7E5;margin:14px 0 0;">This step has case-specific rules. A vetted lawyer can review yours — only if you'd like.</p>
+                              <button onClick="{{ goLawyer }}" style="width:100%;margin-top:14px;background:#D4562E;color:#fff;border:none;border-radius:12px;padding:14px;font:600 15px Figtree,sans-serif;cursor:pointer;">Book a consult · from €45</button>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-if>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ---- DOCUMENTS ---- -->
+      <sc-if value="{{ isDocuments }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:820px;margin:0 auto;padding:44px 48px 96px;">
+          <h1 style="font:600 34px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Documents</h1>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:18px;">
+            <div style="flex:1;height:8px;border-radius:999px;background:rgba(34,48,60,.09);overflow:hidden;">
+              <div style="{{ docsBarStyle }}"></div>
+            </div>
+            <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;white-space:nowrap;">{{ docsDoneTotal }} of {{ docsGrandTotal }} ready</span>
+          </div>
+          <p style="font:400 12.5px/1.5 Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">Guidance based on officially published requirements — not a guarantee of approval. Some documents have validity windows; we'll flag those below.</p>
+          <a href="https://www.exteriores.gob.es/Consulados/Paginas/index.aspx" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Find your nearest Spanish consulate ↗</a>
+
+          <div style="margin-top:30px;">
+            <sc-for list="{{ steps }}" as="step" hint-placeholder-count="5">
+              <div style="margin-bottom:28px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <h3 style="font:600 17px Spectral,serif;color:#1A1F24;margin:0;">{{ step.title }}</h3>
+                  <span style="font:600 12px Figtree,sans-serif;color:#8A7C64;">{{ step.due }}</span>
+                </div>
+                <sc-if value="{{ step.locked }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#fff;border:1.5px dashed #D8CDB8;border-radius:14px;margin-top:10px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+                    <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">Document tracking for this step is part of the full roadmap.</p>
+                    <button onClick="{{ unlockAll }}" style="background:none;border:none;font:600 13.5px Figtree,sans-serif;color:#D4562E;cursor:pointer;">See plans — from €{{ unlockPrice }} →</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ step.unlockedView }}" hint-placeholder-val="{{ true }}">
+                  <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:14px;margin-top:10px;overflow:hidden;">
+                    <sc-for list="{{ step.docs }}" as="doc" hint-placeholder-count="3">
+                      <div style="border-top:1px solid rgba(34,48,60,.06);">
+                        <div onClick="{{ doc.onOpen }}" style="display:flex;gap:12px;align-items:center;padding:14px 18px;cursor:pointer;">
+                          <span onClick="{{ doc.onToggleStop }}" style="{{ doc.checkStyle }}">{{ doc.checkGlyph }}</span>
+                          <div style="flex:1;">
+                            <div style="font:500 15px Figtree,sans-serif;color:#3A4A54;">{{ doc.label }}</div>
+                            <sc-if value="{{ doc.hasFlags }}" hint-placeholder-val="{{ false }}">
+                              <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+                                <sc-if value="{{ doc.expires }}" hint-placeholder-val="{{ false }}"><span style="{{ doc.expiresChipStyle }}">Time-sensitive</span></sc-if>
+                                <sc-if value="{{ doc.translation }}" hint-placeholder-val="{{ false }}">
+                                  <span style="{{ doc.translationChipStyle }}">Translation required</span>
+                                </sc-if>
+                              </div>
+                            </sc-if>
+                            <sc-if value="{{ doc.showValidityBadge }}" hint-placeholder-val="{{ false }}">
+                              <div style="margin-top:6px;"><span style="{{ doc.validityBadgeStyle }}">{{ doc.validityBadgeText }}</span></div>
+                            </sc-if>
+                          </div>
+                          <span style="font:600 13px Figtree,sans-serif;color:#8A7C64;">{{ doc.chevron }}</span>
+                        </div>
+                        <sc-if value="{{ doc.open }}" hint-placeholder-val="{{ false }}">
+                          <div style="padding:0 18px 18px 48px;">
+                            <p style="margin:0 0 12px;font:400 13.5px/1.55 Figtree,sans-serif;color:#5A6872;">{{ doc.note }}</p>
+                            <sc-if value="{{ doc.noUpload }}" hint-placeholder-val="{{ true }}">
+                              <label htmlFor="{{ doc.inputId }}" onDragOver="{{ doc.onDragOver }}" onDrop="{{ doc.onDrop }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 16px;border-radius:12px;border:1.5px dashed #D8CDB8;background:#EFEAE0;cursor:pointer;text-align:center;max-width:280px;">
+                                <span style="font-size:20px;line-height:1;">☁️</span>
+                                <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;"><span style="text-decoration:underline;">Choose file</span> or drop here</span>
+                                <span style="font:400 11.5px Figtree,sans-serif;color:#8A7C64;">PDF, PNG or JPEG · up to 20MB</span>
+                              </label>
+                              <input type="file" id="{{ doc.inputId }}" style="display:none" onChange="{{ doc.onAttach }}">
+                            </sc-if>
+                            <sc-if value="{{ doc.hasUpload }}" hint-placeholder-val="{{ false }}">
+                              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                                <span style="{{ doc.uploadChipStyle }}">{{ doc.uploadStatusLabel }}</span>
+                                <span style="font:500 13px Figtree,sans-serif;color:#3A4A54;">{{ doc.fileName }}</span>
+                                <button onClick="{{ doc.onRemove }}" style="background:none;border:none;font:600 12.5px Figtree,sans-serif;color:#8A7C64;cursor:pointer;padding:0;">Remove</button>
+                              </div>
+                              <sc-if value="{{ doc.showDeliveryChoice }}" hint-placeholder-val="{{ false }}">
+                                <div style="margin-top:10px;background:rgba(27,58,62,.06);border-radius:11px;padding:14px 16px;">
+                                  <p style="font:600 12px Figtree,sans-serif;color:#1B3A3E;margin:0 0 10px;">This one needs a sworn translation. How should we return it?</p>
+                                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <button onClick="{{ doc.onSetDownload }}" style="{{ doc.downloadBtnStyle }}">Download in-app</button>
+                                    <button onClick="{{ doc.onSetPost }}" style="{{ doc.postBtnStyle }}">Post a copy (+€12)</button>
+                                  </div>
+                                  <button onClick="{{ goTranslation }}" style="display:block;margin-top:10px;background:none;border:none;font:600 12.5px Figtree,sans-serif;color:#D4562E;cursor:pointer;padding:0;">Send it for translation →</button>
+                                </div>
+                              </sc-if>
+                            </sc-if>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ---- TRANSLATION ---- -->
+      <sc-if value="{{ isTranslation }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:900px;margin:0 auto;padding:44px 48px 96px;">
+          <h1 style="font:600 34px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Translation service</h1>
+          <p style="font:400 15.5px/1.6 Figtree,sans-serif;color:#5A6872;margin:12px 0 0;max-width:640px;">Sworn translations for the documents Spain requires in Spanish. Attach a copy next to any document in your Documents list, then send it here — no need to find your own translator.</p>
+          <sc-if value="{{ isCompletePlan }}" hint-placeholder-val="{{ false }}">
+            <span style="{{ completePerkChipStyle }}">Complete plan perk: your translations are prioritized in our queue (pricing below still applies)</span>
+          </sc-if>
+
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;margin-top:30px;">
+            <div>
+              <span style="width:36px;height:36px;border-radius:999px;border:2px solid #D4562E;color:#D4562E;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">01</span>
+              <h4 style="font:600 16px Spectral,serif;color:#1A1F24;margin:12px 0 5px;">Attach</h4>
+              <p style="font:400 13.5px/1.5 Figtree,sans-serif;color:#5A6872;margin:0;">Upload a scan next to any document in your Documents list.</p>
+            </div>
+            <div>
+              <span style="width:36px;height:36px;border-radius:999px;border:2px solid #D4562E;color:#D4562E;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">02</span>
+              <h4 style="font:600 16px Spectral,serif;color:#1A1F24;margin:12px 0 5px;">We translate</h4>
+              <p style="font:400 13.5px/1.5 Figtree,sans-serif;color:#5A6872;margin:0;">Our translation team prepares a certified Spanish translation.</p>
+            </div>
+            <div>
+              <span style="width:36px;height:36px;border-radius:999px;background:#1B3A3E;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">03</span>
+              <h4 style="font:600 16px Spectral,serif;color:#1A1F24;margin:12px 0 5px;">Get it back</h4>
+              <p style="font:400 13.5px/1.5 Figtree,sans-serif;color:#5A6872;margin:0;">Ready in 2 working days — download it, or have a copy posted to you.</p>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:26px 28px;margin-top:32px;">
+            <h3 style="font:600 17px Spectral,serif;color:#1A1F24;margin:0 0 16px;">Pricing</h3>
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #F0EBDD;">
+                <span style="font:500 14px Figtree,sans-serif;color:#3A4A54;">1–3 documents</span>
+                <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">€35</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #F0EBDD;">
+                <span style="font:500 14px Figtree,sans-serif;color:#3A4A54;">4–6 documents</span>
+                <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">€55</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #F0EBDD;border-bottom:1px solid #F0EBDD;">
+                <span style="font:500 14px Figtree,sans-serif;color:#3A4A54;">7+ documents</span>
+                <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">€80</span>
+              </div>
+            </div>
+            <p style="font:400 13px/1.5 Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">Bundle price covers every document you send in one batch. Choosing to have any document posted adds a flat +€12 to that batch.</p>
+            <p style="font:400 12px/1.5 Figtree,sans-serif;color:#8A7C64;margin:8px 0 0;">Estimated pricing — final quote confirmed once our team reviews your files.</p>
+          </div>
+
+          <h3 style="font:600 17px Spectral,serif;color:#1A1F24;margin:36px 0 14px;">Your documents</h3>
+          <sc-if value="{{ hasQueueItems }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:14px;overflow:hidden;">
+              <sc-for list="{{ translationQueue }}" as="doc" hint-placeholder-count="3">
+                <div style="padding:16px 20px;border-top:1px solid rgba(34,48,60,.06);">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                    <div>
+                      <div style="font:500 14.5px Figtree,sans-serif;color:#3A4A54;">{{ doc.label }}</div>
+                      <div style="font:400 12.5px Figtree,sans-serif;color:#8A7C64;margin-top:2px;">{{ doc.stepTitle }} · {{ doc.fileName }}</div>
+                    </div>
+                    <span style="{{ doc.uploadChipStyle }}">{{ doc.uploadStatusLabel }}</span>
+                  </div>
+                  <sc-if value="{{ doc.showDeliveryChoice }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+                      <button onClick="{{ doc.onSetDownload }}" style="{{ doc.downloadBtnStyle }}">Download in-app</button>
+                      <button onClick="{{ doc.onSetPost }}" style="{{ doc.postBtnStyle }}">Post a copy (+€12)</button>
+                      <button onClick="{{ doc.onRemove }}" style="background:none;border:none;font:600 12.5px Figtree,sans-serif;color:#8A7C64;cursor:pointer;">Remove</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ doc.showMarkDelivered }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ doc.onMarkDelivered }}" style="margin-top:12px;background:none;border:1px solid #E2D8C5;border-radius:9px;padding:8px 13px;font:600 12.5px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">(Demo) Mark as delivered</button>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:18px;">
+              <span style="font:600 15px Figtree,sans-serif;color:#1A1F24;">{{ sendableCount }} document(s) ready to send · €{{ totalPrice }} estimated</span>
+              <p style="font:600 12px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A7C64;margin:14px 0 10px;">Choose how to pay</p>
+              <div style="display:flex;gap:12px;">
+                <button onClick="{{ sendForTranslationAction }}" style="flex:1;padding:14px;border-radius:13px;border:1.5px solid #E2D8C5;background:#fff;font:600 14.5px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">PayPal</button>
+                <button onClick="{{ sendForTranslationAction }}" style="flex:1;padding:14px;border-radius:13px;border:1.5px solid #E2D8C5;background:#fff;font:600 14.5px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">Credit / debit card</button>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ noQueueItems }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border:1.5px dashed #D8CDB8;border-radius:14px;padding:26px;text-align:center;">
+              <p style="font:400 14px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 14px;">No documents attached yet. Open any document in your Documents list and attach a copy — it'll show up here.</p>
+              <button onClick="{{ goDocuments }}" style="background:#1B3A3E;color:#fff;border:none;border-radius:11px;padding:12px 20px;font:600 13.5px Figtree,sans-serif;cursor:pointer;">Go to Documents</button>
+            </div>
+          </sc-if>
+
+          <a href="https://www.exteriores.gob.es/Consulados/Paginas/index.aspx" style="display:inline-flex;align-items:center;gap:6px;margin-top:28px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Find your nearest Spanish consulate ↗</a>
+        </div>
+      </sc-if>
+
+      <!-- ---- LAWYER ---- -->
+      <sc-if value="{{ isLawyer }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:760px;margin:0 auto;padding:44px 48px 96px;">
+          <h1 style="font:600 34px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Talk to a lawyer</h1>
+          <p style="font:400 15.5px/1.6 Figtree,sans-serif;color:#5A6872;margin:12px 0 0;max-width:560px;">Most of your roadmap you can handle yourself. A few steps have case-specific rules — that's when it's worth a second opinion.</p>
+
+          <div style="background:#1B3A3E;border-radius:22px;padding:32px;margin-top:30px;color:#F5F2EC;">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(247,241,232,.08);border:1px solid rgba(247,241,232,.18);border-radius:8px;padding:8px 14px 8px 10px;font:600 12.5px Figtree,sans-serif;color:#DCE7E5;">🔒 Confidential — only shared with you</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(247,241,232,.08);border:1px solid rgba(247,241,232,.18);border-radius:8px;padding:8px 14px 8px 10px;font:600 12.5px Figtree,sans-serif;color:#DCE7E5;">🎓 10 years, student visa cases</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(247,241,232,.08);border:1px solid rgba(247,241,232,.18);border-radius:8px;padding:8px 14px 8px 10px;font:600 12.5px Figtree,sans-serif;color:#DCE7E5;">⏱️ 30-min focused consults</span>
+            </div>
+            <h2 style="font:600 22px Spectral,serif;color:#F5F2EC;margin:0;letter-spacing:-.2px;">Rutabien's Legal Partner</h2>
+            <div style="display:flex;align-items:center;gap:16px;margin-top:18px;">
+              <span style="width:56px;height:56px;flex:none;border-radius:999px;background:rgba(247,241,232,.16);color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 18px Spectral,serif;">IQ</span>
+              <div>
+                <div style="font:600 16px Figtree,sans-serif;">Ida Quintián Pacheco</div>
+                <div style="font:400 13px Figtree,sans-serif;color:#B8CFCC;">Immigration lawyer · ICAB Barcelona</div>
+              </div>
+            </div>
+            <p style="font:400 15px/1.6 Figtree,sans-serif;color:#DCE7E5;margin:20px 0 0;max-width:560px;">Ida has spent a decade helping international students through Spain's student visa and residence process. Consults are 30 minutes, one-on-one, focused on your specific case.</p>
+            <div style="display:flex;align-items:center;gap:18px;margin-top:24px;flex-wrap:wrap;">
+              <a href="https://calendly.com/rutabien-ida/consult" style="background:#D4562E;color:#fff;border:none;border-radius:13px;padding:15px 24px;font:600 15px Figtree,sans-serif;display:inline-block;">Open booking page — from €45 ↗</a>
+              <span style="font:500 13px Figtree,sans-serif;color:#B8CFCC;">No pressure — cancel anytime</span>
+            </div>
+            <p style="font:400 12.5px/1.5 Figtree,sans-serif;color:#9FC0BC;margin:16px 0 0;">Fees range €45–400 depending on the service — you'll see exact pricing before booking. Hosted on a dedicated business scheduling page that Ida controls herself, showing only the hours she's opened for consults — never her personal calendar. (Link is a placeholder pending Ida's setup and confirmation.)</p>
+          </div>
+
+          <p style="font:600 12px Figtree,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#8A7C64;margin:34px 0 14px;">Good moments to bring one in</p>
+          <sc-for list="{{ lawyerSteps }}" as="step" hint-placeholder-count="2">
+            <div onClick="{{ step.onView }}" style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:14px;padding:18px 20px;margin-bottom:12px;cursor:pointer;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <h4 style="font:600 16px Spectral,serif;color:#1A1F24;margin:0;">{{ step.title }}</h4>
+                <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;">View this step →</span>
+              </div>
+              <p style="font:400 14px/1.5 Figtree,sans-serif;color:#5A6872;margin:8px 0 0;">{{ step.what }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <!-- ============ ADMIN LOGIN ============ -->
+  <sc-if value="{{ isAdminLogin }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;background:#1A1F24;display:flex;align-items:center;justify-content:center;padding:40px;">
+      <div style="width:100%;max-width:380px;background:#fff;border-radius:18px;padding:36px 32px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+          <span style="{{ pinMark }}"></span>
+          <span style="font:600 17px Spectral,serif;color:#1A1F24;">Rutabien Admin</span>
+        </div>
+        <p style="font:400 13.5px Figtree,sans-serif;color:#8A7C64;margin:0 0 26px;">Internal access only.</p>
+        <label style="font:600 12px Figtree,sans-serif;color:#5A6872;">Email</label>
+        <input type="email" placeholder="you@rutabien.com" style="width:100%;margin:6px 0 16px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2D8C5;font:500 14px Figtree,sans-serif;color:#1A1F24;">
+        <label style="font:600 12px Figtree,sans-serif;color:#5A6872;">Password</label>
+        <input type="password" placeholder="••••••••" style="width:100%;margin:6px 0 22px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2D8C5;font:500 14px Figtree,sans-serif;color:#1A1F24;">
+        <button onClick="{{ goAdmin }}" style="width:100%;background:#1A1F24;color:#fff;border:none;border-radius:10px;padding:13px;font:600 14px Figtree,sans-serif;cursor:pointer;">Sign in</button>
+        <button onClick="{{ goLanding }}" style="width:100%;margin-top:10px;background:none;border:none;font:600 13px Figtree,sans-serif;color:#8A7C64;cursor:pointer;">← Back to site</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ ADMIN DASHBOARD ============ -->
+  <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+    <div style="min-height:100vh;background:#F4F1EC;">
+      <div style="background:#1A1F24;padding:0 40px;">
+        <div style="max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;">
+          <div style="display:flex;align-items:center;gap:9px;">
+            <span style="{{ pinMarkLight }}"></span>
+            <span style="font:600 16px Figtree,sans-serif;color:#fff;">Rutabien Admin</span>
+          </div>
+          <button onClick="{{ goLanding }}" style="background:none;border:none;font:600 13px Figtree,sans-serif;color:#B8C4CC;cursor:pointer;">Log out</button>
+        </div>
+      </div>
+
+      <div style="max-width:1240px;margin:0 auto;padding:36px 40px 80px;">
+
+        <sc-if value="{{ isAdminList }}" hint-placeholder-val="{{ true }}">
+          <h1 style="font:700 24px Figtree,sans-serif;color:#1A1F24;margin:0;">Students</h1>
+          <p style="font:400 14px Figtree,sans-serif;color:#5A6872;margin:6px 0 0;">{{ flaggedCount }} flagged for legal review</p>
+
+          <div style="display:flex;gap:20px;margin-top:22px;flex-wrap:wrap;align-items:center;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <sc-for list="{{ caseFilters }}" as="f" hint-placeholder-count="4">
+                <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <sc-for list="{{ statusFilters }}" as="f" hint-placeholder-count="3">
+                <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <button onClick="{{ toggleSort }}" style="margin-left:auto;background:#fff;border:1px solid #DDD6C7;border-radius:8px;padding:8px 14px;font:600 12.5px Figtree,sans-serif;color:#5A6872;cursor:pointer;">Joined: {{ sortLabel }}</button>
+          </div>
+
+          <div style="margin-top:22px;background:#fff;border:1px solid #E4DECD;border-radius:12px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:2fr 1.3fr 1fr 1fr 1.2fr .9fr;padding:12px 20px;background:#F4F1EC;font:600 11.5px Figtree,sans-serif;letter-spacing:.3px;text-transform:uppercase;color:#8A7C64;">
+              <span>Name</span><span>Case type</span><span>Progress</span><span>Payment</span><span>Docs outstanding</span><span>Flag</span>
+            </div>
+            <sc-for list="{{ adminUsers }}" as="u" hint-placeholder-count="6">
+              <div onClick="{{ u.onClick }}" style="{{ u.rowStyle }}">
+                <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">{{ u.name }}</span>
+                <span style="font:400 13.5px Figtree,sans-serif;color:#5A6872;">{{ u.caseType }}</span>
+                <span style="font:500 13.5px Figtree,sans-serif;color:#3A4A54;">{{ u.progress }}%</span>
+                <span style="{{ u.paymentChip }}">{{ u.payment }}</span>
+                <span style="font:500 13.5px Figtree,sans-serif;color:#3A4A54;">{{ u.docsOutstanding }}</span>
+                <sc-if value="{{ u.flagged }}" hint-placeholder-val="{{ false }}"><span style="{{ u.flagChip }}">Flagged</span></sc-if>
+                <sc-if value="{{ u.notFlagged }}" hint-placeholder-val="{{ true }}"><span></span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isAdminDetail }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ backAdminList }}" style="background:none;border:none;font:600 13.5px Figtree,sans-serif;color:#5A6872;cursor:pointer;padding:0;">‹ Back to all students</button>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:16px;">
+            <div>
+              <h1 style="font:700 24px Figtree,sans-serif;color:#1A1F24;margin:0;">{{ selected.name }}</h1>
+              <p style="font:400 14px Figtree,sans-serif;color:#5A6872;margin:6px 0 0;">{{ selected.email }} · {{ selected.country }} · {{ selected.caseType }}</p>
+            </div>
+            <span style="{{ selected.paymentChip }}">{{ selected.payment }}</span>
+          </div>
+
+          <sc-if value="{{ selected.flagged }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;background:rgba(212,86,46,.08);border:1px solid rgba(212,86,46,.3);border-radius:10px;padding:12px 16px;font:600 13px Figtree,sans-serif;color:#D4562E;">Flagged for legal review</div>
+          </sc-if>
+
+          <div style="margin-top:26px;background:#fff;border:1px solid #E4DECD;border-radius:12px;padding:22px 24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">Roadmap progress</span>
+              <span style="font:600 14px Figtree,sans-serif;color:#1B3A3E;">{{ selected.progress }}%</span>
+            </div>
+            <div style="height:8px;border-radius:999px;background:rgba(34,48,60,.08);overflow:hidden;margin-top:10px;">
+              <div style="{{ selected.barStyle }}"></div>
+            </div>
+            <div style="margin-top:18px;">
+              <sc-for list="{{ selected.stepStatuses }}" as="st" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-top:1px solid #F0EBDD;">
+                  <span style="font:500 13.5px Figtree,sans-serif;color:#3A4A54;">{{ st.title }}</span>
+                  <span style="{{ st.chip }}">{{ st.status }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;background:#fff;border:1px solid #E4DECD;border-radius:12px;padding:22px 24px;">
+            <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">Documents</span>
+            <div style="margin-top:14px;">
+              <sc-for list="{{ selected.docsSample }}" as="d" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid #F0EBDD;">
+                  <span style="font:400 13.5px Figtree,sans-serif;color:#3A4A54;">{{ d.label }}</span>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="{{ d.chip }}">{{ d.status }}</span>
+                    <button style="background:none;border:1px solid #DDD6C7;border-radius:7px;padding:5px 10px;font:600 12px Figtree,sans-serif;color:#5A6872;cursor:pointer;">View</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  getNodes(){
+    return {
+      euStatus:{ id:'euStatus', type:'choice', q:'Are you an EU/EEA citizen?', help:"EU/EEA citizens don't need a student visa — just a short registration after arrival.", options:['Yes, EU/EEA citizen','No, non-EU/EEA'],
+        next:(A)=> A.euStatus==='Yes, EU/EEA citizen' ? 'euEmail' : 'returning' },
+      euEmail:{ id:'email', type:'email', q:'Where should we send your EU registration checklist?', help:'No visa questions needed — just your email.',
+        next:()=>null, terminalScreen:'eu-email-sent' },
+      returning:{ id:'returning', type:'choice', q:'New applicant, or already in Spain and renewing/changing status?', options:['New applicant','Returning or already in Spain'],
+        next:(A)=> A.returning==='Returning or already in Spain' ? 'permit' : 'nationality' },
+      permit:{ id:'permit', type:'choice', q:'What permit do you currently hold?', help:"Not sure which? A student visa is the sticker in your passport before you register in Spain. A TIE is the physical residence card you get after applying in-country.", options:['Student visa (not yet exchanged)','TIE residence card','Other / not sure'],
+        next:()=>'permitExpiry' },
+      permitExpiry:{ id:'permitExpiry', type:'date', q:'When does it expire?',
+        next:()=>'familyGate' },
+      nationality:{ id:'nationality', type:'nationality', q:'Where are you moving from?', help:"Some nationalities need extra legalization/apostille steps for documents — we'll flag anything that applies once we know your roadmap.", options:['Brazil','India','United States','Mexico','China','Colombia','Nigeria','South Korea','Vietnam','Other'],
+        next:()=>'letter' },
+      letter:{ id:'letter', type:'choice', q:'Do you have your university acceptance letter yet?', options:['Yes','No'],
+        next:(A)=> A.letter==='No' ? 'beforeApply' : 'familyGate' },
+      beforeApply:{ id:'email', type:'before-apply', q:'Before you apply',
+        next:()=>null, terminalScreen:'before-apply-sent' },
+      familyGate:{ id:'familyGate', type:'choice', q:'Will any family members (spouse/children) be accompanying you?', options:['Yes','No'],
+        next:(A)=> A.familyGate==='Yes' ? 'familyDetails' : 'work' },
+      familyDetails:{ id:'familyDetails', type:'family-details', q:'Tell us about your family',
+        next:()=>'work' },
+      work:{ id:'work', type:'choice', q:'Do you plan to work part-time while studying?', options:['Yes','No','Maybe later'],
+        next:()=>'housing' },
+      housing:{ id:'housing', type:'choice', q:'Do you already have housing arranged?', options:['Signed a rental','Temporary / Airbnb','Still looking'],
+        next:(A)=> A.returning==='Returning or already in Spain' ? 'email' : 'arrival' },
+      arrival:{ id:'arrival', type:'date', q:'When do you arrive in Spain?',
+        next:()=>'email' },
+      email:{ id:'email', type:'email', q:'Where should we save your roadmap?', help:'No account needed — just an email so you can return to your plan.',
+        next:()=>null, terminalScreen:'GENERATE' },
+    };
+  }
+  computePath(A){
+    const nodes=this.getNodes();
+    const path=[]; let id='euStatus'; let guard=0;
+    while(id && guard<20){
+      guard++;
+      const n=nodes[id];
+      if(!n) break;
+      path.push(id);
+      if(n.terminalScreen) break;
+      id=n.next(A);
+    }
+    return path;
+  }
+
+  steps = [
+    { id:'s1', phase:'Before you fly', title:'Secure your student visa', due:'By Aug 2026',
+      what:'Apply for your student visa at the Spanish consulate before departure. Processing usually takes 4–6 weeks, so start early.',
+      docs:[
+        { label:'University acceptance letter', note:'Official admission letter from your Spanish university confirming enrollment dates.' },
+        { label:'Proof of funds (≈ €600/mo)', note:'Bank statement or scholarship letter showing you can cover living costs.' },
+        { label:'Private health insurance', note:'Must have no co-pays and cover the full length of your stay in Spain.' },
+        { label:'Criminal record certificate, apostilled', note:"From every country you've lived in for 6+ months over the last 5 years. Valid ~3 months from issue — must still be valid at your consulate appointment. Needs a certified (sworn) translation into Spanish.", expires:true, translation:true },
+      ], link:'exteriores.gob.es', lawyer:true },
+    { id:'s2', phase:'Your first 30 days', title:'Register your address (empadronamiento)', due:'Within 2 weeks of arrival',
+      what:'Register at your local ajuntament to get your padrón certificate — you need it for nearly every step that follows.',
+      docs:[
+        { label:'Passport', note:'Original plus a photocopy of the ID page.' },
+        { label:'Rental contract or host authorization', note:"If you're not on the lease, ask your host for a signed authorization letter." },
+      ], link:'ajuntament.barcelona.cat', lawyer:false },
+    { id:'s3', phase:'Your first 30 days', title:'Apply for your TIE card', due:'Within 30 days of arrival',
+      what:'Book a cita previa and apply for your physical residence card, which makes your NIE official.',
+      docs:[
+        { label:'Form EX-17', note:'The residence card application form, filled in and signed.' },
+        { label:'Passport + visa', note:'Original documents, plus copies of every stamped page.' },
+        { label:'Empadronamiento certificate', note:'Issued within the last 3 months.', expires:true },
+        { label:'Modelo 790 fee payment', note:'Pay at any Spanish bank, then bring the stamped receipt.' },
+      ], link:'sede.administracionespublicas.gob.es', lawyer:false },
+    { id:'s4', phase:'Settling in', title:'Open a Spanish bank account', due:'Month 1',
+      what:'A local account makes rent, bills and paperwork much smoother.',
+      docs:[
+        { label:'Passport', note:'To verify identity.' },
+        { label:'NIE / TIE', note:'Some banks accept the NIE receipt before your TIE card arrives.' },
+        { label:'Proof of enrollment', note:'Confirms you qualify for student account terms.' },
+      ], link:'', lawyer:false },
+    { id:'s5', phase:'Settling in', title:'Confirm your healthcare', due:'Month 1–2',
+      what:'Your visa insurance covers you from day one; register for a SIP card if you become eligible.',
+      docs:[
+        { label:'Private insurance policy', note:'Keep a digital copy on your phone for appointments.' },
+        { label:'Empadronamiento', note:'Some clinics ask for it to confirm your address.' },
+      ], link:'', lawyer:false },
+    { id:'s6', phase:'Settling in', title:'Sort part-time work authorization', due:'Before you start working',
+      what:'A student stay lets you work up to 30h/week, but the authorization rules are case-specific and change often — worth a quick expert check.',
+      docs:[
+        { label:'Job offer or contract', note:'Needed before the authorization request can be filed.' },
+        { label:'Enrollment proof', note:"Confirms you're still a full-time student." },
+      ], link:'', lawyer:true },
+    { id:'s7', phase:'Looking ahead', title:'Plan your renewal', due:'60 days before Sept 2027',
+      what:'Start gathering updated enrollment and proof of funds well before your card expires.',
+      docs:[
+        { label:'Updated enrollment', note:'New academic year confirmation from your university.' },
+        { label:'Proof of funds', note:'Refreshed bank statement or scholarship letter.' },
+      ], link:'', lawyer:false },
+  ];
+
+  adminUsers = [
+    { id:1, name:'Camila Duarte', country:'Brazil', caseType:'Study', progress:85, payment:'Complete', docsOutstanding:1, flagged:false, joined:'2026-05-02', email:'camila.duarte@example.com' },
+    { id:2, name:'Rahul Mehta', country:'India', caseType:'Study + work', progress:22, payment:'Free', docsOutstanding:8, flagged:true, joined:'2026-06-18', email:'rahul.mehta@example.com' },
+    { id:3, name:'Sofia Delgado', country:'Mexico', caseType:'Renewal', progress:60, payment:'Essential', docsOutstanding:3, flagged:false, joined:'2026-04-10', email:'sofia.delgado@example.com' },
+    { id:4, name:'Wei Zhang', country:'China', caseType:'Study', progress:8, payment:'Free', docsOutstanding:11, flagged:false, joined:'2026-06-30', email:'wei.zhang@example.com' },
+    { id:5, name:'Amara Nwosu', country:'Nigeria', caseType:'Study + work', progress:47, payment:'Complete', docsOutstanding:5, flagged:true, joined:'2026-05-22', email:'amara.nwosu@example.com' },
+    { id:6, name:'Jisoo Park', country:'South Korea', caseType:'Study', progress:92, payment:'Essential', docsOutstanding:0, flagged:false, joined:'2026-03-14', email:'jisoo.park@example.com' },
+    { id:7, name:'Diego Fernandez', country:'Colombia', caseType:'Renewal', progress:35, payment:'Free', docsOutstanding:6, flagged:false, joined:'2026-06-05', email:'diego.fernandez@example.com' },
+    { id:8, name:'Minh Tran', country:'Vietnam', caseType:'Study', progress:15, payment:'Free', docsOutstanding:9, flagged:true, joined:'2026-07-01', email:'minh.tran@example.com' },
+  ];
+
+  state = {
+    screen:'landing',
+    node:'euStatus',
+    qHistory:[],
+    answers:{ nationality:'Brazil', nationalityOther:'', returning:'', euStatus:'', letter:'Yes', permit:'', permitExpiry:'', familyGate:'', spouseIncluded:false, childCount:0, arrival:'2026-09-15', work:'Yes', housing:'Still looking', email:'' },
+    statuses:{ s1:'in-progress', s2:'not-started', s3:'not-started', s4:'not-started', s5:'not-started', s6:'not-started', s7:'not-started' },
+    expanded:'s2',
+    docs:{ 's1-0':true, 's1-1':true },
+    docOpen:{},
+    uploads:{},
+    unlocked:false,
+    linkBannerDismissed:false,
+    adminView:'list',
+    selectedUserId:null,
+    adminFilterCase:'All',
+    adminFilterStatus:'All',
+    adminSort:'newest',
+    accessEmail:'',
+    returnScreen:null,
+    selectedTier:null,
+    helpMenuOpen:false,
+    supportThread:[ { from:'team', text:"Hi! We're here before and after your arrival — ask us anything about your visa, paperwork, or settling in." } ],
+    supportDraft:'',
+  };
+
+  monthName(d){ if(!d) return 'soon'; const m=['January','February','March','April','May','June','July','August','September','October','November','December']; const dt=new Date(d); return isNaN(dt.getTime())?'soon':m[dt.getMonth()]; }
+  nextStatus(st){ return st==='not-started'?'in-progress':st==='in-progress'?'done':'not-started'; }
+  labelFor(st){ return st==='not-started'?'Not started':st==='in-progress'?'In progress':'Done'; }
+  statusVis(st){
+    if(st==='done') return { label:'Done', chip:{ background:'rgba(27,58,62,.12)', color:'#1B3A3E' } };
+    if(st==='in-progress') return { label:'In progress', chip:{ background:'rgba(212,86,46,.15)', color:'#D4562E' } };
+    return { label:'Not started', chip:{ background:'rgba(34,48,60,.07)', color:'#6B7A85' } };
+  }
+  chipBase(){ return { display:'inline-flex', alignItems:'center', padding:'4px 11px', borderRadius:'999px', font:'600 11px Figtree,sans-serif', letterSpacing:'.3px', whiteSpace:'nowrap' }; }
+  adminStatusChip(label){
+    const base = this.chipBase();
+    if(label==='Done') return { ...base, background:'rgba(27,58,62,.12)', color:'#1B3A3E' };
+    if(label==='In progress') return { ...base, background:'rgba(212,86,46,.15)', color:'#D4562E' };
+    return { ...base, background:'rgba(34,48,60,.07)', color:'#6B7A85' };
+  }
+  paymentChipStyle(payment){
+    const base = this.chipBase();
+    if(payment==='Complete') return { ...base, background:'rgba(212,86,46,.15)', color:'#D4562E' };
+    if(payment==='Essential') return { ...base, background:'rgba(27,58,62,.12)', color:'#1B3A3E' };
+    return { ...base, background:'rgba(34,48,60,.07)', color:'#6B7A85' };
+  }
+
+  setAnswer(id,v){ this.setState(s=>({ answers:{ ...s.answers, [id]:v } })); }
+  setOther(v){ this.setState(s=>({ answers:{ ...s.answers, nationalityOther:v } })); }
+  next(){
+    const nodes=this.getNodes();
+    const n=nodes[this.state.node];
+    if(n.terminalScreen){
+      if(n.terminalScreen==='GENERATE'){ this.startGenerate(); } else { this.setState({ screen:n.terminalScreen }); }
+      return;
+    }
+    const nextId=n.next(this.state.answers);
+    this.setState(s=>({ qHistory:[...s.qHistory, s.node], node:nextId }));
+  }
+  back(){
+    this.setState(s=>{
+      if(!s.qHistory.length) return { screen:'landing' };
+      const h=[...s.qHistory]; const prev=h.pop();
+      return { qHistory:h, node:prev };
+    });
+  }
+  toggleSpouse(v){ this.setState(s=>({ answers:{ ...s.answers, spouseIncluded:v } })); }
+  incChildCount(){ this.setState(s=>({ answers:{ ...s.answers, childCount:Math.min(6,(s.answers.childCount||0)+1) } })); }
+  decChildCount(){ this.setState(s=>({ answers:{ ...s.answers, childCount:Math.max(0,(s.answers.childCount||0)-1) } })); }
+  startGenerate(){ this.setState({ screen:'generating' }); setTimeout(()=>this.setState({ screen:'roadmap' }), 1700); }
+  goQ(){ this.setState({ screen:'questionnaire', node:'euStatus', qHistory:[] }); }
+  goSample(){ this.setState({ screen:'roadmap' }); }
+  goLanding(){ this.setState({ screen:'landing', node:'euStatus', qHistory:[] }); }
+  goDashboard(){ this.setState({ screen:'dashboard' }); }
+  goRoadmap(id){ this.setState(s=>({ screen:'roadmap', expanded: id!==undefined ? id : s.expanded })); }
+  goDocuments(){ this.setState({ screen:'documents' }); }
+  goLawyer(){ this.setState({ screen:'lawyer' }); }
+  goAccess(){ this.setState({ screen:'access' }); }
+  setAccessEmail(v){ this.setState({ accessEmail:v }); }
+  sendAccessLink(){ this.setState({ screen:'access-sent' }); }
+  goAdminLogin(){ this.setState({ screen:'admin-login' }); }
+  goAdmin(){ this.setState({ screen:'admin', adminView:'list', selectedUserId:null }); }
+  openAdminUser(id){ this.setState({ adminView:'detail', selectedUserId:id }); }
+  backAdminList(){ this.setState({ adminView:'list', selectedUserId:null }); }
+  setAdminFilterCase(v){ this.setState({ adminFilterCase:v }); }
+  setAdminFilterStatus(v){ this.setState({ adminFilterStatus:v }); }
+  toggleSort(){ this.setState(s=>({ adminSort: s.adminSort==='newest'?'oldest':'newest' })); }
+  toggleExpand(id){ this.setState(s=>({ expanded:s.expanded===id?null:id })); }
+  cycleStatus(id){ this.setState(s=>({ statuses:{ ...s.statuses, [id]:this.nextStatus(s.statuses[id]) } })); }
+  toggleDoc(k){ this.setState(s=>({ docs:{ ...s.docs, [k]:!s.docs[k] } })); }
+  toggleDocOpen(k){ this.setState(s=>({ docOpen:{ ...s.docOpen, [k]:!s.docOpen[k] } })); }
+  unlock(){ this.setState({ unlocked:true }); }
+  dismissBanner(){ this.setState({ linkBannerDismissed:true }); }
+  goTranslation(){ this.setState({ screen:'translation' }); }
+  goPaywall(){ this.setState(s=>({ screen:'paywall', returnScreen:s.screen, selectedTier:null })); }
+  goLiveSupport(){ this.setState({ screen:'live-support' }); }
+  goBienvenido(){ this.setState({ screen:'bienvenido' }); }
+  toggleHelpMenu(){ this.setState(s=>({ helpMenuOpen:!s.helpMenuOpen })); }
+  closeHelpMenu(){ this.setState({ helpMenuOpen:false }); }
+  helpChooseChat(){ this.setState({ helpMenuOpen:false, screen:'live-support' }); }
+  helpChooseIda(){ this.setState({ helpMenuOpen:false, screen:'lawyer' }); }
+  goEuChecklist(){ this.setState({ screen:'eu-checklist' }); }
+  sendSupportMessage(){ this.setState(s=>{ if(!s.supportDraft || !s.supportDraft.trim()) return {}; const msg={ from:'you', text:s.supportDraft.trim() }; return { supportThread:[...(s.supportThread||[]), msg], supportDraft:'' }; }); }
+  sendSupportSuggestion(text){ this.setState(s=>({ supportThread:[...(s.supportThread||[]), { from:'you', text } ] })); }
+  setSupportDraft(v){ this.setState({ supportDraft:v }); }
+  backFromPaywall(){ this.setState(s=> s.selectedTier ? { selectedTier:null } : { screen:s.returnScreen||'dashboard' }); }
+  selectTier(tier){ this.setState({ selectedTier:tier }); }
+  confirmUnlock(){ this.setState(s=>({ unlocked:s.selectedTier||'essential', screen:s.returnScreen||'dashboard', selectedTier:null })); }
+  formatValidUntil(ts){ const d=new Date(ts+90*24*60*60*1000); const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return m[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear(); }
+  attachFile(key,fileName){ this.setState(s=>({ uploads:{ ...s.uploads, [key]:{ fileName, status:'uploaded', delivery:'download', attachedAt:Date.now() } } })); }
+  removeAttachment(key){ this.setState(s=>{ const u={ ...s.uploads }; delete u[key]; return { uploads:u }; }); }
+  setDelivery(key,delivery){ this.setState(s=>({ uploads:{ ...s.uploads, [key]:{ ...s.uploads[key], delivery } } })); }
+  sendForTranslation(){ this.setState(s=>{ const u={ ...s.uploads }; Object.keys(u).forEach(k=>{ if(u[k].status==='uploaded') u[k]={ ...u[k], status:'in-translation' }; }); return { uploads:u }; }); }
+  markDelivered(key){ this.setState(s=>({ uploads:{ ...s.uploads, [key]:{ ...s.uploads[key], status:'ready' } } })); }
+  translationTiers(){ return [ { label:'1–3 documents', max:3, price:35 }, { label:'4–6 documents', max:6, price:55 }, { label:'7+ documents', max:Infinity, price:80 } ]; }
+  tierPriceFor(count){ if(count<=0) return 0; const tiers=this.translationTiers(); const t=tiers.find(t=>count<=t.max); return t?t.price:tiers[tiers.length-1].price; }
+
+  renderVals(){
+    const A = this.state.answers;
+    const screen = this.state.screen;
+    const nodes = this.getNodes();
+    const path = this.computePath(A);
+    const q = nodes[this.state.node] || nodes.euStatus;
+    const total = path.length;
+    const qIndex1 = path.indexOf(this.state.node)+1;
+    const cur = A[q.id];
+    const currentOptions = (q.options||[]).map(opt=>({ label:opt, selected:cur===opt, notSelected:cur!==opt, flexBasis: opt==='Other'?'1 1 100%':'1 1 30%', onClick:()=>this.setAnswer(q.id,opt) }));
+    const showOtherInput = q.type==='nationality' && cur==='Other';
+    const stepLabelMap = { euStatus:'EU status', euEmail:'Your email', returning:'Applicant type', permit:'Current permit', permitExpiry:'Permit expiry', nationality:'Nationality', letter:'Acceptance letter', beforeApply:'Before you apply', familyGate:'Family', familyDetails:'Family details', work:'Work plans', housing:'Housing', arrival:'Arrival date', email:'Contact email' };
+    const railSteps = path.map((id,i)=>{
+      const isDone = i < qIndex1-1; const isCurrent = i === qIndex1-1;
+      return {
+        label: stepLabelMap[id]||id, isDone, isCurrent, isUpcoming: !isDone && !isCurrent,
+        circleStyle: isDone
+          ? { width:'26px', height:'26px', flex:'none', borderRadius:'999px', background:'#1B3A3E', color:'#F5F2EC', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' }
+          : isCurrent
+          ? { width:'26px', height:'26px', flex:'none', borderRadius:'999px', border:'2px solid #D4562E', background:'rgba(212,86,46,.1)', color:'#D4562E', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px', fontWeight:'700' }
+          : { width:'26px', height:'26px', flex:'none', borderRadius:'999px', border:'2px solid #E2D8C5', color:'#B8AB8C', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' },
+        circleGlyph: isDone ? '✓' : String(i+1),
+        labelStyle: { font: (isCurrent?'600':'500')+' 13.5px Figtree,sans-serif', color: isCurrent ? '#1A1F24' : isDone ? '#5A6872' : '#B8AB8C' },
+      };
+    });
+    const spouseIncluded = !!A.spouseIncluded;
+    const childCountVal = A.childCount||0;
+    const familyCountVal = (spouseIncluded?1:0) + childCountVal;
+
+    const pinSvg = (w,h) => React.createElement('svg',{width:w,height:h,viewBox:'0 0 22 28',fill:'none'},
+      React.createElement('path',{d:'M11 27C11 27 20 16.5 20 10A9 9 0 1 0 2 10C2 16.5 11 27 11 27Z',fill:'#D4562E'}),
+      React.createElement('circle',{cx:11,cy:10,r:3.4,fill:'#F5F2EC'}));
+    const pinMark = { display:'inline-block', width:'22px', height:'26px', flex:'none',
+      background:"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='28' viewBox='0 0 22 28'><path d='M11 27C11 27 20 16.5 20 10A9 9 0 1 0 2 10C2 16.5 11 27 11 27Z' fill='%23D4562E'/><circle cx='11' cy='10' r='3.4' fill='%23F7F1E8'/></svg>\") center/contain no-repeat" };
+    const pinMarkLight = { display:'inline-block', width:'22px', height:'26px', flex:'none',
+      background:"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='28' viewBox='0 0 22 28'><path d='M11 27C11 27 20 16.5 20 10A9 9 0 1 0 2 10C2 16.5 11 27 11 27Z' fill='%23E8734A'/><circle cx='11' cy='10' r='3.4' fill='%232B5B5E'/></svg>\") center/contain no-repeat" };
+
+    const unlocked = this.state.unlocked;
+    const isReturning = A.returning === 'Returning or already in Spain';
+    const unlockPrice = 39;
+    const selectedTier = this.state.selectedTier;
+    const tierSelected = !!selectedTier;
+    const tierMeta = { essential:{ name:'Essential', price:39 }, complete:{ name:'Complete', price:89 } };
+    const selectedTierName = selectedTier ? tierMeta[selectedTier].name : '';
+    const selectedTierPrice = selectedTier ? tierMeta[selectedTier].price : 0;
+    const unlockedTierName = unlocked ? (tierMeta[unlocked] ? tierMeta[unlocked].name : 'Essential') : '';
+    const isNigeria = A.nationality === 'Nigeria';
+    let sourceSteps = isReturning
+      ? this.steps.filter(s=>['s3','s6','s7'].includes(s.id)).map(s=> s.id==='s3' ? { ...s, phase:'Renewal', title:'Renew your TIE card', due:'60 days before expiry', what:"Since you're already in Spain, renew your residence card before it expires rather than applying from scratch." } : s)
+      : this.steps;
+    if(isNigeria){
+      sourceSteps = sourceSteps.map(s=> s.id!=='s1' ? s : {
+        ...s,
+        what: "Apply for your student visa at the Spanish Embassy in Abuja or Consulate in Lagos before departure. Your documents must first pass through Nigeria's legalization chain before the consulate will accept them; processing then usually takes 4–6 weeks, so start early.",
+        legalizationChain: [
+          { n:1, text:'Nigerian Ministry of Education attestation' },
+          { n:2, text:'Nigerian Ministry of Foreign Affairs legalization' },
+          { n:3, text:'Spanish Embassy authentication' },
+        ],
+        docs: s.docs.map(d=> d.label.indexOf('Proof of funds')===0 ? { ...d, note:"Calculated using Spain's IPREM formula: 100% IPREM for you, +75% for the first accompanying family member, +50% for each additional. Central Bank of Nigeria forex limits can complicate transfers — plan ahead." } : d),
+      });
+    }
+    const familyStep = {
+      id:'sFam', phase: isReturning ? 'Renewal' : 'Your first 30 days',
+      title:'Register your family members',
+      due: isReturning ? 'With your renewal' : 'Within 30 days of arrival',
+      what:'Each accompanying family member needs their own empadronamiento and residence registration, tied to yours.',
+      docs:[
+        { label:'Passport copies for each family member', note:'One clear copy of the photo page per person.' },
+        { label:'Marriage certificate, apostilled', note:'Needs a certified Spanish translation if not already in Spanish.', translation:true, showOnlyIf:'spouse' },
+        { label:'Birth certificates for accompanying children, apostilled', note:'Needs a certified Spanish translation if not already in Spanish.', translation:true, showOnlyIf:'children' },
+      ], link:'', lawyer:false,
+    };
+    if(!spouseIncluded) familyStep.docs = familyStep.docs.filter(d=>d.showOnlyIf!=='spouse');
+    if(childCountVal===0) familyStep.docs = familyStep.docs.filter(d=>d.showOnlyIf!=='children');
+    const housingStep = {
+      id:'sHouse', phase:'Settling in', title:'Sort your housing', due:'Before your TIE appointment',
+      what:'Line up a signed rental contract or host authorization letter — you need it for your empadronamiento and TIE application.',
+      docs:[ { label:'Signed rental contract or hosting agreement', note:"Ask your host for a signed authorization letter if you're not on the lease." } ],
+      link:'', lawyer:false,
+    };
+    if(A.familyGate==='Yes'){
+      const anchorId = isReturning ? 's3' : 's2';
+      const idx = sourceSteps.findIndex(s=>s.id===anchorId);
+      const insertAt = idx>=0 ? idx+1 : sourceSteps.length;
+      sourceSteps = [...sourceSteps.slice(0,insertAt), familyStep, ...sourceSteps.slice(insertAt)];
+    }
+    if(!isReturning && A.housing && A.housing!=='Signed a rental'){
+      const idx = sourceSteps.findIndex(s=>s.id==='s4');
+      const insertAt = idx>=0 ? idx : sourceSteps.length;
+      sourceSteps = [...sourceSteps.slice(0,insertAt), housingStep, ...sourceSteps.slice(insertAt)];
+    }
+    const steps = sourceSteps.map((s, idx)=>{
+      const st = this.state.statuses[s.id];
+      const vis = this.statusVis(st);
+      const locked = idx>=2 && !unlocked;
+      const docs = s.docs.map((d,di)=>{
+        const key = s.id+'-'+di;
+        const done=!!this.state.docs[key];
+        const open=!!this.state.docOpen[key];
+        const upload = this.state.uploads[key];
+        const hasUpload = !!upload;
+        const uploadStatus = upload ? upload.status : null;
+        const deliveryIsPost = !!(upload && upload.delivery==='post');
+        const toggleBtn = (active)=>({ padding:'8px 13px', borderRadius:'9px', border:'1.5px solid '+(active?'#1B3A3E':'#E2D8C5'), background: active?'rgba(27,58,62,.12)':'#fff', font:'600 12.5px Figtree,sans-serif', color: active?'#1B3A3E':'#5A6872', cursor:'pointer' });
+        return {
+          label:d.label, note:d.note, done, notDone:!done, open,
+          expires:!!d.expires, translation:!!d.translation, hasFlags:!!(d.expires||d.translation),
+          expiresChipStyle:{ ...this.chipBase(), background:'rgba(212,86,46,.14)', color:'#D4562E' },
+          translationChipStyle:{ ...this.chipBase(), background:'rgba(27,58,62,.12)', color:'#1B3A3E' },
+          onToggle:()=>this.toggleDoc(key),
+          onOpen:()=>this.toggleDocOpen(key),
+          onToggleStop:(e)=>{ e.stopPropagation(); this.toggleDoc(key); },
+          checkStyle: done
+            ? { width:'22px', height:'22px', flex:'none', borderRadius:'6px', background:'#1B3A3E', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' }
+            : { width:'22px', height:'22px', flex:'none', borderRadius:'6px', border:'1.5px solid #D8CDB8', background:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' },
+          checkGlyph: done ? '✓' : '',
+          chevron: open ? '−' : '+',
+          stepTitle:s.title, key,
+          hasUpload, noUpload:!hasUpload, uploadStatus,
+          fileName: upload ? upload.fileName : '',
+          inputId:'up-'+key,
+          onAttach:(e)=>{ const f=e.target.files&&e.target.files[0]; if(f) this.attachFile(key,f.name); e.target.value=''; },
+          onDragOver:(e)=>e.preventDefault(),
+          onDrop:(e)=>{ e.preventDefault(); const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f) this.attachFile(key,f.name); },
+          onRemove:()=>this.removeAttachment(key),
+          uploadStatusLabel: uploadStatus==='ready'?'Ready':uploadStatus==='in-translation'?'In translation':'Attached',
+          uploadChipStyle:{ ...this.chipBase(), ...(uploadStatus==='ready'?{background:'rgba(27,58,62,.12)',color:'#1B3A3E'}:uploadStatus==='in-translation'?{background:'rgba(212,86,46,.15)',color:'#D4562E'}:{background:'rgba(34,48,60,.07)',color:'#6B7A85'}) },
+          showDeliveryChoice: !!(d.translation && uploadStatus==='uploaded'),
+          deliveryIsPost, deliveryIsDownload:!deliveryIsPost,
+          downloadBtnStyle:toggleBtn(!deliveryIsPost), postBtnStyle:toggleBtn(deliveryIsPost),
+          onSetDownload:()=>this.setDelivery(key,'download'),
+          onSetPost:()=>this.setDelivery(key,'post'),
+          showMarkDelivered: uploadStatus==='in-translation',
+          onMarkDelivered:()=>this.markDelivered(key),
+          showValidityBadge: !!(d.expires && hasUpload),
+          validityBadgeText: (d.expires && hasUpload) ? ('Valid until '+this.formatValidUntil(upload.attachedAt||Date.now())) : '',
+          validityBadgeStyle:{ ...this.chipBase(), background:'rgba(212,86,46,.12)', color:'#D4562E' },
+        };
+      });
+      return {
+        ...s, status:st, statusLabel:vis.label,
+        chip:{ ...this.chipBase(), ...vis.chip },
+        isExpanded:this.state.expanded===s.id,
+        locked, unlockedView:!locked,
+        hasLegalizationChain:!!(s.legalizationChain && s.legalizationChain.length), legalizationChain:s.legalizationChain||[],
+        hasLink:!!s.link, docs, docsDone:docs.filter(d=>d.done).length, docsTotal:docs.length,
+        toggleLabel: this.state.expanded===s.id ? 'Hide' : (locked?'Unlock':'Details'),
+        nextLabel:this.labelFor(this.nextStatus(st)),
+        onToggle:()=>this.toggleExpand(s.id), onCycle:()=>this.cycleStatus(s.id),
+        onView:()=>this.goRoadmap(s.id),
+      };
+    });
+    const doneCount = steps.filter(s=>s.status==='done').length;
+    const roadmapPct = Math.round((doneCount/steps.length)*100);
+    const docsGrandTotal = steps.reduce((a,s)=>a+s.docsTotal,0);
+    const docsDoneTotal = steps.reduce((a,s)=>a+s.docsDone,0);
+    const reminderItems = (()=>{
+      const items = [];
+      const arrivalDate = A.arrival ? new Date(A.arrival+'T00:00:00') : null;
+      if(arrivalDate && !isNaN(arrivalDate)){
+        const checkinDate = new Date(arrivalDate.getTime() + 60*24*60*60*1000);
+        if(Date.now() >= checkinDate.getTime()){
+          items.push({
+            id:'checkin-2mo', title:'2 months since arrival', sentDate:this.monthName(checkinDate.toISOString().slice(0,10)),
+            message:"Settling in okay? Here's some extra help if you need it.",
+            ctaLabel:'See the Bienvenido guide', onAction:()=>this.goBienvenido(),
+          });
+        }
+      }
+      return items;
+    })();
+    const docsPct = Math.round((docsDoneTotal/docsGrandTotal)*100);
+    const firstUndone = steps.find(s=>s.status!=='done');
+
+    const phaseNames = [...new Set(sourceSteps.map(s=>s.phase))];
+    const phasesB = phaseNames.map((n,i)=>({
+      name:n,
+      dot:{ width:'20px', height:'20px', flex:'none', borderRadius:'999px', background:i===phaseNames.length-1?'#D4562E':'#1B3A3E', boxShadow:'0 0 0 4px #F5F2EC' },
+      steps:steps.filter(s=>s.phase===n),
+    }));
+
+    const navConfig = [
+      { id:'dashboard', label:'Dashboard', onClick:()=>this.goDashboard() },
+      { id:'roadmap', label:'Roadmap', onClick:()=>this.goRoadmap() },
+      { id:'documents', label:'Documents', onClick:()=>this.goDocuments() },
+      { id:'translation', label:'Translation', onClick:()=>this.goTranslation() },
+      { id:'bienvenido', label:'Bienvenido', onClick:()=>this.goBienvenido() },
+      { id:'lawyer', label:'Talk to a lawyer', onClick:()=>this.goLawyer() },
+    ];
+
+    const translationQueue = [];
+    steps.forEach(s=>{ s.docs.forEach(d=>{ if(d.hasUpload) translationQueue.push(d); }); });
+    const sendableCount = translationQueue.filter(d=>d.uploadStatus==='uploaded').length;
+    const anyPost = translationQueue.some(d=>d.uploadStatus==='uploaded' && d.deliveryIsPost);
+    const tierPrice = this.tierPriceFor(sendableCount);
+    const totalPrice = tierPrice + (anyPost?12:0);
+    const navItems = navConfig.map(n=>({
+      ...n,
+      style:{ padding:'8px 14px', borderRadius:'9px', border:'none', cursor:'pointer', font:'600 14px Figtree,sans-serif',
+        background: screen===n.id ? 'rgba(27,58,62,.1)' : 'transparent',
+        color: screen===n.id ? '#1B3A3E' : '#5A6872' },
+    }));
+
+    const nationalityLabel = A.nationality==='Other' ? (A.nationalityOther||'Your country') : (A.nationality||'You');
+    const lawyerSteps = steps.filter(s=>s.lawyer);
+    const pilotBadgeText = isNigeria ? 'Reviewed in detail for Nigerian applicants' : 'General guidance — nationality-specific detail expanding soon';
+    const pilotBadgeStyle = { ...this.chipBase(), padding:'6px 13px', marginTop:'12px', background: isNigeria ? 'rgba(27,58,62,.1)' : 'rgba(34,48,60,.06)', color: isNigeria ? '#1B3A3E' : '#6B7A85' };
+    const showPilotBadge = !isReturning;
+    const familyCount = A.familyGate==='Yes' ? (A.familyCount||1) : 0;
+    const headerContextLine = isReturning
+      ? ('Renewing your stay · permit expires '+this.monthName(A.permitExpiry))
+      : (nationalityLabel+' → Barcelona · arriving '+this.monthName(A.arrival));
+    const familyDescParts = [];
+    if(spouseIncluded) familyDescParts.push('spouse');
+    if(childCountVal>0) familyDescParts.push(childCountVal+' child'+(childCountVal>1?'ren':''));
+    const familyDesc = familyDescParts.join(' + ');
+    const familyNote = familyCount>0 ? ('+ '+familyDesc+' included in this roadmap') : '';
+
+    // ---- admin ----
+    const adminFilterCase = this.state.adminFilterCase;
+    const adminFilterStatus = this.state.adminFilterStatus;
+    let filteredUsers = this.adminUsers.filter(u=>
+      (adminFilterCase==='All'||u.caseType===adminFilterCase) &&
+      (adminFilterStatus==='All'||u.payment===adminFilterStatus)
+    );
+    filteredUsers = filteredUsers.slice().sort((a,b)=> this.state.adminSort==='oldest' ? a.joined.localeCompare(b.joined) : b.joined.localeCompare(a.joined));
+    const adminUsers = filteredUsers.map(u=>({
+      ...u,
+      onClick:()=>this.openAdminUser(u.id),
+      paymentChip:this.paymentChipStyle(u.payment),
+      flagChip:{ ...this.chipBase(), background:'rgba(212,86,46,.12)', color:'#D4562E' },
+      notFlagged:!u.flagged,
+      rowStyle:{ display:'grid', gridTemplateColumns:'2fr 1.3fr 1fr 1fr 1.2fr .9fr', alignItems:'center', padding:'14px 20px', cursor:'pointer',
+        borderTop:'1px solid #F0EBDD', borderLeft: u.flagged ? '4px solid #D4562E' : '4px solid transparent' },
+    }));
+    const caseTypeOptions = ['All','Study','Study + work','Renewal'];
+    const caseFilters = caseTypeOptions.map(c=>({
+      label:c, onClick:()=>this.setAdminFilterCase(c),
+      style:{ padding:'7px 14px', borderRadius:'999px', border:'1px solid #DDD6C7', cursor:'pointer', font:'600 12.5px Figtree,sans-serif',
+        background: adminFilterCase===c ? '#1A1F24' : '#fff', color: adminFilterCase===c ? '#fff' : '#5A6872' },
+    }));
+    const statusOptions = ['All','Complete','Essential','Free'];
+    const statusFilters = statusOptions.map(c=>({
+      label:c, onClick:()=>this.setAdminFilterStatus(c),
+      style:{ padding:'7px 14px', borderRadius:'999px', border:'1px solid #DDD6C7', cursor:'pointer', font:'600 12.5px Figtree,sans-serif',
+        background: adminFilterStatus===c ? '#1A1F24' : '#fff', color: adminFilterStatus===c ? '#fff' : '#5A6872' },
+    }));
+    const flaggedCount = this.adminUsers.filter(u=>u.flagged).length;
+
+    const selectedRaw = this.adminUsers.find(u=>u.id===this.state.selectedUserId) || null;
+    let selected = {};
+    if(selectedRaw){
+      const doneN = Math.round(this.steps.length * selectedRaw.progress/100);
+      const stepStatuses = this.steps.map((s,i)=>{
+        const label = i<doneN ? 'Done' : (i===doneN ? 'In progress' : 'Not started');
+        return { title:s.title, status:label, chip:this.adminStatusChip(label) };
+      });
+      const flatDocs = [];
+      this.steps.forEach(s=>s.docs.forEach(d=>flatDocs.push(d.label)));
+      const sampleDocs = flatDocs.slice(0,6);
+      const doneDocN = Math.round(sampleDocs.length * selectedRaw.progress/100);
+      const docsSample = sampleDocs.map((label,i)=>{
+        const status = i<doneDocN ? 'Done' : 'Not started';
+        return { label, status, chip:this.adminStatusChip(status) };
+      });
+      selected = {
+        ...selectedRaw,
+        paymentChip:this.paymentChipStyle(selectedRaw.payment),
+        barStyle:{ width:selectedRaw.progress+'%', height:'100%', background:'#D4562E', borderRadius:'999px' },
+        stepStatuses, docsSample,
+      };
+    }
+
+    return {
+      isLanding:screen==='landing',
+      isAccess:screen==='access', isAccessSent:screen==='access-sent',
+      accessEmail:this.state.accessEmail, onAccessEmail:(e)=>this.setAccessEmail(e.target.value),
+      goAccess:()=>this.goAccess(), sendAccessLink:()=>this.sendAccessLink(), goDashboard:()=>this.goDashboard(),
+      checklistItems: (()=>{
+        const docsAttached = docsGrandTotal>0 && docsDoneTotal>0;
+        const items = [
+          { n:1, title:'Build your roadmap', desc:'Based on your nationality and situation.', done:true },
+          { n:2, title:'Attach your documents', desc: docsGrandTotal+' documents needed · '+docsDoneTotal+' marked ready', done: docsGrandTotal>0 && docsDoneTotal===docsGrandTotal, actionLabel: docsAttached && docsDoneTotal<docsGrandTotal ? 'Continue' : 'Go to Documents', onAction:()=>this.goDocuments() },
+          { n:3, title:'Unlock your full roadmap', desc: unlocked ? (unlockedTierName+' plan active') : 'Full step detail, tracking, and reminders.', done: !!unlocked, actionLabel:'See plans — from €'+unlockPrice, onAction:()=>this.goPaywall() },
+          { n:4, title:'Talk to a lawyer', desc:'Optional — only if you have questions about your case.', done:false, optional:true, actionLabel:'Book a consult', onAction:()=>this.goLawyer() },
+        ];
+        return items.map(it=>({
+          ...it,
+          showAction: !it.done && !!it.actionLabel,
+          showDoneTag: it.done,
+          circleStyle: it.done
+            ? { width:'34px', height:'34px', flex:'none', borderRadius:'999px', background:'#1B3A3E', color:'#F5F2EC', display:'flex', alignItems:'center', justifyContent:'center', font:'600 14px Figtree,sans-serif' }
+            : { width:'34px', height:'34px', flex:'none', borderRadius:'999px', border:'2px solid '+(it.optional?'#D8CDB8':'#D4562E'), color: it.optional?'#8A7C64':'#D4562E', display:'flex', alignItems:'center', justifyContent:'center', font:'600 14px Spectral,serif' },
+          circleGlyph: it.done ? '✓' : String(it.n),
+        }));
+      })(),
+      reminderItems, hasReminders: reminderItems.length>0,
+      isEuChecklist:screen==='eu-checklist', isBeforeApplySent:screen==='before-apply-sent',
+      isEuEmailSent:screen==='eu-email-sent', goEuChecklist:()=>this.goEuChecklist(),
+      isLiveSupport:screen==='live-support', goLiveSupport:()=>this.goLiveSupport(),
+      isBienvenido:screen==='bienvenido', goBienvenido:()=>this.goBienvenido(),
+      helpMenuOpen:this.state.helpMenuOpen, toggleHelpMenu:()=>this.toggleHelpMenu(), closeHelpMenu:()=>this.closeHelpMenu(),
+      helpChooseChat:()=>this.helpChooseChat(), helpChooseIda:()=>this.helpChooseIda(),
+      isCompletePlanActive: unlocked==='complete', notCompletePlanActive: unlocked!=='complete',
+      supportSuggestions: [
+        { label:"How do I attach a document?", onClick:()=>this.sendSupportSuggestion("How do I attach a document?") },
+        { label:"Is my step marked done?", onClick:()=>this.sendSupportSuggestion("Is my step marked done?") },
+        { label:"Where's my roadmap link?", onClick:()=>this.sendSupportSuggestion("Where's my roadmap link?") },
+      ],
+      supportThreadRows: (this.state.supportThread||[]).map(m=>({
+        isYou: m.from==='you', isTeam: m.from!=='you', text:m.text,
+        bubbleStyle: m.from==='you'
+          ? { maxWidth:'78%', padding:'12px 16px', borderRadius:'14px 14px 4px 14px', font:'400 14px/1.5 Figtree,sans-serif', background:'#D4562E', color:'#fff' }
+          : { maxWidth:'78%', padding:'12px 16px', borderRadius:'14px 14px 14px 4px', font:'400 14px/1.5 Figtree,sans-serif', background:'#F0EBDD', color:'#1A1F24' },
+        rowStyle:{ display:'flex', justifyContent: m.from==='you' ? 'flex-end' : 'flex-start' },
+      })),
+      supportThread:this.state.supportThread, supportDraft:this.state.supportDraft,
+      onSupportDraft:(e)=>this.setSupportDraft(e.target.value), sendSupportMessage:()=>this.sendSupportMessage(),
+      pilotBadgeText, pilotBadgeStyle, showPilotBadge, headerContextLine, familyNote, hasFamilyNote:familyCount>0,
+      isQuestionnaire:screen==='questionnaire', isGenerating:screen==='generating',
+      isAppScreen: ['dashboard','roadmap','documents','lawyer','translation','live-support','bienvenido'].includes(screen),
+      isDashboard:screen==='dashboard', isRoadmap:screen==='roadmap', isDocuments:screen==='documents', isLawyer:screen==='lawyer',
+      isTranslation:screen==='translation', goTranslation:()=>this.goTranslation(),
+      translationQueue, hasQueueItems:translationQueue.length>0, noQueueItems:translationQueue.length===0,
+      sendableCount, totalPrice, canSend:sendableCount>0,
+      sendForTranslationAction:()=>this.sendForTranslation(),
+      isCompletePlan: unlocked==='complete',
+      completePerkChipStyle:{ ...this.chipBase(), display:'inline-flex', marginTop:'12px', padding:'6px 13px', background:'rgba(27,58,62,.1)', color:'#1B3A3E' },
+      isAdminLogin:screen==='admin-login', isAdmin:screen==='admin',
+      isAdminList: screen==='admin' && this.state.adminView==='list',
+      isAdminDetail: screen==='admin' && this.state.adminView==='detail',
+      pinIcon:pinSvg(20,26), pinIconLg:pinSvg(30,38), pinMark, pinMarkLight,
+      goQ:()=>this.goQ(), goSample:()=>this.goSample(), goLanding:()=>this.goLanding(),
+      goRoadmap:()=>this.goRoadmap(), goDocuments:()=>this.goDocuments(), goLawyer:()=>this.goLawyer(),
+      goAdminLogin:()=>this.goAdminLogin(), goAdmin:()=>this.goAdmin(), backAdminList:()=>this.backAdminList(),
+      toggleSort:()=>this.toggleSort(),
+      next:()=>this.next(), back:()=>this.back(),
+      q, qIndex1, qTotal:total,
+      qBarStyle:{ width:Math.round((qIndex1/total)*100)+'%', height:'100%', background:'#D4562E', borderRadius:'999px', transition:'width .3s ease' },
+      isChoiceLike:q.type==='choice'||q.type==='nationality', isDate:q.type==='date', isEmail:q.type==='email',
+      isBeforeApply:q.type==='before-apply', isFamilyDetails:q.type==='family-details',
+      currentOptions, currentValue:cur||'', onCurrentInput:(e)=>this.setAnswer(q.id, e.target.value),
+      showOtherInput, otherValue:A.nationalityOther, onOtherInput:(e)=>this.setOther(e.target.value),
+      spouseIncluded, notSpouseIncluded: !spouseIncluded, childCountVal, toggleSpouseYes:()=>this.toggleSpouse(true), toggleSpouseNo:()=>this.toggleSpouse(false),
+      incChildCount:()=>this.incChildCount(), decChildCount:()=>this.decChildCount(), familyCountVal,
+      railSteps,
+      nextLabel: q.terminalScreen==='GENERATE' ? 'Build my roadmap →' : q.type==='before-apply' ? 'Save my email →' : (q.terminalScreen==='eu-checklist' ? 'See my checklist →' : 'Next →'),
+      steps, doneCount, totalSteps:steps.length,
+      roadmapBarStyle:{ width:roadmapPct+'%', height:'100%', background:'#D4562E', borderRadius:'999px', transition:'width .4s ease' },
+      docsBarStyle:{ width:docsPct+'%', height:'100%', background:'#D4562E', borderRadius:'999px', transition:'width .4s ease' },
+      docsGrandTotal, docsDoneTotal,
+      hasNextStep:!!firstUndone, allDone:!firstUndone, nextStep:firstUndone||{},
+      nationalityLabel, arrivalMonth:this.monthName(A.arrival), answerEmail:A.email,
+      isArrivalNear: (()=>{ if(!A.arrival) return false; const days=(new Date(A.arrival+'T00:00:00').getTime()-Date.now())/(864e5); return days<=30 && days>=-14; })(),
+      phasesB, navItems, lawyerSteps,
+      isUnlocked:!!unlocked, notUnlocked:!unlocked, unlockAll:()=>this.goPaywall(), unlockedTierName,
+      isPaywall:screen==='paywall', unlockPrice,
+      showTierPicker: screen==='paywall' && !tierSelected, showPaymentStep: screen==='paywall' && tierSelected,
+      selectedTierName, selectedTierPrice,
+      selectEssential:()=>this.selectTier('essential'), selectComplete:()=>this.selectTier('complete'),
+      backFromPaywall:()=>this.backFromPaywall(), confirmUnlock:()=>this.confirmUnlock(),
+      showLinkBanner:!this.state.linkBannerDismissed, dismissBanner:()=>this.dismissBanner(),
+      adminUsers, caseFilters, statusFilters, flaggedCount, sortLabel:this.state.adminSort==='newest'?'Newest':'Oldest',
+      selected,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

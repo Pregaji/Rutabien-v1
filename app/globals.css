@@ -1,0 +1,65 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --rb-bg: #f5f2ec;
+  --rb-sidebar: #efeae0;
+  --rb-text: #1a1f24;
+  --rb-text-secondary: #5a6872;
+  --rb-text-muted: #8a7c64;
+  --rb-teal: #1b3a3e;
+  --rb-orange: #d4562e;
+  --rb-border: #e2d8c5;
+  --font-spectral: var(--font-spectral), Georgia, serif;
+  --font-figtree: var(--font-figtree), Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--rb-bg);
+  color: var(--rb-text);
+  font-family: var(--font-figtree);
+}
+
+a {
+  color: var(--rb-orange);
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-figtree);
+}
+
+input {
+  font-family: var(--font-figtree);
+}
+
+@keyframes rbfade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rbspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rbpulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.75;
+  }
+}

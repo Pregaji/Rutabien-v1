@@ -1,0 +1,39 @@
+<svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E8734A"/>
+      <stop offset="100%" stop-color="#D4562E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon: a winding path leading to a destination dot -->
+  <g transform="translate(20, 40)">
+    <path d="M 10 150 
+             C 40 150, 40 100, 70 100 
+             C 100 100, 100 50, 130 50 
+             C 150 50, 155 35, 160 25"
+          fill="none" 
+          stroke="url(#pathGrad)" 
+          stroke-width="10" 
+          stroke-linecap="round"
+          stroke-dasharray="1 22"
+          stroke-dashoffset="0"/>
+    <!-- Starting point -->
+    <circle cx="10" cy="150" r="9" fill="#2B5B5E"/>
+    <!-- Destination pin -->
+    <g transform="translate(160, 25)">
+      <circle cx="0" cy="0" r="14" fill="#2B5B5E"/>
+      <circle cx="0" cy="0" r="5" fill="#F7F1E8"/>
+    </g>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="215" y="115" font-family="Georgia, 'Times New Roman', serif" font-size="58" font-weight="600" fill="#22303C">
+    Ruta<tspan fill="#D4562E">bien</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="217" y="150" font-family="Helvetica, Arial, sans-serif" font-size="18" letter-spacing="1.5" fill="#5B6B75">
+    EVERY STEP, MAPPED
+  </text>
+</svg>
