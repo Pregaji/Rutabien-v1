@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rutabien
 
-## Getting Started
+"Every step, mapped." A web app helping non-EU international students navigate moving to Barcelona — visas, document tracking, sworn translation referrals, legal referral, and post-arrival settling-in guidance.
 
-First, run the development server:
+See [CLAUDE.md](./CLAUDE.md) for architecture/product principles, and [MVP_Draft.md](./MVP_Draft.md) for the full product spec.
+
+## Stack
+
+Next.js (App Router) · Drizzle ORM + Neon Postgres · Resend · Cloudflare R2 · Stripe (test mode) + PayPal (sandbox)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.local` and fill in real values — see inline comments for what each key is for. Nothing runs against real payment/storage providers without them.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run db:generate   # generate a migration from schema changes
+npm run db:push       # push schema to the database
+npm run db:studio     # browse the database
+npm run db:seed:nigeria  # seed draft Nigeria requirements content (signedOff: false)
+npm run db:seed:admin    # create an admin user from SEED_ADMIN_EMAIL/SEED_ADMIN_PASSWORD
+```

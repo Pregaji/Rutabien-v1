@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PRICING_TIERS, type PlanType } from "@/lib/pricing";
+import HomeLink from "../HomeLink";
 
 const cardBase = {
   flex: "1 1 320px",
@@ -31,7 +32,8 @@ export default function PaywallPage() {
 
   if (!selectedTier) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
+      <div className="rb-paywall-wrap" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
+        <HomeLink />
         <div style={{ width: "100%", maxWidth: 820 }}>
           <h2 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "30px", lineHeight: "1.2", color: "var(--rb-text)", margin: 0, letterSpacing: "-.3px" }}>
             Unlock your full roadmap
@@ -71,19 +73,28 @@ export default function PaywallPage() {
                   padding: 13,
                   fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14.5px",
                   cursor: "pointer",
+                  transition: "background .15s ease",
                 }}
               >
                 Choose {PRICING_TIERS.essential.name}
               </button>
             </div>
 
-            <div style={{ ...cardBase, border: "1.5px solid var(--rb-orange)", position: "relative" }}>
+            <div
+              style={{
+                ...cardBase,
+                background: "linear-gradient(160deg, var(--rb-teal) 0%, #234b50 100%)",
+                border: "none",
+                position: "relative",
+                boxShadow: "0 30px 60px -30px rgba(27,58,62,.55)",
+              }}
+            >
               <span
                 style={{
                   position: "absolute",
                   top: -13,
                   left: 28,
-                  background: "var(--rb-orange)",
+                  background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
                   color: "#fff",
                   padding: "5px 12px",
                   borderRadius: 999,
@@ -93,22 +104,22 @@ export default function PaywallPage() {
               >
                 Most popular
               </span>
-              <h3 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "19px", color: "var(--rb-text)", margin: 0 }}>
+              <h3 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "19px", color: "#F5F2EC", margin: 0 }}>
                 {PRICING_TIERS.complete.name}
               </h3>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 12 }}>
-                <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "34px", color: "var(--rb-text)" }}>
+                <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "34px", color: "#F5F2EC" }}>
                   €{PRICING_TIERS.complete.priceEur}
                 </span>
-                <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "13px", color: "var(--rb-text-muted)" }}>
+                <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "13px", color: "#B8CFCC" }}>
                   single payment, valid 12 months
                 </span>
               </div>
               <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
                 {PRICING_TIERS.complete.includes.map((f) => (
                   <div key={f} style={{ display: "flex", gap: 9, alignItems: "flex-start" }}>
-                    <span style={checkIcon("rgba(212,86,46,.15)", "var(--rb-orange)")}>✓</span>
-                    <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14px", lineHeight: "1.5", color: "#3A4A54" }}>{f}</span>
+                    <span style={checkIcon("rgba(245,242,236,.15)", "#F5F2EC")}>✓</span>
+                    <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14px", lineHeight: "1.5", color: "#DCE7E5" }}>{f}</span>
                   </div>
                 ))}
               </div>
@@ -117,13 +128,14 @@ export default function PaywallPage() {
                 style={{
                   width: "100%",
                   marginTop: 24,
-                  background: "var(--rb-orange)",
+                  background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
                   border: "none",
                   color: "#fff",
                   borderRadius: 12,
                   padding: 13,
                   fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14.5px",
                   cursor: "pointer",
+                  boxShadow: "0 14px 28px -14px rgba(212,86,46,.6)",
                 }}
               >
                 Choose {PRICING_TIERS.complete.name}
@@ -177,6 +189,7 @@ export default function PaywallPage() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
+      <HomeLink />
       <div style={{ width: "100%", maxWidth: 460 }}>
         <button
           onClick={() => setSelectedTier(null)}

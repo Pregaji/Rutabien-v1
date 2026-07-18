@@ -79,6 +79,7 @@ export async function generateRoadmap(userId: string) {
       userId,
       stepKey: r.id,
       stepLabel: `Gather: ${r.documentName}`,
+      phase: r.phase,
       position: r.sortOrder ?? i,
     }))
   );

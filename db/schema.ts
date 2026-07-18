@@ -72,6 +72,16 @@ export const requirements = pgTable("requirements", {
   description: text("description"),
   sortOrder: integer("sort_order").notNull().default(0),
 
+  // Roadmap phase grouping (e.g. "Before you fly", "Your first 30 days").
+  // Authored content like everything else in this table — a new phase
+  // label is a content decision, not a UI one.
+  phase: text("phase"),
+
+  // Who this document applies to — the applicant themself (SLU) or an
+  // accompanying family member (SLF). Schema support only; no SLF content
+  // has been drafted yet pending real source material / Ida's input.
+  appliesTo: text("applies_to").notNull().default("self"), // 'self' | 'spouse' | 'child'
+
   // Spain-side legalization/translation/notarization requirements.
   translationRequired: boolean("translation_required").notNull().default(false),
   legalizationChain: text("legalization_chain"),
@@ -155,6 +165,19 @@ export const users = pgTable("users", {
   paymentStatus: paymentStatusEnum("payment_status").notNull().default("unpaid"),
   paidAt: timestamp("paid_at", { mode: "date" }),
 
+  // Dedup tracking for reminder emails (MVP_Draft.md section 8) — keyed by
+  // reminder type, e.g. { unlock: "2026-07-18T...", stalled: "2026-08-01T..." }.
+  // Avoids re-sending the same nudge every time the check runs.
+  remindersSent: jsonb("reminders_sent").$type<Record<string, string>>().default({}),
+
+  // Updated when the user actually comes back (magic-link redemption) —
+  // the real "activity" signal for Document Vault retention, not just
+  // account creation date.
+  lastActiveAt: timestamp("last_active_at", { mode: "date" }).defaultNow().notNull(),
+  // Retention warning dedup — set once the "documents will be removed"
+  // notice is sent, so it doesn't repeat on every retention check.
+  retentionWarnedAt: timestamp("retention_warned_at", { mode: "date" }),
+
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
@@ -170,6 +193,10 @@ export const accessTokens = pgTable("access_tokens", {
   token: text("token").notNull().unique(),
   expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
   usedAt: timestamp("used_at", { mode: "date" }),
+  // Where to send the user after redeeming this specific link — e.g. a
+  // translation-order customer should land on their order, not /roadmap.
+  // Null falls back to the default /roadmap redirect.
+  redirectPath: text("redirect_path"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -229,6 +256,10 @@ export const documents = pgTable("documents", {
   legalizationChain: text("legalization_chain"),
   notarizationRequired: boolean("notarization_required").notNull().default(false),
 
+  // Dedup tracking so the "document may no longer be valid" reminder only
+  // fires once per expiry, not every time the reminder check runs.
+  expiryReminderSentAt: timestamp("expiry_reminder_sent_at", { mode: "date" }),
+
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
@@ -245,6 +276,9 @@ export const roadmapProgress = pgTable("roadmap_progress", {
     .references(() => users.id, { onDelete: "cascade" }),
   stepKey: text("step_key").notNull(),
   stepLabel: text("step_label").notNull(),
+  // Snapshot of requirements.phase at generation time, same pattern as the
+  // translation/legalization snapshot on documents.
+  phase: text("phase"),
   status: roadmapStepStatusEnum("status").notNull().default("not_started"),
   position: integer("position").notNull().default(0),
   dueDate: date("due_date", { mode: "date" }),
@@ -273,4 +307,71 @@ export const supportEscalationLog = pgTable("support_escalation_log", {
   resolvedAt: timestamp("resolved_at", { mode: "date" }),
   resolvedBy: text("resolved_by"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// Individual messages in a live-support thread. Kept separate from the
+// escalation log above — this is the conversation itself; the log is the
+// audit trail of when the operational boundary was hit.
+export const supportMessages = pgTable("support_messages", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  from: text("from").notNull(), // 'user' | 'team'
+  text: text("text").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// ---------------------------------------------------------------------------
+// Admin — founder/Ida-facing access. Deliberately a separate, real
+// email+password auth system, not the passwordless user flow (see
+// MVP_Draft.md section 9: "you and Ida need a properly authenticated
+// system... since it exposes every user's personal documents and case data").
+// ---------------------------------------------------------------------------
+
+export const adminUsers = pgTable("admin_users", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  name: text("name"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const adminSessions = pgTable("admin_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  adminUserId: uuid("admin_user_id")
+    .notNull()
+    .references(() => adminUsers.id, { onDelete: "cascade" }),
+  token: text("token").notNull().unique(),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// ---------------------------------------------------------------------------
+// Translation orders — the standalone revenue stream (MVP_Draft.md section
+// 3/"Get this translated"). Deliberately independent of the Requirements
+// table and roadmap flow: no nationality/visa-type logic, just documents,
+// tiered pricing, and a sworn-translator referral. Uses the same
+// passwordless email access pattern (via `users`/`accessTokens`/`sessions`)
+// for order tracking, but shares no other infrastructure with the roadmap.
+// ---------------------------------------------------------------------------
+
+export const translationOrderStatusEnum = pgEnum("translation_order_status", [
+  "pending",
+  "paid",
+  "in_progress",
+  "delivered",
+]);
+
+export const translationOrders = pgTable("translation_orders", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  files: jsonb("files").$type<Array<{ key: string; name: string }>>().notNull().default([]),
+  postalDelivery: boolean("postal_delivery").notNull().default(false),
+  totalEur: integer("total_eur").notNull(),
+  status: translationOrderStatusEnum("status").notNull().default("pending"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });

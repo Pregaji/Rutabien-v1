@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { accessTokens, sessions } from "@/db/schema";
+import { accessTokens, sessions, users } from "@/db/schema";
 import { generateAccessToken } from "@/lib/auth";
 import { setSessionCookie } from "@/lib/session";
 
@@ -36,6 +36,13 @@ export async function GET(req: NextRequest) {
     .set({ usedAt: new Date() })
     .where(eq(accessTokens.id, accessToken.id));
 
+  // Real "activity" signal for Document Vault retention — the user actually
+  // came back, not just that their account exists.
+  await db
+    .update(users)
+    .set({ lastActiveAt: new Date(), retentionWarnedAt: null })
+    .where(eq(users.id, accessToken.userId));
+
   const [session] = await db
     .insert(sessions)
     .values({
@@ -45,7 +52,7 @@ export async function GET(req: NextRequest) {
     })
     .returning();
 
-  const response = NextResponse.redirect(new URL("/roadmap", req.url));
+  const response = NextResponse.redirect(new URL(accessToken.redirectPath ?? "/roadmap", req.url));
   return setSessionCookie(response, {
     userId: accessToken.userId,
     sessionId: session.id,

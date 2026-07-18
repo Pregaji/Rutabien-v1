@@ -139,3 +139,109 @@ export async function sendPostPaymentAccessEmail({
     html,
   });
 }
+
+/* Reminders — MVP_Draft.md section 8. Every reminder includes the direct
+   access link, matching the no-password architecture. Sent by lib/reminders.ts,
+   never more than the cadence discipline the section calls for. */
+
+export async function sendStalledProgressEmail({
+  to,
+  accessUrl,
+}: {
+  to: string;
+  accessUrl: string;
+}) {
+  const html = emailWrapper(
+    `
+    <h1>Pick up where you left off</h1>
+    <p>You started your Rutabien roadmap a couple of weeks ago — no rush, just a nudge in case it slipped your mind.</p>
+    <a href="${accessUrl}" class="btn">Continue my roadmap →</a>
+  `,
+    "You're receiving this because your Rutabien roadmap has been inactive for a while."
+  );
+
+  await getResend().emails.send({
+    from: FROM_NOREPLY,
+    to,
+    subject: "Pick up where you left off with Rutabien",
+    html,
+  });
+}
+
+export async function sendUnlockReminderEmail({
+  to,
+  accessUrl,
+}: {
+  to: string;
+  accessUrl: string;
+}) {
+  const html = emailWrapper(
+    `
+    <h1>Your personalized roadmap is ready to unlock</h1>
+    <p>Your roadmap has been generated and is waiting for you — full step detail, document tracking, and reminders unlock with a one-time payment.</p>
+    <a href="${accessUrl}" class="btn">View my roadmap →</a>
+  `,
+    "One-time reminder about your unlocked Rutabien roadmap."
+  );
+
+  await getResend().emails.send({
+    from: FROM_NOREPLY,
+    to,
+    subject: "Your Rutabien roadmap is ready to unlock",
+    html,
+  });
+}
+
+export async function sendDocumentExpiringEmail({
+  to,
+  documentName,
+  accessUrl,
+}: {
+  to: string;
+  documentName: string;
+  accessUrl: string;
+}) {
+  const html = emailWrapper(
+    `
+    <h1>A document may no longer be valid</h1>
+    <p><strong>${documentName}</strong> is approaching or past its validity window for submission. It may need to be re-issued before you use it.</p>
+    <a href="${accessUrl}" class="btn">Check my documents →</a>
+    <p style="font-size:13px;color:#8a8f92">Guidance based on officially published requirements — validity windows can vary by consulate.</p>
+  `,
+    "You're receiving this because a document in your Rutabien vault has a validity window."
+  );
+
+  await getResend().emails.send({
+    from: FROM_NOREPLY,
+    to,
+    subject: `${documentName} may need to be re-issued`,
+    html,
+  });
+}
+
+export async function sendRetentionWarningEmail({
+  to,
+  graceDays,
+  accessUrl,
+}: {
+  to: string;
+  graceDays: number;
+  accessUrl: string;
+}) {
+  const html = emailWrapper(
+    `
+    <h1>Your documents will be removed soon</h1>
+    <p>Your Rutabien account has been inactive for a while, and the files in your Document Vault are scheduled for removal in ${graceDays} days.</p>
+    <p>Sign back in any time before then and they'll stay exactly where they are.</p>
+    <a href="${accessUrl}" class="btn">Access my roadmap →</a>
+  `,
+    "You're receiving this because of Rutabien's document retention policy for inactive accounts."
+  );
+
+  await getResend().emails.send({
+    from: FROM_NOREPLY,
+    to,
+    subject: "Your Rutabien documents will be removed soon",
+    html,
+  });
+}

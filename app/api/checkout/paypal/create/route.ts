@@ -16,7 +16,12 @@ export async function POST(req: NextRequest) {
   }
   const tier = PRICING_TIERS[parsed.data.plan];
 
-  const order = await createSandboxOrder(tier.priceEur, `${session.userId}:${tier.id}`, tier.id);
+  const order = await createSandboxOrder(
+    tier.priceEur,
+    `${session.userId}:${tier.id}`,
+    `${process.env.APP_URL}/paywall/paypal-return?plan=${tier.id}`,
+    `${process.env.APP_URL}/paywall`
+  );
   const approveUrl = (order.links as { rel: string; href: string }[]).find(
     (l) => l.rel === "approve"
   )?.href;

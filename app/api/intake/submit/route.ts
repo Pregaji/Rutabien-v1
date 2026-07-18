@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { users, accessTokens } from "@/db/schema";
 import { generateAccessToken } from "@/lib/auth";
 import { sendAccessLinkEmail } from "@/lib/email";
-import { deriveCaseType, isComplete } from "@/lib/intakeTree";
+import { deriveUserFields, isComplete } from "@/lib/intakeTree";
 
 const ACCESS_TOKEN_TTL_MINUTES = 20;
 
@@ -42,17 +42,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const caseType = deriveCaseType(answers);
-  const euStatus: "eu_eea" | "non_eu" = answers.euEeaCitizen ? "eu_eea" : "non_eu";
-  // Schema only models new/returning; eu_registration and pre_acceptance
-  // branches don't have a meaningful new/returning answer, default to "new".
-  const studentStatus: "new" | "returning" =
-    answers.applicantType === "returning" ? "returning" : "new";
-
-  const arrivalDate = answers.arrivalDate ? new Date(answers.arrivalDate) : null;
-  const visaExpiryDate = answers.currentPermitExpiry
-    ? new Date(answers.currentPermitExpiry)
-    : null;
+  const fields = deriveUserFields(answers);
 
   const [existing] = await db
     .select()
@@ -60,17 +50,7 @@ export async function POST(req: NextRequest) {
     .where(eq(users.email, answers.email))
     .limit(1);
 
-  const values = {
-    email: answers.email,
-    nationality: answers.nationality ?? null,
-    euStatus,
-    studentStatus,
-    caseType,
-    arrivalDate,
-    visaExpiryDate,
-    intakeAnswers: answers,
-    updatedAt: new Date(),
-  };
+  const values = { email: answers.email, ...fields, updatedAt: new Date() };
 
   const [user] = existing
     ? await db.update(users).set(values).where(eq(users.id, existing.id)).returning()
@@ -88,7 +68,7 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json({
-    caseType,
+    caseType: fields.caseType,
     message: "Roadmap started — check your email for a link to access it.",
   });
 }

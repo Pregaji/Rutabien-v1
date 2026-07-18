@@ -27,7 +27,8 @@ async function getAccessToken(): Promise<string> {
 export async function createSandboxOrder(
   amountEur: number,
   reference: string,
-  plan: string
+  returnUrl: string,
+  cancelUrl: string
 ) {
   const token = await getAccessToken();
   const res = await fetch(`${PAYPAL_SANDBOX_BASE}/v2/checkout/orders`, {
@@ -38,10 +39,7 @@ export async function createSandboxOrder(
       purchase_units: [
         { reference_id: reference, amount: { currency_code: "EUR", value: amountEur.toFixed(2) } },
       ],
-      application_context: {
-        return_url: `${process.env.APP_URL}/paywall/paypal-return?plan=${plan}`,
-        cancel_url: `${process.env.APP_URL}/paywall`,
-      },
+      application_context: { return_url: returnUrl, cancel_url: cancelUrl },
     }),
   });
   if (!res.ok) throw new Error("PayPal sandbox order creation failed");

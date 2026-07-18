@@ -96,3 +96,26 @@ export function deriveCaseType(answers: IntakeAnswers): CaseType {
   if (answers.hasAcceptanceLetter === false) return "pre_acceptance";
   return "new_student_visa";
 }
+
+// Shared by /api/intake/submit and /api/intake/update — the mapping from
+// raw intake answers to Users-table columns.
+export function deriveUserFields(answers: IntakeAnswers) {
+  const caseType = deriveCaseType(answers);
+  const euStatus: "eu_eea" | "non_eu" = answers.euEeaCitizen ? "eu_eea" : "non_eu";
+  // Schema only models new/returning; eu_registration and pre_acceptance
+  // branches don't have a meaningful new/returning answer, default to "new".
+  const studentStatus: "new" | "returning" =
+    answers.applicantType === "returning" ? "returning" : "new";
+  const arrivalDate = answers.arrivalDate ? new Date(answers.arrivalDate) : null;
+  const visaExpiryDate = answers.currentPermitExpiry ? new Date(answers.currentPermitExpiry) : null;
+
+  return {
+    nationality: answers.nationality ?? null,
+    euStatus,
+    studentStatus,
+    caseType,
+    arrivalDate,
+    visaExpiryDate,
+    intakeAnswers: answers,
+  };
+}

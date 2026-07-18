@@ -63,3 +63,114 @@ input {
     opacity: 0.75;
   }
 }
+
+/* ---------------------------------------------------------------------
+   Responsive layer — mirrors "Rutabien v1 (mobile).dc.html", not just a
+   scaled-down desktop. Below 680px the intake screen swaps its sidebar
+   rail for a top bar + horizontal progress; other screens mostly need
+   spacing/type adjustments since their layouts already reflow.
+   ------------------------------------------------------------------- */
+
+.rb-intake-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.rb-intake-sidebar {
+  flex: none;
+  width: 260px;
+  background: linear-gradient(160deg, var(--rb-teal) 0%, #234b50 100%);
+  padding: 32px 26px;
+}
+
+.rb-intake-desktop-rail {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.rb-intake-mobile-progress {
+  display: none;
+}
+
+.rb-intake-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.rb-hero-title {
+  font-size: 56px;
+}
+
+@media (max-width: 900px) {
+  .rb-hero-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 26px !important;
+  }
+  .rb-hero-illustration {
+    width: 100%;
+  }
+}
+
+@media (max-width: 680px) {
+  .rb-intake-shell {
+    flex-direction: column;
+  }
+  .rb-intake-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(34, 48, 60, 0.08);
+    padding: 18px 20px 14px;
+  }
+  .rb-intake-desktop-rail {
+    display: none;
+  }
+  .rb-intake-mobile-progress {
+    display: block;
+    margin-top: 12px;
+  }
+  .rb-intake-content {
+    padding: 28px 20px 20px;
+    align-items: flex-start;
+  }
+  .rb-paywall-wrap,
+  .rb-roadmap-wrap {
+    padding: 24px !important;
+  }
+  .rb-option-btn {
+    flex: 1 1 100% !important;
+    width: 100%;
+  }
+
+  /* Landing — mirrors the mobile prototype's stacked teal editorial hero */
+  .rb-container {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  .rb-hero-title {
+    font-size: 38px;
+  }
+  .rb-hero-ctas {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .rb-hero-ctas a:first-child {
+    text-align: center;
+  }
+  /* Decorative only — its pin markers are pixel-positioned against the
+     desktop illustration's width and don't rescale cleanly, so it's
+     dropped rather than shown clipped/misaligned on narrow screens. */
+  .rb-hero-illustration {
+    display: none;
+  }
+  /* Sized/positioned for the 1160px desktop container; on narrow screens
+     they clip into a visible hard-edged seam instead of a soft glow. */
+  .rb-hero-blob {
+    display: none;
+  }
+}
+

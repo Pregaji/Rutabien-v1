@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { users, accessTokens } from "@/db/schema";
+import { users, accessTokens, translationOrders } from "@/db/schema";
 import { getStripe } from "@/lib/payments/stripe";
 import { isPlanType, PRICING_TIERS } from "@/lib/pricing";
 import { generateAccessToken } from "@/lib/auth";
@@ -24,6 +24,15 @@ export async function POST(req: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const checkoutSession = event.data.object as { metadata?: Record<string, string> };
+
+    if (checkoutSession.metadata?.type === "translation" && checkoutSession.metadata.orderId) {
+      await db
+        .update(translationOrders)
+        .set({ status: "paid", updatedAt: new Date() })
+        .where(eq(translationOrders.id, checkoutSession.metadata.orderId));
+      return NextResponse.json({ received: true });
+    }
+
     const userId = checkoutSession.metadata?.userId;
     const plan = checkoutSession.metadata?.plan;
     if (userId && plan && isPlanType(plan)) {

@@ -8,6 +8,34 @@
       "when": 1784007061487,
       "tag": "0000_mean_mockingbird",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784373470845,
+      "tag": "0001_sloppy_northstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784379338154,
+      "tag": "0002_sharp_malcolm_colcord",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1784380714528,
+      "tag": "0003_fearless_azazel",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1784381953078,
+      "tag": "0004_bouncy_captain_britain",
+      "breakpoints": true
     }
   ]
 }

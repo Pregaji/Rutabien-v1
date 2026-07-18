@@ -76,6 +76,12 @@ async function seed() {
     homeCountryApostilleAuthority: "Nigeria Ministry of Foreign Affairs",
     postAppointmentGracePeriodDays: 14,
     signedOff: false,
+    // All 8 rows are pre-arrival visa-application documents — genuinely
+    // one phase. Not labeling later phases (address registration, TIE)
+    // since that content doesn't exist in this table yet; adding those
+    // labels without the underlying requirement rows would be fabricating
+    // structure ahead of real content.
+    phase: "Before you fly",
     ...r,
   }));
 

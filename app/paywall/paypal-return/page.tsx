@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import HomeLink from "../../HomeLink";
 
 export default function PaypalReturnPage() {
+  return (
+    <Suspense fallback={null}>
+      <PaypalReturnInner />
+    </Suspense>
+  );
+}
+
+function PaypalReturnInner() {
   const params = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"capturing" | "done" | "error">("capturing");
@@ -33,6 +42,7 @@ export default function PaypalReturnPage() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48, textAlign: "center" }}>
+      <HomeLink />
       <div>
         {status === "capturing" && (
           <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "15px", color: "var(--rb-text-muted)" }}>Confirming your payment…</p>

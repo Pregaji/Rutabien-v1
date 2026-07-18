@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { getNextStep, type IntakeAnswers, type StepId } from "@/lib/intakeTree";
+import HomeLink from "../HomeLink";
 
 const card = { width: "100%", maxWidth: 560 } as const;
 const heading = { fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "34px", lineHeight: "1.2", color: "var(--rb-text)", margin: 0, letterSpacing: "-.3px" } as const;
@@ -19,6 +22,7 @@ function OptionButton({
   return (
     <button
       onClick={onClick}
+      className="rb-option-btn"
       style={{
         textAlign: "left",
         padding: "15px 18px",
@@ -97,11 +101,44 @@ const STEP_LABELS: Record<StepId, string> = {
 };
 
 export default function IntakePage() {
+  return (
+    <Suspense fallback={null}>
+      <IntakePageInner />
+    </Suspense>
+  );
+}
+
+function IntakePageInner() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const editing = searchParams.get("edit") === "1";
+
   const [answers, setAnswers] = useState<IntakeAnswers>({});
   const [history, setHistory] = useState<IntakeAnswers[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadingCurrent, setLoadingCurrent] = useState(editing);
+
+  useEffect(() => {
+    if (!editing) return;
+    fetch("/api/intake/current")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => {
+        // Loaded answers are already "complete" (they generated the
+        // existing roadmap), which would make getNextStep return COMPLETE
+        // immediately. Drop email so the tree re-lands on the last question
+        // — the user reviews/confirms it, which also re-triggers submit.
+        // Known limitation: Back is disabled until they've re-answered at
+        // least one question, since we don't reconstruct full step history
+        // from a flat answers object.
+        const loaded = { ...(data.answers ?? {}) };
+        delete loaded.email;
+        setAnswers(loaded);
+      })
+      .catch(() => setError("Could not load your current answers."))
+      .finally(() => setLoadingCurrent(false));
+  }, [editing]);
 
   const step = getNextStep(answers);
 
@@ -112,14 +149,18 @@ export default function IntakePage() {
     if (getNextStep(next) === "COMPLETE") {
       setSubmitting(true);
       setError(null);
-      const res = await fetch("/api/intake/submit", {
+      const res = await fetch(editing ? "/api/intake/update" : "/api/intake/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(next),
       });
       setSubmitting(false);
       if (res.ok) {
-        setSubmitted(true);
+        if (editing) {
+          router.push("/roadmap");
+        } else {
+          setSubmitted(true);
+        }
       } else {
         const data = await res.json().catch(() => ({}));
         setError(data.error ?? "Something went wrong — please try again.");
@@ -137,9 +178,20 @@ export default function IntakePage() {
     });
   }
 
+  if (loadingCurrent) {
+    return (
+      <Centered>
+        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 15, color: "var(--rb-text-muted)" }}>
+          Loading your answers…
+        </p>
+      </Centered>
+    );
+  }
+
   if (submitted) {
     return (
       <Centered>
+        <HomeLink />
         <div style={{ ...card, textAlign: "center" }}>
           <h2 style={heading}>Check your inbox</h2>
           <p style={help}>
@@ -151,17 +203,27 @@ export default function IntakePage() {
     );
   }
 
+  // The tree branches, so there's no fixed step count — this is a rough
+  // estimate against the 9-question full path, just for a progress bar.
+  const ESTIMATED_TOTAL = 9;
+  const progressPct = Math.min(100, Math.round((history.length / ESTIMATED_TOTAL) * 100));
+
   return (
-    <div style={{ minHeight: "100vh", display: "flex" }}>
-      <div
-        style={{
-          flex: "none",
-          width: 260,
-          background: "var(--rb-sidebar)",
-          borderRight: "1px solid rgba(34,48,60,.08)",
-          padding: "32px 26px",
-        }}
-      >
+    <div className="rb-intake-shell">
+      <div className="rb-intake-sidebar">
+        <Link
+          href="/"
+          style={{
+            display: "block",
+            fontFamily: "var(--font-spectral)",
+            fontWeight: 600,
+            fontSize: 16,
+            color: "#F5F2EC",
+            marginBottom: 18,
+          }}
+        >
+          Rutabien
+        </Link>
         <button
           onClick={back}
           disabled={history.length === 0}
@@ -171,18 +233,24 @@ export default function IntakePage() {
             padding: "2px 0 24px",
             cursor: history.length ? "pointer" : "default",
             fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "15px",
-            color: "var(--rb-teal)",
+            color: "#F5F2EC",
             opacity: history.length ? 1 : 0.4,
           }}
         >
           ‹ Back
         </button>
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "12px", color: "var(--rb-text-muted)", letterSpacing: ".5px", textTransform: "uppercase" }}>
+        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "12px", color: "#B8CFCC", letterSpacing: ".5px", textTransform: "uppercase", margin: 0 }}>
           {STEP_LABELS[step]}
         </p>
+        <div className="rb-intake-desktop-rail" />
+        <div className="rb-intake-mobile-progress">
+          <div style={{ height: 4, borderRadius: 999, background: "rgba(245,242,236,.2)", overflow: "hidden" }}>
+            <div style={{ width: `${progressPct}%`, height: "100%", background: "linear-gradient(90deg, #E2733F, #D4562E)", borderRadius: 999, transition: "width .3s ease" }} />
+          </div>
+        </div>
       </div>
 
-      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
+      <div className="rb-intake-content">
         <div style={card}>
           {error && (
             <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "13px", color: "var(--rb-orange)", marginBottom: 12 }}>
@@ -402,13 +470,14 @@ function NextButton({
       disabled={disabled}
       style={{
         flex: "none",
-        background: disabled ? "#B8CFCC" : "var(--rb-teal)",
+        background: disabled ? "#C7CDD0" : "linear-gradient(135deg, #234b50 0%, var(--rb-teal) 100%)",
         color: "#fff",
         border: "none",
         borderRadius: 14,
         padding: "0 22px",
         fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "15px",
         cursor: disabled ? "default" : "pointer",
+        boxShadow: disabled ? "none" : "0 12px 26px -14px rgba(27,58,62,.55)",
       }}
     >
       {label}
