@@ -16,7 +16,7 @@ const bodySchema = z.object({
   postalDelivery: z.boolean().default(false),
 });
 
-// Standalone entry point (MVP_Draft.md: "Just need a translation?") — no
+// Standalone entry point (MVP_Draft.md: "Just need a translation?") - no
 // intake questionnaire, no nationality/visa-type gate, no Requirements-table
 // dependency. Still uses the same passwordless email pattern for order
 // tracking, sharing only the users/accessTokens/sessions infrastructure
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
   await sendAccessLinkEmail({
     to: email,
-    accessUrl: `${process.env.APP_URL}/auth/verify?token=${token}`,
+    accessUrl: `${process.env.APP_URL}/api/auth/verify?token=${token}`,
     expiresInMinutes: ACCESS_TOKEN_TTL_MINUTES,
   });
 

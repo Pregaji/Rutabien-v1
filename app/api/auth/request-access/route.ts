@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       expiresAt,
     });
 
-    const accessUrl = `${process.env.APP_URL}/auth/verify?token=${token}`;
+    const accessUrl = `${process.env.APP_URL}/api/auth/verify?token=${token}`;
     await sendAccessLinkEmail({
       to: email,
       accessUrl,

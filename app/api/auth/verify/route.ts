@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL("/auth/expired", req.url));
   }
 
-  // Single-use, unexpired lookup — matching a used or expired token here
+  // Single-use, unexpired lookup - matching a used or expired token here
   // is treated the same as no match, so no distinction leaks to the caller.
   const [accessToken] = await db
     .select()
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     .set({ usedAt: new Date() })
     .where(eq(accessTokens.id, accessToken.id));
 
-  // Real "activity" signal for Document Vault retention — the user actually
+  // Real "activity" signal for Document Vault retention - the user actually
   // came back, not just that their account exists.
   await db
     .update(users)
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     })
     .returning();
 
-  const response = NextResponse.redirect(new URL(accessToken.redirectPath ?? "/roadmap", req.url));
+  const response = NextResponse.redirect(new URL(accessToken.redirectPath ?? "/dashboard", req.url));
   return setSessionCookie(response, {
     userId: accessToken.userId,
     sessionId: session.id,

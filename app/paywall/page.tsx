@@ -1,27 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { Check } from "lucide-react";
 import { PRICING_TIERS, type PlanType } from "@/lib/pricing";
 import HomeLink from "../HomeLink";
-
-const cardBase = {
-  flex: "1 1 320px",
-  background: "#fff",
-  borderRadius: 20,
-  padding: 28,
-} as const;
+import { Button, Heading, PageShell, Text } from "@/components/ui";
 
 const checkIcon = (bg: string, color: string) => ({
   width: 18,
   height: 18,
   flex: "none" as const,
-  borderRadius: 999,
+  borderRadius: "var(--radius-full)",
   background: bg,
   color,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 10,
   marginTop: 1,
 });
 
@@ -32,61 +26,53 @@ export default function PaywallPage() {
 
   if (!selectedTier) {
     return (
-      <div className="rb-paywall-wrap" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
+      <PageShell className="rb-paywall-wrap">
         <HomeLink />
         <div style={{ width: "100%", maxWidth: 820 }}>
-          <h2 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "30px", lineHeight: "1.2", color: "var(--rb-text)", margin: 0, letterSpacing: "-.3px" }}>
+          <Heading size="lg" style={{ fontSize: 30 }}>
             Unlock your full roadmap
-          </h2>
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14.5px", color: "var(--rb-text-muted)", margin: "10px 0 0" }}>
-            Both plans are a single payment — no auto-renewal, ever.
-          </p>
+          </Heading>
+          <Text size={14.5} muted style={{ margin: "10px 0 0" }}>
+            Both plans are a single payment - no auto-renewal, ever.
+          </Text>
 
           <div style={{ display: "flex", gap: 20, marginTop: 28, flexWrap: "wrap" }}>
-            <div style={{ ...cardBase, border: "1.5px solid var(--rb-border)" }}>
-              <h3 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "19px", color: "var(--rb-text)", margin: 0 }}>
+            <div style={{ flex: "1 1 320px", background: "#fff", borderRadius: "var(--radius-xl)", padding: 28, border: "1.5px solid var(--rb-border)" }}>
+              <Heading as="h3" size="sm" style={{ fontSize: 19 }}>
                 {PRICING_TIERS.essential.name}
-              </h3>
+              </Heading>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 12 }}>
-                <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "34px", color: "var(--rb-text)" }}>
+                <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 34, color: "var(--rb-text)" }}>
                   €{PRICING_TIERS.essential.priceEur}
                 </span>
-                <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "13px", color: "var(--rb-text-muted)" }}>one-time</span>
+                <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 13, color: "var(--rb-text-muted)" }}>one-time</span>
               </div>
               <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
                 {PRICING_TIERS.essential.includes.map((f) => (
                   <div key={f} style={{ display: "flex", gap: 9, alignItems: "flex-start" }}>
-                    <span style={checkIcon("rgba(27,58,62,.12)", "var(--rb-teal)")}>✓</span>
-                    <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14px", lineHeight: "1.5", color: "#3A4A54" }}>{f}</span>
+                    <span style={checkIcon("rgba(27,58,62,.12)", "var(--rb-teal)")}><Check size={10} strokeWidth={3} /></span>
+                    <Text size={14} style={{ lineHeight: 1.5, color: "var(--rb-text-dense)" }}>{f}</Text>
                   </div>
                 ))}
               </div>
-              <button
+              <Button
+                variant="outline"
+                fullWidth
+                style={{ marginTop: 24, padding: 13, fontSize: 14.5, transition: "background .15s ease" }}
                 onClick={() => setSelectedTier("essential")}
-                style={{
-                  width: "100%",
-                  marginTop: 24,
-                  background: "#fff",
-                  border: "1.5px solid var(--rb-teal)",
-                  color: "var(--rb-teal)",
-                  borderRadius: 12,
-                  padding: 13,
-                  fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14.5px",
-                  cursor: "pointer",
-                  transition: "background .15s ease",
-                }}
               >
                 Choose {PRICING_TIERS.essential.name}
-              </button>
+              </Button>
             </div>
 
             <div
               style={{
-                ...cardBase,
-                background: "linear-gradient(160deg, var(--rb-teal) 0%, #234b50 100%)",
-                border: "none",
+                flex: "1 1 320px",
+                borderRadius: "var(--radius-xl)",
+                padding: 28,
+                background: "var(--rb-gradient-teal)",
                 position: "relative",
-                boxShadow: "0 30px 60px -30px rgba(27,58,62,.55)",
+                boxShadow: "var(--shadow-lg)",
               }}
             >
               <span
@@ -94,60 +80,53 @@ export default function PaywallPage() {
                   position: "absolute",
                   top: -13,
                   left: 28,
-                  background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
+                  background: "var(--rb-gradient-orange)",
                   color: "#fff",
                   padding: "5px 12px",
-                  borderRadius: 999,
-                  fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "11px",
+                  borderRadius: "var(--radius-full)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 600,
+                  fontSize: 11,
                   letterSpacing: ".3px",
                 }}
               >
                 Most popular
               </span>
-              <h3 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "19px", color: "#F5F2EC", margin: 0 }}>
+              <Heading as="h3" size="sm" color="var(--rb-on-teal)" style={{ fontSize: 19 }}>
                 {PRICING_TIERS.complete.name}
-              </h3>
+              </Heading>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 12 }}>
-                <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "34px", color: "#F5F2EC" }}>
+                <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 34, color: "var(--rb-on-teal)" }}>
                   €{PRICING_TIERS.complete.priceEur}
                 </span>
-                <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "13px", color: "#B8CFCC" }}>
+                <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 13, color: "var(--rb-on-teal-muted)" }}>
                   single payment, valid 12 months
                 </span>
               </div>
               <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
                 {PRICING_TIERS.complete.includes.map((f) => (
                   <div key={f} style={{ display: "flex", gap: 9, alignItems: "flex-start" }}>
-                    <span style={checkIcon("rgba(245,242,236,.15)", "#F5F2EC")}>✓</span>
-                    <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14px", lineHeight: "1.5", color: "#DCE7E5" }}>{f}</span>
+                    <span style={checkIcon("rgba(245,242,236,.15)", "var(--rb-on-teal)")}><Check size={10} strokeWidth={3} /></span>
+                    <Text size={14} style={{ lineHeight: 1.5, color: "var(--rb-on-teal-body)" }}>{f}</Text>
                   </div>
                 ))}
               </div>
-              <button
+              <Button
+                variant="primary"
+                fullWidth
+                style={{ marginTop: 24, padding: 13, fontSize: 14.5 }}
                 onClick={() => setSelectedTier("complete")}
-                style={{
-                  width: "100%",
-                  marginTop: 24,
-                  background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
-                  border: "none",
-                  color: "#fff",
-                  borderRadius: 12,
-                  padding: 13,
-                  fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14.5px",
-                  cursor: "pointer",
-                  boxShadow: "0 14px 28px -14px rgba(212,86,46,.6)",
-                }}
               >
                 Choose {PRICING_TIERS.complete.name}
-              </button>
+              </Button>
             </div>
           </div>
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "12.5px", color: "var(--rb-text-muted)", margin: "18px 0 0" }}>
-            &quot;Valid for 12 months&quot; means single access period, not a recurring charge —
+          <Text size={12.5} muted style={{ margin: "18px 0 0" }}>
+            &quot;Valid for 12 months&quot; means single access period, not a recurring charge -
             nothing renews automatically.
-          </p>
+          </Text>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
@@ -188,53 +167,56 @@ export default function PaywallPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
+    <PageShell>
       <HomeLink />
       <div style={{ width: "100%", maxWidth: 460 }}>
-        <button
+        <Button
+          variant="ghost"
+          style={{ border: "none", padding: "0 0 18px", fontSize: 15 }}
           onClick={() => setSelectedTier(null)}
-          style={{ background: "none", border: "none", padding: "0 0 18px", cursor: "pointer", fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "15px", color: "var(--rb-teal)" }}
         >
           ‹ Back
-        </button>
-        <h2 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "28px", lineHeight: "1.2", color: "var(--rb-text)", margin: 0, letterSpacing: "-.3px" }}>
-          {tier.name} plan
-        </h2>
+        </Button>
+        <Heading size="lg">{tier.name} plan</Heading>
         <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 18 }}>
-          <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "46px", color: "var(--rb-text)" }}>€{tier.priceEur}</span>
-          <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "14px", color: "var(--rb-text-muted)" }}>single payment</span>
+          <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 46, color: "var(--rb-text)" }}>€{tier.priceEur}</span>
+          <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 14, color: "var(--rb-text-muted)" }}>single payment</span>
         </div>
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "13.5px", color: "var(--rb-text-muted)", margin: "6px 0 0" }}>
-          This is the full price — nothing changes at checkout.
-        </p>
+        <Text size={13.5} muted style={{ margin: "6px 0 0" }}>
+          This is the full price - nothing changes at checkout.
+        </Text>
 
         {error && (
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "13px", color: "var(--rb-orange)", marginTop: 16 }}>{error}</p>
+          <Text size={13} weight={500} color="var(--rb-orange)" style={{ marginTop: 16 }}>
+            {error}
+          </Text>
         )}
 
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "12px", letterSpacing: ".5px", textTransform: "uppercase", color: "var(--rb-text-muted)", margin: "28px 0 10px" }}>
+        <Text size={12} weight={600} muted style={{ letterSpacing: ".5px", textTransform: "uppercase", margin: "28px 0 10px" }}>
           Choose how to pay
-        </p>
+        </Text>
         <div style={{ display: "flex", gap: 12 }}>
-          <button
-            onClick={payWithPaypal}
+          <Button
+            variant="outline"
             disabled={paying}
-            style={{ flex: 1, padding: 16, borderRadius: 14, border: "1.5px solid var(--rb-border)", background: "#fff", fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "15px", color: "var(--rb-text)", cursor: paying ? "default" : "pointer" }}
+            style={{ flex: 1, padding: 16, fontSize: 15, borderRadius: "var(--radius-lg)" }}
+            onClick={payWithPaypal}
           >
             PayPal
-          </button>
-          <button
-            onClick={payWithStripe}
+          </Button>
+          <Button
+            variant="outline"
             disabled={paying}
-            style={{ flex: 1, padding: 16, borderRadius: 14, border: "1.5px solid var(--rb-border)", background: "#fff", fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "15px", color: "var(--rb-text)", cursor: paying ? "default" : "pointer" }}
+            style={{ flex: 1, padding: 16, fontSize: 15, borderRadius: "var(--radius-lg)" }}
+            onClick={payWithStripe}
           >
             Credit / debit card
-          </button>
+          </Button>
         </div>
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "12.5px", color: "var(--rb-text-muted)", margin: "16px 0 0" }}>
-          A receipt is emailed to you. Pay once — no subscription.
-        </p>
+        <Text size={12.5} muted style={{ margin: "16px 0 0" }}>
+          A receipt is emailed to you. Pay once - no subscription.
+        </Text>
       </div>
-    </div>
+    </PageShell>
   );
 }

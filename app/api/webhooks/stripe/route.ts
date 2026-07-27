@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       await db.insert(accessTokens).values({ userId: user.id, token, expiresAt });
       await sendPostPaymentAccessEmail({
         to: user.email,
-        accessUrl: `${process.env.APP_URL}/auth/verify?token=${token}`,
+        accessUrl: `${process.env.APP_URL}/api/auth/verify?token=${token}`,
         expiresInMinutes: 20,
         planName: tier.name,
       });

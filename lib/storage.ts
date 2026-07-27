@@ -1,7 +1,7 @@
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-// Cloudflare R2, EU jurisdiction — S3-compatible API. R2 encrypts all
+// Cloudflare R2, EU jurisdiction - S3-compatible API. R2 encrypts all
 // objects at rest by default (see CLAUDE.md "Documents encrypted at rest").
 let _client: S3Client | null = null;
 
@@ -43,7 +43,7 @@ export async function getUploadUrl(key: string, contentType: string): Promise<st
 }
 
 // Caller must have already passed step-up verification for this session
-// (see lib/stepUp.ts) before this is issued — enforced at the route level,
+// (see lib/stepUp.ts) before this is issued - enforced at the route level,
 // not here, since this module has no notion of sessions.
 export async function getDownloadUrl(key: string): Promise<string> {
   const command = new GetObjectCommand({ Bucket: getBucket(), Key: key });

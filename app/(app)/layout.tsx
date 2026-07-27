@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui";
+import HelpWidget from "./HelpWidget";
 
 const NAV_LINKS = [
+  { href: "/dashboard", label: "Dashboard" },
   { href: "/roadmap", label: "Roadmap" },
   { href: "/documents", label: "Documents" },
+  { href: "/translation/orders", label: "Translation" },
   { href: "/bienvenido", label: "Bienvenido" },
-  { href: "/live-support", label: "Live support" },
+  { href: "/lawyer", label: "Talk to a lawyer" },
 ];
 
 export default function AppShellLayout({ children }: { children: React.ReactNode }) {
@@ -34,7 +38,7 @@ export default function AppShellLayout({ children }: { children: React.ReactNode
             gap: 12,
           }}
         >
-          <Link href="/" style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: 18, color: "var(--rb-teal)" }}>
+          <Link href="/" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 18, color: "var(--rb-teal)" }}>
             Rutabien
           </Link>
           <nav style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
@@ -46,8 +50,8 @@ export default function AppShellLayout({ children }: { children: React.ReactNode
                   href={l.href}
                   style={{
                     padding: "8px 14px",
-                    borderRadius: 10,
-                    fontFamily: "var(--font-figtree)",
+                    borderRadius: "var(--radius-sm)",
+                    fontFamily: "var(--font-body)",
                     fontWeight: 600,
                     fontSize: 13,
                     color: active ? "#fff" : "var(--rb-text-secondary)",
@@ -59,23 +63,17 @@ export default function AppShellLayout({ children }: { children: React.ReactNode
               );
             })}
           </nav>
-          <button
+          <Button
+            variant="ghost"
+            style={{ border: "none", padding: 0, color: "var(--rb-text-muted)", fontSize: 13 }}
             onClick={logout}
-            style={{
-              background: "none",
-              border: "none",
-              fontFamily: "var(--font-figtree)",
-              fontWeight: 600,
-              fontSize: 13,
-              color: "var(--rb-text-muted)",
-              cursor: "pointer",
-            }}
           >
             Log out
-          </button>
+          </Button>
         </div>
       </div>
       <div style={{ flex: 1 }}>{children}</div>
+      <HelpWidget />
     </div>
   );
 }

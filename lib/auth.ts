@@ -7,7 +7,7 @@ const getSecret = () => {
   return new TextEncoder().encode(secret);
 };
 
-// Session JWT — issued only after a magic link or step-up code has been
+// Session JWT - issued only after a magic link or step-up code has been
 // redeemed. There is no password anywhere in this flow (see CLAUDE.md).
 export interface SessionPayload {
   userId: string;

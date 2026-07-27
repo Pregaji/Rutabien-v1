@@ -3,8 +3,15 @@
 import { useState } from "react";
 import { computeTranslationTotal, POSTAL_DELIVERY_SURCHARGE_EUR, tierPriceFor } from "@/lib/translationPricing";
 import HomeLink from "../HomeLink";
+import { Button, Card, Heading, PageShell, Text, TextInput } from "@/components/ui";
 
-// Standalone entry point — "Just need a translation?" — skips the entire
+const STEPS = [
+  { n: "01", title: "Attach", body: "Upload scans of the documents you need translated." },
+  { n: "02", title: "We translate", body: "Our translation team prepares a certified Spanish translation." },
+  { n: "03", title: "Get it back", body: "Ready in 2 working days - download it, or have a copy posted to you." },
+];
+
+// Standalone entry point - "Just need a translation?" - skips the entire
 // intake questionnaire. Full total shown before any commitment, updating
 // live as document count / postal option change (CLAUDE.md pricing rule).
 export default function TranslationPage() {
@@ -36,33 +43,81 @@ export default function TranslationPage() {
 
   if (sent) {
     return (
-      <Centered>
+      <PageShell>
+        <HomeLink />
         <div style={{ textAlign: "center", maxWidth: 420 }}>
-          <h2 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: 28, color: "var(--rb-text)", margin: 0 }}>
-            Check your inbox
-          </h2>
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: 15, lineHeight: 1.6, color: "var(--rb-text-secondary)", margin: "14px 0 0" }}>
-            We&apos;ve sent a link to {email} — click it to upload your documents and pay.
-          </p>
+          <Heading size="lg">Check your inbox</Heading>
+          <Text style={{ margin: "14px 0 0" }}>
+            We&apos;ve sent a link to {email} - click it to upload your documents and pay.
+          </Text>
+          <Button variant="secondary" size="lg" fullWidth href="/" style={{ marginTop: 24 }}>
+            Back to homepage
+          </Button>
         </div>
-      </Centered>
+      </PageShell>
     );
   }
 
   return (
-    <Centered>
-      <div style={{ width: "100%", maxWidth: 480 }}>
-        <h2 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: 30, lineHeight: 1.2, color: "var(--rb-text)", margin: 0, letterSpacing: "-.3px" }}>
-          Just need a translation?
-        </h2>
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: 14.5, color: "var(--rb-text-muted)", margin: "10px 0 0" }}>
-          Sworn translation via our accredited translator partner — no visa questionnaire needed.
-        </p>
+    <div style={{ minHeight: "100vh", padding: "80px 48px" }}>
+      <HomeLink />
+      <div
+        className="rb-translation-grid"
+        style={{
+          maxWidth: 1000,
+          margin: "0 auto",
+          display: "flex",
+          gap: 56,
+          alignItems: "flex-start",
+        }}
+      >
+        <div style={{ flex: "1 1 380px", maxWidth: 420 }}>
+          <Heading size="lg" style={{ fontSize: 32 }}>
+            Just need a translation?
+          </Heading>
+          <Text size={15} style={{ margin: "12px 0 0", lineHeight: 1.6 }}>
+            Sworn translation via our accredited translator partner - no visa questionnaire
+            needed. Attach a scan, we translate it, you get it back.
+          </Text>
 
-        <div style={{ marginTop: 28 }}>
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 13, color: "var(--rb-text)", margin: "0 0 10px" }}>
+          <div style={{ marginTop: 36, display: "flex", flexDirection: "column", gap: 22 }}>
+            {STEPS.map((s) => (
+              <div key={s.n} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                <span
+                  style={{
+                    flex: "none",
+                    width: 34,
+                    height: 34,
+                    borderRadius: "var(--radius-full)",
+                    border: "2px solid var(--rb-orange)",
+                    color: "var(--rb-orange)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 600,
+                    fontSize: 13,
+                  }}
+                >
+                  {s.n}
+                </span>
+                <div>
+                  <Heading as="h3" size="sm" style={{ fontSize: 16 }}>
+                    {s.title}
+                  </Heading>
+                  <Text size={13.5} style={{ margin: "3px 0 0", lineHeight: 1.5 }}>
+                    {s.body}
+                  </Text>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Card style={{ flex: "1 1 380px", maxWidth: 440, padding: 32 }}>
+          <Text size={13} weight={600} color="var(--rb-text)" style={{ margin: "0 0 10px" }}>
             How many documents?
-          </p>
+          </Text>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <button
               onClick={() => setDocumentCount((c) => Math.max(1, c - 1))}
@@ -70,85 +125,71 @@ export default function TranslationPage() {
             >
               −
             </button>
-            <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: 20, color: "var(--rb-text)", minWidth: 24, textAlign: "center" }}>
+            <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 20, color: "var(--rb-text)", minWidth: 24, textAlign: "center" }}>
               {documentCount}
             </span>
             <button onClick={() => setDocumentCount((c) => Math.min(50, c + 1))} style={stepperBtn}>
               +
             </button>
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 13, color: "var(--rb-text-muted)" }}>
-              €{tierPriceFor(documentCount)} for {documentCount <= 3 ? "1–3" : documentCount <= 6 ? "4–6" : "7+"} docs
-            </span>
+            <Text size={13} weight={500} muted>
+              €{tierPriceFor(documentCount)} for {documentCount <= 3 ? "1-3" : documentCount <= 6 ? "4-6" : "7+"} docs
+            </Text>
           </div>
 
           <label style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20, cursor: "pointer" }}>
             <input type="checkbox" checked={postalDelivery} onChange={(e) => setPostalDelivery(e.target.checked)} />
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 14, color: "var(--rb-text)" }}>
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 14, color: "var(--rb-text)" }}>
               Postal delivery (+€{POSTAL_DELIVERY_SURCHARGE_EUR})
             </span>
           </label>
 
-          <div style={{ marginTop: 22, padding: "16px 20px", background: "var(--rb-bg)", borderRadius: 14, display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 13, color: "var(--rb-text-muted)", textTransform: "uppercase", letterSpacing: ".3px" }}>
+          <div style={{ marginTop: 22, padding: "16px 20px", background: "var(--rb-bg)", borderRadius: "var(--radius-md)", display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-text-muted)", textTransform: "uppercase", letterSpacing: ".3px" }}>
               Total
             </span>
-            <span style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: 28, color: "var(--rb-text)" }}>€{total}</span>
+            <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 28, color: "var(--rb-text)" }}>€{total}</span>
           </div>
 
           {error && (
-            <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 13, color: "var(--rb-orange)", marginTop: 14 }}>{error}</p>
+            <Text size={13} weight={500} color="var(--rb-orange)" style={{ marginTop: 14 }}>
+              {error}
+            </Text>
           )}
 
-          <input
+          <TextInput
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={setEmail}
             placeholder="you@email.com"
-            style={{ width: "100%", marginTop: 18, padding: "15px 17px", borderRadius: 14, border: "1.5px solid var(--rb-border)", fontFamily: "var(--font-figtree)", fontSize: 15 }}
+            style={{ marginTop: 18 }}
           />
-          <button
-            onClick={submit}
+          <Button
+            variant="primary"
+            fullWidth
             disabled={!email || submitting}
-            style={{
-              width: "100%",
-              marginTop: 12,
-              padding: 16,
-              borderRadius: 15,
-              border: "none",
-              background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
-              color: "#fff",
-              fontFamily: "var(--font-figtree)",
-              fontWeight: 600,
-              fontSize: 15,
-              cursor: submitting ? "default" : "pointer",
-            }}
+            style={{ marginTop: 12, padding: 16, borderRadius: "var(--radius-xl)", fontSize: 15 }}
+            onClick={submit}
           >
-            {submitting ? "Starting…" : `Continue — €${total}`}
-          </button>
-        </div>
+            {submitting ? "Starting…" : `Continue - €${total}`}
+          </Button>
+          <Text size={12} muted style={{ marginTop: 12 }}>
+            A receipt is emailed to you. Pay once - no subscription.
+          </Text>
+        </Card>
       </div>
-    </Centered>
+    </div>
   );
 }
 
 const stepperBtn: React.CSSProperties = {
   width: 40,
   height: 40,
-  borderRadius: 999,
+  borderRadius: "var(--radius-full)",
   border: "1.5px solid var(--rb-border)",
   background: "#fff",
-  fontFamily: "var(--font-figtree)",
+  fontFamily: "var(--font-body)",
   fontWeight: 600,
   fontSize: 18,
   color: "var(--rb-text)",
   cursor: "pointer",
 };
-
-function Centered({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
-      <HomeLink />
-      {children}
-    </div>
-  );
-}

@@ -14,7 +14,7 @@ export async function POST(
   if (!session) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
   // Step-up verification required specifically before viewing/downloading a
-  // document, even within an active session — see CLAUDE.md "Auth".
+  // document, even within an active session - see CLAUDE.md "Auth".
   const stepUpOk = await hasRecentStepUp(session.sessionId, "document_access");
   if (!stepUpOk) {
     return NextResponse.json({ error: "Step-up verification required" }, { status: 403 });

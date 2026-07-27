@@ -1,19 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui";
 
 export default function AdminLogoutButton() {
   const router = useRouter();
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      style={{ border: "none", padding: 0, background: "transparent", color: "var(--rb-on-teal-muted)", fontSize: 13 }}
       onClick={async () => {
         await fetch("/api/admin/logout", { method: "POST" });
         router.push("/admin/login");
       }}
-      style={{ background: "none", border: "none", fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 13, color: "var(--rb-text-muted)", cursor: "pointer" }}
     >
       Log out
-    </button>
+    </Button>
   );
 }

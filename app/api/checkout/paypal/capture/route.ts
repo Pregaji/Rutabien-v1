@@ -32,14 +32,14 @@ export async function POST(req: NextRequest) {
     .where(eq(users.id, session.userId))
     .returning();
 
-  // No gap between "I just paid" and "here's how I get back in" — see
+  // No gap between "I just paid" and "here's how I get back in" - see
   // MVP_Draft.md section 7, point 5.
   const token = generateAccessToken();
   const expiresAt = new Date(Date.now() + 20 * 60 * 1000);
   await db.insert(accessTokens).values({ userId: user.id, token, expiresAt });
   await sendPostPaymentAccessEmail({
     to: user.email,
-    accessUrl: `${process.env.APP_URL}/auth/verify?token=${token}`,
+    accessUrl: `${process.env.APP_URL}/api/auth/verify?token=${token}`,
     expiresInMinutes: 20,
     planName: tier.name,
   });

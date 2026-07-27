@@ -7,7 +7,7 @@ import { sendRetentionWarningEmail } from "@/lib/email";
 // Section 6 of MVP_Draft.md flags this as its own compliance gap: "retained
 // while your account is active; after [X years] of inactivity, you'll be
 // notified before anything is removed." The actual X is a policy decision
-// for Ida/legal, not an engineering one — these are placeholder defaults so
+// for Ida/legal, not an engineering one - these are placeholder defaults so
 // the mechanism exists and is provably safe (warn, then wait, then delete),
 // not a claim that 24 months is the final agreed number.
 const WARN_AFTER_INACTIVE_DAYS = 24 * 30; // ~24 months
@@ -55,7 +55,7 @@ export async function runRetentionDeletions(): Promise<number> {
   for (const user of candidates) {
     if (!user.retentionWarnedAt) continue;
     if (daysSince(user.retentionWarnedAt) < DELETE_AFTER_WARNING_DAYS) continue;
-    // If they came back, verify/route already clears retentionWarnedAt —
+    // If they came back, verify/route already clears retentionWarnedAt -
     // still active users never reach this branch.
 
     const files = await db

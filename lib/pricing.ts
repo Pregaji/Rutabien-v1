@@ -1,4 +1,4 @@
-// Two one-time tiers, not subscriptions — MVP_Draft.md section 5a.
+// Two one-time tiers, not subscriptions - MVP_Draft.md section 5a.
 // Every checkout surface must show this full total before commit, never a
 // price that grows after the click (see CLAUDE.md "Critical product principles").
 export const PRICING_TIERS = {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import HomeLink from "../../HomeLink";
+import { Button, Heading, Text, TextInput } from "@/components/ui";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -29,48 +29,51 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
-      <HomeLink />
-      <div style={{ width: "100%", maxWidth: 380 }}>
-        <h2 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: 26, color: "var(--rb-text)", margin: 0 }}>
-          Admin login
-        </h2>
+    <div style={{ minHeight: "100vh", background: "var(--rb-text)", display: "flex", alignItems: "center", justifyContent: "center", padding: 40 }}>
+      <div style={{ width: "100%", maxWidth: 380, background: "#fff", borderRadius: "var(--radius-xl)", padding: "36px 32px" }}>
+        <Heading as="h2" size="sm" style={{ fontSize: 17 }}>
+          Rutabien Admin
+        </Heading>
+        <Text size={13.5} muted style={{ margin: "0 0 26px" }}>
+          Internal access only.
+        </Text>
         {error && (
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 13, color: "var(--rb-orange)", marginTop: 12 }}>{error}</p>
+          <Text size={13} weight={500} color="var(--rb-orange)" style={{ marginBottom: 12 }}>
+            {error}
+          </Text>
         )}
-        <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 12 }}>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@rutabien.com"
-            style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1.5px solid var(--rb-border)", fontFamily: "var(--font-figtree)", fontSize: 15 }}
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            onKeyDown={(e) => e.key === "Enter" && submit()}
-            style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1.5px solid var(--rb-border)", fontFamily: "var(--font-figtree)", fontSize: 15 }}
-          />
-          <button
-            onClick={submit}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div>
+            <Text size={12} weight={600} color="var(--rb-text-secondary)" style={{ marginBottom: 6 }}>
+              Email
+            </Text>
+            <TextInput type="email" value={email} onChange={setEmail} placeholder="you@rutabien.com" style={{ padding: "12px 14px", fontSize: 14 }} />
+          </div>
+          <div>
+            <Text size={12} weight={600} color="var(--rb-text-secondary)" style={{ marginBottom: 6 }}>
+              Password
+            </Text>
+            <TextInput
+              type="password"
+              value={password}
+              onChange={setPassword}
+              placeholder="••••••••"
+              onKeyDown={(e) => e.key === "Enter" && submit()}
+              style={{ padding: "12px 14px", fontSize: 14 }}
+            />
+          </div>
+          <Button
+            variant="secondary"
+            fullWidth
             disabled={submitting || !email || !password}
-            style={{
-              background: "linear-gradient(135deg, #234b50 0%, var(--rb-teal) 100%)",
-              color: "#fff",
-              border: "none",
-              borderRadius: 12,
-              padding: 14,
-              fontFamily: "var(--font-figtree)",
-              fontWeight: 600,
-              fontSize: 15,
-              cursor: "pointer",
-            }}
+            onClick={submit}
+            style={{ background: "var(--rb-text)", color: "#fff", border: "none", marginTop: 10, padding: 13, fontSize: 14 }}
           >
             {submitting ? "Signing in…" : "Sign in"}
-          </button>
+          </Button>
+          <Button variant="ghost" fullWidth href="/" style={{ border: "none", color: "var(--rb-text-muted)", fontSize: 13 }}>
+            Back to site
+          </Button>
         </div>
       </div>
     </div>

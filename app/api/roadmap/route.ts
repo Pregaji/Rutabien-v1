@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     .orderBy(asc(roadmapProgress.position));
 
   // Left-joined with requirements for detail that isn't snapshotted onto
-  // documents (official source link, lawyer-relevant fields) — safe to read
+  // documents (official source link, lawyer-relevant fields) - safe to read
   // live since it's display-only, not requirement rules already locked in
   // at generation time.
   const docs = await db
@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
     .where(eq(documents.userId, session.userId));
 
   return NextResponse.json({
+    email: user.email,
     paymentStatus: user.paymentStatus,
     caseType: user.caseType,
     nationality: user.nationality,

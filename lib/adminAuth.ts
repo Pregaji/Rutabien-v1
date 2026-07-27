@@ -6,7 +6,7 @@ import { db } from "@/db";
 import { adminSessions, adminUsers } from "@/db/schema";
 
 const ADMIN_COOKIE = "admin_session";
-const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours — real login, shorter-lived than user sessions
+const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours - real login, shorter-lived than user sessions
 
 const getSecret = () => {
   const secret = process.env.JWT_SECRET;

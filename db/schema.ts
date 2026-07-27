@@ -8,6 +8,7 @@ import {
   integer,
   boolean,
   date,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 // ---------------------------------------------------------------------------
@@ -62,8 +63,15 @@ export const escalationStatusEnum = pgEnum("escalation_status", [
 export const requirements = pgTable("requirements", {
   id: uuid("id").defaultRandom().primaryKey(),
 
-  // The query key: nationality x visa-type x student-status.
-  nationality: text("nationality").notNull(),
+  // The query key: nationality x visa-type x student-status. Nullable for
+  // SLF (family-member) document rows only — those document *types* are
+  // set by Spanish national law (Article 53.b), not per-nationality, so a
+  // null nationality means "applies to every nationality." Only the
+  // legalization path for that document varies by country, and that's
+  // resolved at generation time via countryProfiles.isHagueApostilleSignatory,
+  // not by duplicating the row per nationality. SLU (self) rows still
+  // require a real nationality, same as before.
+  nationality: text("nationality"),
   visaType: text("visa_type").notNull(),
   studentStatus: studentStatusEnum("student_status").notNull(),
 
@@ -130,6 +138,36 @@ export const requirements = pgTable("requirements", {
 
   // Content is authored/legal-reviewed content, not AI-generated (see CLAUDE.md).
   // Must not be treated as published/final until this is explicitly set.
+  signedOff: boolean("signed_off").notNull().default(false),
+  signedOffBy: text("signed_off_by"),
+  signedOffAt: timestamp("signed_off_at", { mode: "date" }),
+
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// ---------------------------------------------------------------------------
+// Country profiles — the one real per-country variable for SLF (family
+// member) documents: is the issuing country a Hague Apostille Convention
+// signatory. Hague members get a simple apostille; non-members (e.g.
+// Nigeria) need the fuller consular legalization chain. This is a country-
+// level legal fact, not a per-document one, so it's a lookup keyed by
+// nationality rather than duplicated onto every requirements row.
+// ---------------------------------------------------------------------------
+
+export const countryProfiles = pgTable("country_profiles", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  nationality: text("nationality").notNull().unique(),
+
+  // Null = not yet researched. True/false once confirmed against the
+  // Hague Conference's actual member list - don't default this to a guess.
+  isHagueApostilleSignatory: boolean("is_hague_apostille_signatory"),
+
+  // Public source for the country's SLF (family-member) visa guidance,
+  // e.g. a Spanish consulate page for that country - populated per country
+  // as it's researched, same sign-off discipline as Requirements content.
+  officialSlfSourceLink: text("official_slf_source_link"),
+
   signedOff: boolean("signed_off").notNull().default(false),
   signedOffBy: text("signed_off_by"),
   signedOffAt: timestamp("signed_off_at", { mode: "date" }),
@@ -259,6 +297,14 @@ export const documents = pgTable("documents", {
   // Dedup tracking so the "document may no longer be valid" reminder only
   // fires once per expiry, not every time the reminder check runs.
   expiryReminderSentAt: timestamp("expiry_reminder_sent_at", { mode: "date" }),
+
+  // Set once this document's file has been attached to a translation order —
+  // lets Documents and Translation show the same attach/send state instead
+  // of being two disconnected flows.
+  translationOrderId: uuid("translation_order_id").references(
+    (): AnyPgColumn => translationOrders.id,
+    { onDelete: "set null" }
+  ),
 
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),

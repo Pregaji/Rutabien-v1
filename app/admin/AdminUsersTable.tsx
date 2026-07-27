@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button, Chip, Text } from "@/components/ui";
+import type { ChipTone } from "@/components/ui/Chip";
 
 type AdminUserRow = {
   id: string;
@@ -12,17 +14,37 @@ type AdminUserRow = {
   payment: "unpaid" | "essential" | "complete";
   docsOutstanding: number;
   flagged: boolean;
+  createdAt: string;
 };
 
-const PAYMENT_CHIP: Record<AdminUserRow["payment"], React.CSSProperties> = {
-  complete: { background: "rgba(212,86,46,.15)", color: "var(--rb-orange)" },
-  essential: { background: "rgba(27,58,62,.12)", color: "var(--rb-teal)" },
-  unpaid: { background: "rgba(34,48,60,.07)", color: "#6B7A85" },
+const PAYMENT_TONE: Record<AdminUserRow["payment"], ChipTone> = {
+  complete: "orange",
+  essential: "teal",
+  unpaid: "neutral",
 };
+
+const PAYMENT_OPTIONS: Array<AdminUserRow["payment"] | "All"> = ["All", "complete", "essential", "unpaid"];
+
+function filterPillStyle(active: boolean): React.CSSProperties {
+  return {
+    padding: "7px 14px",
+    borderRadius: "var(--radius-full)",
+    border: "1px solid var(--rb-border)",
+    fontFamily: "var(--font-body)",
+    fontWeight: 600,
+    fontSize: 12.5,
+    background: active ? "var(--rb-text)" : "#fff",
+    color: active ? "#fff" : "var(--rb-text-secondary)",
+    cursor: "pointer",
+  };
+}
 
 export default function AdminUsersTable() {
   const [rows, setRows] = useState<AdminUserRow[] | null>(null);
   const [filterFlagged, setFilterFlagged] = useState(false);
+  const [filterCase, setFilterCase] = useState("All");
+  const [filterPayment, setFilterPayment] = useState<AdminUserRow["payment"] | "All">("All");
+  const [sortNewestFirst, setSortNewestFirst] = useState(true);
 
   useEffect(() => {
     fetch("/api/admin/users")
@@ -32,38 +54,82 @@ export default function AdminUsersTable() {
   }, []);
 
   if (!rows) {
-    return <p style={{ fontFamily: "var(--font-figtree)", color: "var(--rb-text-muted)", marginTop: 20 }}>Loading…</p>;
+    return (
+      <Text muted style={{ marginTop: 20 }}>
+        Loading…
+      </Text>
+    );
   }
 
   const flaggedCount = rows.filter((r) => r.flagged).length;
-  const visible = filterFlagged ? rows.filter((r) => r.flagged) : rows;
+  const caseTypeOptions = ["All", ...Array.from(new Set(rows.map((r) => r.caseType).filter((c): c is string => !!c)))];
+
+  let visible = rows;
+  if (filterFlagged) visible = visible.filter((r) => r.flagged);
+  if (filterCase !== "All") visible = visible.filter((r) => r.caseType === filterCase);
+  if (filterPayment !== "All") visible = visible.filter((r) => r.payment === filterPayment);
+  visible = [...visible].sort((a, b) =>
+    sortNewestFirst ? b.createdAt.localeCompare(a.createdAt) : a.createdAt.localeCompare(b.createdAt)
+  );
 
   return (
     <div>
-      <p style={{ fontFamily: "var(--font-figtree)", fontSize: 14, color: "var(--rb-text-secondary)", margin: "6px 0 0" }}>
+      <Text size={14} style={{ margin: "6px 0 0" }}>
         {flaggedCount} flagged for legal review
-      </p>
-      <div style={{ marginTop: 18 }}>
-        <button
-          onClick={() => setFilterFlagged((f) => !f)}
+      </Text>
+      <div style={{ display: "flex", gap: 20, marginTop: 18, flexWrap: "wrap", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {caseTypeOptions.map((c) => (
+            <button key={c} onClick={() => setFilterCase(c)} style={filterPillStyle(filterCase === c)}>
+              {c}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {PAYMENT_OPTIONS.map((p) => (
+            <button key={p} onClick={() => setFilterPayment(p)} style={filterPillStyle(filterPayment === p)}>
+              {p}
+            </button>
+          ))}
+        </div>
+        <Button
+          variant={filterFlagged ? "primary" : "outline"}
+          size="md"
           style={{
-            background: filterFlagged ? "var(--rb-orange)" : "#fff",
-            color: filterFlagged ? "#fff" : "var(--rb-text-secondary)",
-            border: "1px solid var(--rb-border)",
-            borderRadius: 8,
             padding: "8px 14px",
-            fontFamily: "var(--font-figtree)",
-            fontWeight: 600,
             fontSize: 12.5,
-            cursor: "pointer",
+            borderRadius: "var(--radius-sm)",
+            border: "1px solid var(--rb-border)",
+            color: filterFlagged ? "#fff" : "var(--rb-text-secondary)",
+            boxShadow: "none",
           }}
+          onClick={() => setFilterFlagged((f) => !f)}
         >
           {filterFlagged ? "Showing flagged only" : "Show flagged only"}
+        </Button>
+        <button
+          onClick={() => setSortNewestFirst((s) => !s)}
+          style={{ marginLeft: "auto", background: "#fff", border: "1px solid var(--rb-border)", borderRadius: "var(--radius-sm)", padding: "8px 14px", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 12.5, color: "var(--rb-text-secondary)", cursor: "pointer" }}
+        >
+          Joined: {sortNewestFirst ? "Newest" : "Oldest"}
         </button>
       </div>
 
-      <div style={{ marginTop: 22, background: "#fff", border: "1px solid #E4DECD", borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1.3fr 1fr 1fr 1.2fr .9fr", padding: "12px 20px", background: "#F4F1EC", fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 11.5, letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
+      <div style={{ marginTop: 22, background: "#fff", border: "1px solid var(--rb-border)", borderRadius: "var(--radius-md)", overflow: "hidden" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1.3fr 1fr 1fr 1.2fr .9fr",
+            padding: "12px 20px",
+            background: "var(--rb-table-header-bg)",
+            fontFamily: "var(--font-body)",
+            fontWeight: 600,
+            fontSize: 11.5,
+            letterSpacing: ".3px",
+            textTransform: "uppercase",
+            color: "var(--rb-text-muted)",
+          }}
+        >
           <span>Name</span>
           <span>Case type</span>
           <span>Progress</span>
@@ -72,23 +138,34 @@ export default function AdminUsersTable() {
           <span>Flag</span>
         </div>
         {visible.map((u) => (
-          <div key={u.id} style={{ display: "grid", gridTemplateColumns: "2fr 1.3fr 1fr 1fr 1.2fr .9fr", padding: "14px 20px", borderTop: "1px solid #F0EBDD", alignItems: "center" }}>
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 14, color: "var(--rb-text)" }}>{u.name}</span>
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: 13.5, color: "var(--rb-text-secondary)" }}>{u.caseType ?? "—"}</span>
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 13.5, color: "#3A4A54" }}>{u.progress}%</span>
-            <span style={{ ...PAYMENT_CHIP[u.payment], display: "inline-flex", padding: "4px 11px", borderRadius: 999, fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 11, width: "fit-content" }}>
+          <div
+            key={u.id}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "2fr 1.3fr 1fr 1fr 1.2fr .9fr",
+              padding: "14px 20px",
+              borderTop: "1px solid var(--rb-table-row-border)",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 14, color: "var(--rb-text)" }}>{u.name}</span>
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 400, fontSize: 13.5, color: "var(--rb-text-secondary)" }}>{u.caseType ?? "-"}</span>
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 13.5, color: "var(--rb-text-dense)" }}>{u.progress}%</span>
+            <Chip tone={PAYMENT_TONE[u.payment]} style={{ width: "fit-content" }}>
               {u.payment}
-            </span>
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: 13.5, color: "#3A4A54" }}>{u.docsOutstanding}</span>
+            </Chip>
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 13.5, color: "var(--rb-text-dense)" }}>{u.docsOutstanding}</span>
             {u.flagged && (
-              <span style={{ background: "rgba(212,86,46,.15)", color: "var(--rb-orange)", padding: "4px 11px", borderRadius: 999, fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 11, width: "fit-content" }}>
+              <Chip tone="orange" style={{ width: "fit-content" }}>
                 Flagged
-              </span>
+              </Chip>
             )}
           </div>
         ))}
         {visible.length === 0 && (
-          <p style={{ padding: 20, fontFamily: "var(--font-figtree)", color: "var(--rb-text-muted)" }}>No students yet.</p>
+          <Text muted style={{ padding: 20 }}>
+            No students yet.
+          </Text>
         )}
       </div>
     </div>

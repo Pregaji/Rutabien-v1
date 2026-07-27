@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "eur",
           unit_amount: order.totalEur * 100,
-          product_data: { name: `Rutabien — Sworn translation (${order.files.length} document(s))` },
+          product_data: { name: `Rutabien - Sworn translation (${order.files.length} document(s))` },
         },
         quantity: 1,
       },

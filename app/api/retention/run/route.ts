@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runRetentionCheck } from "@/lib/retention";
 
-// Same shared-secret pattern as /api/reminders/run — called by an external
+// Same shared-secret pattern as /api/reminders/run - called by an external
 // scheduler, not tied to a user session.
 export async function POST(req: NextRequest) {
   const secret = req.headers.get("x-cron-secret");

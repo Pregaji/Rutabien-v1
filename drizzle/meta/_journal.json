@@ -36,6 +36,20 @@
       "when": 1784381953078,
       "tag": "0004_bouncy_captain_britain",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1784568126038,
+      "tag": "0005_equal_thaddeus_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1785188008321,
+      "tag": "0006_nervous_the_hunter",
+      "breakpoints": true
     }
   ]
 }

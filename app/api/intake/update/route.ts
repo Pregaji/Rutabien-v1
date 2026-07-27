@@ -15,16 +15,19 @@ const answersSchema = z.object({
   nationality: z.string().optional(),
   hasAcceptanceLetter: z.boolean().optional(),
   familyMembersAccompanying: z.boolean().optional(),
-  familyMembers: z.array(z.object({ relationship: z.string() })).optional(),
+  spouseIncluded: z.boolean().optional(),
+  childCount: z.number().int().min(0).max(10).optional(),
+  familyMembers: z.array(z.object({ relationship: z.enum(["spouse", "child"]) })).optional(),
   plansPartTimeWork: z.boolean().optional(),
-  hasHousingArranged: z.boolean().optional(),
+  housingStatus: z.enum(["signed", "temporary", "still_looking"]).optional(),
+  sawHousingGuidance: z.boolean().optional(),
   arrivalDate: z.string().optional(),
   email: z.string().trim().toLowerCase().email(),
 });
 
 // Editable intake (MVP_Draft.md section 6: "every document/answer should
 // stay correctable"). Unlike /api/intake/submit, this is for an already
-// signed-in user correcting their answers — no new access token/email, and
+// signed-in user correcting their answers - no new access token/email, and
 // the roadmap is regenerated from scratch against the corrected answers.
 export async function POST(req: NextRequest) {
   const session = await getSession(req);
@@ -50,7 +53,7 @@ export async function POST(req: NextRequest) {
     .set({ ...fields, updatedAt: new Date() })
     .where(eq(users.id, user.id));
 
-  // Regenerate the roadmap from scratch against the corrected answers —
+  // Regenerate the roadmap from scratch against the corrected answers -
   // stale documents/steps from the old answer set shouldn't linger.
   await db.delete(documents).where(eq(documents.userId, user.id));
   await db.delete(roadmapProgress).where(eq(roadmapProgress.userId, user.id));

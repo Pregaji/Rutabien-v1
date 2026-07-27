@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "eur",
           unit_amount: tier.priceEur * 100,
-          product_data: { name: `Rutabien — ${tier.name}` },
+          product_data: { name: `Rutabien - ${tier.name}` },
         },
         quantity: 1,
       },

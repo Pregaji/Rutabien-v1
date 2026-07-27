@@ -3,23 +3,80 @@
 }
 
 :root {
+  /* Color */
   --rb-bg: #f5f2ec;
   --rb-sidebar: #efeae0;
   --rb-text: #1a1f24;
   --rb-text-secondary: #5a6872;
   --rb-text-muted: #8a7c64;
-  --rb-teal: #1b3a3e;
+  --rb-teal: #14181A;
+  --rb-teal-soft: #14181A;
   --rb-orange: #d4562e;
+  --rb-orange-light: #e2733f;
+  --rb-orange-dark: #b23f1f;
   --rb-border: #e2d8c5;
-  --font-spectral: var(--font-spectral), Georgia, serif;
-  --font-figtree: var(--font-figtree), Helvetica, Arial, sans-serif;
+  --rb-white: #ffffff;
+
+  /* Text/fill on dark (teal) surfaces - a scale from full-contrast to
+     faint, so nothing on a teal card falls back to a hand-picked hex. */
+  --rb-on-teal: #f5f2ec;
+  --rb-on-teal-body: #dce7e5;
+  --rb-on-teal-soft: #d9e6e4;
+  --rb-on-teal-muted: #b8cfcc;
+  --rb-on-teal-faint: #9fc0bc;
+  --rb-on-teal-accent: #f0a98c;
+  --rb-route-line: #7fa5a2;
+
+  /* Secondary neutrals used outside the core text/border scale above. */
+  --rb-text-dense: #3a4a54;
+  --rb-text-neutral: #6b7a85;
+  --rb-text-faint-link: #b0a188;
+  --rb-dashed-border: #d8cdb8;
+  --rb-disabled-bg: #c7cdd0;
+  --rb-table-header-bg: #f4f1ec;
+  --rb-table-row-border: #f0ebdd;
+
+  /* Solid fills - the prototype (ground truth) uses flat colors, not
+     gradients, for teal (navigation/neutral) and orange (conversion)
+     surfaces. Names kept as "gradient" for now to avoid touching every
+     call site; values are flat to match design-reference exactly. */
+  --rb-gradient-teal: var(--rb-teal);
+  --rb-gradient-orange: var(--rb-orange);
+
+  /* Type */
+  --font-display: var(--font-display), Georgia, serif;
+  --font-body: var(--font-body), Helvetica, Arial, sans-serif;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+
+  /* Radius scale */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  /* Shadow scale */
+  --shadow-sm: 0 8px 18px -13px rgba(34, 48, 60, 0.3);
+  --shadow-md: 0 18px 40px -26px rgba(27, 58, 62, 0.2);
+  --shadow-lg: 0 30px 60px -30px rgba(27, 58, 62, 0.5);
+  --shadow-orange: 0 16px 34px -14px rgba(212, 86, 46, 0.55);
 }
 
 body {
   margin: 0;
   background: var(--rb-bg);
   color: var(--rb-text);
-  font-family: var(--font-figtree);
+  font-family: var(--font-body);
 }
 
 a {
@@ -28,11 +85,29 @@ a {
 }
 
 button {
-  font-family: var(--font-figtree);
+  font-family: var(--font-body);
+}
+
+/* Native date input - tint the calendar glyph terracotta (accent color)
+   instead of leaving it default black/grey, with a hover affordance.
+   ::-webkit-calendar-picker-indicator is WebKit/Chromium/Edge only (no
+   standard cross-browser hook exists for this glyph); Firefox falls back
+   to its default icon. */
+.rb-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(37%) sepia(64%) saturate(1548%) hue-rotate(337deg) brightness(92%) contrast(92%);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.rb-date-input::-webkit-calendar-picker-indicator:hover {
+  background-color: rgba(212, 86, 46, 0.12);
+  opacity: 0.85;
 }
 
 input {
-  font-family: var(--font-figtree);
+  font-family: var(--font-body);
 }
 
 @keyframes rbfade {
@@ -64,8 +139,71 @@ input {
   }
 }
 
+/* Hero route illustration - the dashed path draws itself in, each stop
+   fades/scales in behind it in sequence, and the destination pin gets a
+   gentle, continuous bounce once it lands. */
+@keyframes rbdraw {
+  from {
+    stroke-dashoffset: 420;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rbflow {
+  to {
+    stroke-dashoffset: -30;
+  }
+}
+
+@keyframes rbstopin {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rbpinbounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.rb-route-path {
+  stroke-dashoffset: 420;
+  animation: rbdraw 1.6s ease-out .2s forwards, rbflow 2.4s linear 1.8s infinite;
+}
+
+.rb-route-stop {
+  opacity: 0;
+  animation: rbstopin .5s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+
+.rb-route-pin {
+  animation: rbstopin .5s cubic-bezier(.34,1.56,.64,1) forwards, rbpinbounce 1.8s ease-in-out 2.2s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rb-route-path,
+  .rb-route-stop,
+  .rb-route-pin {
+    animation: none !important;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* ---------------------------------------------------------------------
-   Responsive layer — mirrors "Rutabien v1 (mobile).dc.html", not just a
+   Responsive layer - mirrors "Rutabien v1 (mobile).dc.html", not just a
    scaled-down desktop. Below 680px the intake screen swaps its sidebar
    rail for a top bar + horizontal progress; other screens mostly need
    spacing/type adjustments since their layouts already reflow.
@@ -76,20 +214,47 @@ input {
   min-height: 100vh;
 }
 
-.rb-intake-sidebar {
-  flex: none;
-  width: 260px;
-  background: linear-gradient(160deg, var(--rb-teal) 0%, #234b50 100%);
-  padding: 32px 26px;
+/* Brand panel - desktop only, matches the reference two-panel onboarding
+   (dark illustrated left side, form on the right). Collapsed below 900px
+   in favor of the segmented progress bar at the top of the form panel. */
+.rb-intake-brand-panel {
+  flex: 0 0 42%;
+  max-width: 480px;
+  background: var(--rb-teal);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
 }
 
-.rb-intake-desktop-rail {
+.rb-intake-form-panel {
   flex: 1;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-.rb-intake-mobile-progress {
-  display: none;
+.rb-intake-form-header {
+  flex: none;
+  padding: 28px 48px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rb-intake-segments {
+  flex: none;
+  display: flex;
+  gap: 6px;
+  padding: 16px 48px 0;
+}
+
+.rb-option-row + .rb-option-row {
+  border-top: none;
+}
+
+.rb-option-row {
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
 }
 
 .rb-intake-content {
@@ -115,22 +280,21 @@ input {
   }
 }
 
-@media (max-width: 680px) {
-  .rb-intake-shell {
-    flex-direction: column;
-  }
-  .rb-intake-sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid rgba(34, 48, 60, 0.08);
-    padding: 18px 20px 14px;
-  }
-  .rb-intake-desktop-rail {
+@media (max-width: 900px) {
+  /* Brand panel is a desktop flourish - below tablet width the form
+     panel takes the full page, with the segmented bar at top doing the
+     orientation job the panel's step list did on desktop. */
+  .rb-intake-brand-panel {
     display: none;
   }
-  .rb-intake-mobile-progress {
-    display: block;
-    margin-top: 12px;
+}
+
+@media (max-width: 680px) {
+  .rb-intake-form-header {
+    padding: 20px 20px 0;
+  }
+  .rb-intake-segments {
+    padding: 14px 20px 0;
   }
   .rb-intake-content {
     padding: 28px 20px 20px;
@@ -140,12 +304,41 @@ input {
   .rb-roadmap-wrap {
     padding: 24px !important;
   }
-  .rb-option-btn {
-    flex: 1 1 100% !important;
-    width: 100%;
+  .rb-bienvenido-row {
+    flex-direction: column !important;
+    text-align: center;
+  }
+  .rb-bienvenido-illustration {
+    width: 72px !important;
+    height: 72px !important;
+  }
+  .rb-translation-grid {
+    flex-direction: column !important;
+  }
+  .rb-getting-started {
+    flex-direction: column !important;
+  }
+  .rb-getting-started-nav {
+    flex: none !important;
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(34, 48, 60, 0.08);
+  }
+  .rb-dash-tiles {
+    grid-template-columns: 1fr !important;
+  }
+  .rb-summary-bar {
+    flex-direction: column !important;
+  }
+  .rb-summary-bar > div {
+    border-left: none !important;
+    border-top: 1px solid var(--rb-border);
+  }
+  .rb-summary-bar > div:first-child {
+    border-top: none;
   }
 
-  /* Landing — mirrors the mobile prototype's stacked teal editorial hero */
+  /* Landing - mirrors the mobile prototype's stacked teal editorial hero */
   .rb-container {
     padding-left: 22px !important;
     padding-right: 22px !important;
@@ -161,16 +354,11 @@ input {
   .rb-hero-ctas a:first-child {
     text-align: center;
   }
-  /* Decorative only — its pin markers are pixel-positioned against the
-     desktop illustration's width and don't rescale cleanly, so it's
-     dropped rather than shown clipped/misaligned on narrow screens. */
-  .rb-hero-illustration {
-    display: none;
-  }
-  /* Sized/positioned for the 1160px desktop container; on narrow screens
-     they clip into a visible hard-edged seam instead of a soft glow. */
-  .rb-hero-blob {
-    display: none;
+  /* Stop markers are percentage-positioned against the illustration's own
+     box (not pixel-fixed), so the SVG and its markers scale together down
+     to mobile widths instead of needing to be dropped. */
+  .rb-hero-illustration-panel {
+    padding: 26px 20px;
   }
 }
 

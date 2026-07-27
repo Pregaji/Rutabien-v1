@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Button, Card, Chip, Heading, PageShell, Text } from "@/components/ui";
+import type { ChipTone } from "@/components/ui/Chip";
 
 type Step = {
   id: string;
@@ -37,10 +39,10 @@ const STATUS_LABEL: Record<Step["status"], string> = {
   done: "Done",
 };
 
-const STATUS_CHIP: Record<Step["status"], React.CSSProperties> = {
-  done: { background: "rgba(27,58,62,.12)", color: "var(--rb-teal)" },
-  in_progress: { background: "rgba(212,86,46,.15)", color: "var(--rb-orange)" },
-  not_started: { background: "rgba(34,48,60,.07)", color: "#6B7A85" },
+const STATUS_TONE: Record<Step["status"], ChipTone> = {
+  done: "teal",
+  in_progress: "orange",
+  not_started: "neutral",
 };
 
 function nextStatus(s: Step["status"]): Step["status"] {
@@ -57,7 +59,7 @@ function isArrivalNear(arrivalDate: string | null): boolean {
 
 // A generic prompt to talk to a lawyer, shown for documents with real
 // case-specific complexity (notarization or a multi-step legalization
-// chain) — this is a UI trigger, not case-specific legal guidance itself.
+// chain) - this is a UI trigger, not case-specific legal guidance itself.
 function suggestsLawyer(doc: Doc | undefined): boolean {
   if (!doc) return false;
   return doc.notarizationRequired || !!doc.legalizationChain;
@@ -94,26 +96,26 @@ export default function RoadmapPage() {
 
   if (loading) {
     return (
-      <Centered>
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "15px", color: "var(--rb-text-muted)" }}>
+      <PageShell>
+        <Text muted weight={500} size={15}>
           Loading your roadmap…
-        </p>
-      </Centered>
+        </Text>
+      </PageShell>
     );
   }
 
   if (!data) {
     return (
-      <Centered>
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "15px", color: "var(--rb-text-secondary)" }}>
+      <PageShell style={{ textAlign: "center" }}>
+        <div>
+          <Text weight={500} size={15}>
             You need to access your roadmap first.
-          </p>
-          <Link href="/access" style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14px", color: "var(--rb-teal)" }}>
-            Access your roadmap →
+          </Text>
+          <Link href="/access" style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 14, color: "var(--rb-teal)" }}>
+            Access your roadmap
           </Link>
         </div>
-      </Centered>
+      </PageShell>
     );
   }
 
@@ -141,11 +143,9 @@ export default function RoadmapPage() {
   return (
     <div className="rb-roadmap-wrap" style={{ maxWidth: 820, margin: "0 auto", padding: "44px 48px 96px" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <h1 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "34px", color: "var(--rb-text)", margin: 0, letterSpacing: "-.3px" }}>
-          Your roadmap
-        </h1>
-        <Link href="/intake?edit=1" style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)" }}>
-          Edit my answers →
+        <Heading size="xl">Your roadmap</Heading>
+        <Link href="/intake?edit=1" style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)" }}>
+          Edit my answers
         </Link>
       </div>
 
@@ -160,50 +160,50 @@ export default function RoadmapPage() {
             flexWrap: "wrap",
             marginTop: 16,
             padding: "16px 20px",
-            borderRadius: 14,
+            borderRadius: "var(--radius-md)",
             background: "rgba(27,58,62,.08)",
             border: "1px solid rgba(27,58,62,.2)",
           }}
         >
           <div>
-            <h4 style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 15, color: "var(--rb-text)", margin: "0 0 3px" }}>
+            <Heading as="h4" size="sm" style={{ margin: "0 0 3px" }}>
               Arrival is coming up
-            </h4>
-            <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: 13, color: "var(--rb-text-secondary)", margin: 0 }}>
-              Take a look at the Bienvenido guide — SIM cards, getting into the city, and settling in.
-            </p>
+            </Heading>
+            <Text size={13} style={{ margin: 0 }}>
+              Take a look at the Bienvenido guide - SIM cards, getting into the city, and settling in.
+            </Text>
           </div>
-          <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)", whiteSpace: "nowrap" }}>
-            Open guide →
+          <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)", whiteSpace: "nowrap" }}>
+            Open guide
           </span>
         </Link>
       )}
 
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 20 }}>
-        <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(34,48,60,.09)", overflow: "hidden" }}>
-          <div style={{ width: `${pct}%`, height: "100%", background: "linear-gradient(90deg, #E2733F, #D4562E)", borderRadius: 999, transition: "width .4s ease" }} />
+        <div style={{ flex: 1, height: 8, borderRadius: "var(--radius-full)", background: "rgba(34,48,60,.09)", overflow: "hidden" }}>
+          <div style={{ width: `${pct}%`, height: "100%", background: "var(--rb-gradient-orange)", borderRadius: "var(--radius-full)", transition: "width .4s ease" }} />
         </div>
-        <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "13px", color: "var(--rb-teal)", whiteSpace: "nowrap" }}>
+        <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)", whiteSpace: "nowrap" }}>
           {doneCount} of {total} done
         </span>
       </div>
 
-      <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "12.5px", lineHeight: "1.5", color: "var(--rb-text-muted)", margin: "14px 0 0" }}>
-        Guidance based on officially published requirements — not a guarantee of approval. The
+      <Text size={12.5} style={{ lineHeight: 1.5, margin: "14px 0 0" }} muted>
+        Guidance based on officially published requirements - not a guarantee of approval. The
         consulate makes the final decision.
-      </p>
+      </Text>
 
       {total === 0 && (
-        <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14px", color: "var(--rb-text-muted)", marginTop: 24 }}>
+        <Text size={14} muted style={{ marginTop: 24 }}>
           Your roadmap hasn&apos;t been generated yet.
-        </p>
+        </Text>
       )}
 
       {phaseOrder.map((phase) => (
         <div key={phase} style={{ marginTop: 28 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--rb-orange)" }} />
-            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "13px", letterSpacing: ".5px", textTransform: "uppercase", color: "var(--rb-teal)" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "var(--radius-full)", background: "var(--rb-orange)" }} />
+            <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, letterSpacing: ".5px", textTransform: "uppercase", color: "var(--rb-teal)" }}>
               {phase}
             </span>
           </div>
@@ -216,34 +216,22 @@ export default function RoadmapPage() {
             const chain = doc?.legalizationChain?.split("→").map((s) => s.trim()).filter(Boolean) ?? [];
 
             return (
-              <div
-                key={step.id}
-                style={{
-                  background: "#fff",
-                  border: "1px solid rgba(34,48,60,.08)",
-                  borderRadius: 16,
-                  marginBottom: 14,
-                  boxShadow: "0 8px 18px -13px rgba(34,48,60,.3)",
-                  overflow: "hidden",
-                }}
-              >
+              <Card key={step.id} style={{ marginBottom: 14, overflow: "hidden", padding: 0 }}>
                 <div
                   onClick={() => !isLocked && setExpanded(isExpanded ? null : step.id)}
                   style={{ padding: "18px 22px 16px", cursor: isLocked ? "default" : "pointer" }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                    <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "11px", letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
+                    <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 11, letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
                       Step {i + 1}
                     </span>
-                    <span style={{ ...STATUS_CHIP[step.status], display: "inline-flex", alignItems: "center", padding: "4px 11px", borderRadius: 999, fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "11px", letterSpacing: ".3px" }}>
-                      {STATUS_LABEL[step.status]}
-                    </span>
+                    <Chip tone={STATUS_TONE[step.status]}>{STATUS_LABEL[step.status]}</Chip>
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "19px", lineHeight: "1.3", color: "var(--rb-text)", margin: "9px 0 0" }}>
+                  <Heading as="h3" size="sm" style={{ fontSize: 19, lineHeight: 1.3, margin: "9px 0 0" }}>
                     {step.stepLabel}
-                  </h3>
+                  </Heading>
                   {!isLocked && (
-                    <span style={{ display: "block", marginTop: 8, fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "13px", color: "var(--rb-teal)" }}>
+                    <span style={{ display: "block", marginTop: 8, fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)" }}>
                       {isExpanded ? "Hide detail ▲" : "View detail ▼"}
                     </span>
                   )}
@@ -254,33 +242,22 @@ export default function RoadmapPage() {
                     <div
                       style={{
                         background: "rgba(34,48,60,.04)",
-                        border: "1.5px dashed #D8CDB8",
-                        borderRadius: 14,
+                        border: "1.5px dashed var(--rb-dashed-border)",
+                        borderRadius: "var(--radius-md)",
                         padding: 22,
                         textAlign: "center",
                       }}
                     >
-                      <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "12px", letterSpacing: ".5px", textTransform: "uppercase", color: "var(--rb-text-muted)", margin: "0 0 8px" }}>
+                      <Text size={12} weight={600} muted style={{ letterSpacing: ".5px", textTransform: "uppercase", margin: "0 0 8px" }}>
                         Locked
-                      </p>
-                      <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "14px", lineHeight: "1.55", color: "var(--rb-text-secondary)", margin: "0 0 18px" }}>
+                      </Text>
+                      <Text size={14} style={{ lineHeight: 1.55, margin: "0 0 18px" }}>
                         Step-by-step detail and document tracking for this step are part of the full
                         roadmap.
-                      </p>
-                      <Link
-                        href="/paywall"
-                        style={{
-                          background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
-                          color: "#fff",
-                          borderRadius: 11,
-                          padding: "12px 22px",
-                          fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14px",
-                          display: "inline-block",
-                          boxShadow: "0 12px 24px -12px rgba(212,86,46,.5)",
-                        }}
-                      >
-                        See plans — from €39
-                      </Link>
+                      </Text>
+                      <Button variant="primary" href="/paywall">
+                        See plans - from €39
+                      </Button>
                     </div>
                   </div>
                 ) : (
@@ -289,33 +266,39 @@ export default function RoadmapPage() {
                       {doc && (
                         <div style={{ marginTop: 16 }}>
                           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                            <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "14px", color: "var(--rb-text)" }}>
+                            <span style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 14, color: "var(--rb-text)" }}>
                               {doc.name}
                             </span>
                             {doc.translationRequired && (
                               <Link href="/translation">
-                                <Chip label="Translation required — get this translated →" bg="rgba(212,86,46,.12)" color="var(--rb-orange)" />
+                                <Chip tone="orange" style={{ padding: "2px 8px", fontSize: 10.5 }}>
+                                  Translation required - get this translated
+                                </Chip>
                               </Link>
                             )}
                             {doc.notarizationRequired && (
-                              <Chip label="Notarization required" bg="rgba(27,58,62,.1)" color="var(--rb-teal)" />
+                              <Chip tone="teal" style={{ padding: "2px 8px", fontSize: 10.5 }}>
+                                Notarization required
+                              </Chip>
                             )}
                             {doc.validityWindowDays && (
-                              <Chip label={`Valid ${doc.validityWindowDays} days from issue`} bg="rgba(34,48,60,.07)" color="#6B7A85" />
+                              <Chip tone="neutral" style={{ padding: "2px 8px", fontSize: 10.5 }}>
+                                Valid {doc.validityWindowDays} days from issue
+                              </Chip>
                             )}
                           </div>
 
                           {chain.length > 0 && (
                             <div style={{ marginTop: 16 }}>
-                              <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "11px", letterSpacing: ".5px", textTransform: "uppercase", color: "var(--rb-text-muted)", margin: "0 0 8px" }}>
+                              <Text size={11} weight={600} muted style={{ letterSpacing: ".5px", textTransform: "uppercase", margin: "0 0 8px" }}>
                                 Legalization chain
-                              </p>
+                              </Text>
                               {chain.map((step2, idx) => (
                                 <div key={idx} style={{ display: "flex", gap: 9, alignItems: "flex-start", padding: "5px 0" }}>
-                                  <span style={{ width: 20, height: 20, flex: "none", borderRadius: 999, background: "rgba(27,58,62,.12)", color: "var(--rb-teal)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: 11 }}>
+                                  <span style={{ width: 20, height: 20, flex: "none", borderRadius: "var(--radius-full)", background: "rgba(27,58,62,.12)", color: "var(--rb-teal)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 11 }}>
                                     {idx + 1}
                                   </span>
-                                  <span style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "13.5px", lineHeight: "1.4", color: "#3A4A54" }}>
+                                  <span style={{ fontFamily: "var(--font-body)", fontWeight: 400, fontSize: 13.5, lineHeight: 1.4, color: "var(--rb-text-dense)" }}>
                                     {step2}
                                   </span>
                                 </div>
@@ -334,9 +317,11 @@ export default function RoadmapPage() {
                                 gap: 6,
                                 marginTop: 14,
                                 padding: "9px 14px",
-                                borderRadius: 10,
+                                borderRadius: "var(--radius-sm)",
                                 background: "rgba(27,58,62,.09)",
-                                fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "13px",
+                                fontFamily: "var(--font-body)",
+                                fontWeight: 600,
+                                fontSize: 13,
                                 color: "var(--rb-teal)",
                               }}
                             >
@@ -345,78 +330,35 @@ export default function RoadmapPage() {
                           )}
 
                           {suggestsLawyer(doc) && (
-                            <div
-                              style={{
-                                marginTop: 16,
-                                background: "linear-gradient(135deg, var(--rb-teal) 0%, #234b50 100%)",
-                                borderRadius: 16,
-                                padding: 18,
-                              }}
-                            >
-                              <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 400, fontSize: "13.5px", lineHeight: "1.5", color: "#DCE7E5", margin: 0 }}>
-                                This step has case-specific rules. A vetted lawyer can review yours —
+                            <Card variant="teal" style={{ marginTop: 16, padding: 18 }}>
+                              <Text size={13.5} style={{ lineHeight: 1.5, color: "var(--rb-on-teal-body)", margin: 0 }}>
+                                This step has case-specific rules. A vetted lawyer can review yours -
                                 only if you&apos;d like.
-                              </p>
-                              <Link
-                                href="/paywall"
-                                style={{
-                                  display: "inline-block",
-                                  marginTop: 12,
-                                  background: "linear-gradient(135deg, #E2733F 0%, #D4562E 55%, #B23F1F 100%)",
-                                  color: "#fff",
-                                  borderRadius: 10,
-                                  padding: "10px 16px",
-                                  fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "13px",
-                                }}
-                              >
+                              </Text>
+                              <Button variant="primary" style={{ marginTop: 12, padding: "10px 16px", fontSize: 13 }} href="/paywall">
                                 Book a consult · from €45
-                              </Link>
-                            </div>
+                              </Button>
+                            </Card>
                           )}
                         </div>
                       )}
 
-                      <button
+                      <Button
+                        variant="outline"
+                        fullWidth
+                        style={{ display: "block", marginTop: 16, padding: 12, fontSize: 14 }}
                         onClick={() => cycle(step)}
-                        style={{
-                          display: "block",
-                          width: "100%",
-                          marginTop: 16,
-                          padding: 12,
-                          borderRadius: 12,
-                          border: "1.5px solid var(--rb-border)",
-                          background: "#fff",
-                          fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "14px",
-                          color: "var(--rb-text)",
-                          cursor: "pointer",
-                        }}
                       >
                         Mark as {STATUS_LABEL[nextStatus(step.status)]}
-                      </button>
+                      </Button>
                     </div>
                   )
                 )}
-              </div>
+              </Card>
             );
           })}
         </div>
       ))}
-    </div>
-  );
-}
-
-function Chip({ label, bg, color }: { label: string; bg: string; color: string }) {
-  return (
-    <span style={{ background: bg, color, padding: "2px 8px", borderRadius: 999, fontFamily: "var(--font-figtree)", fontWeight: 600, fontSize: "10.5px" }}>
-      {label}
-    </span>
-  );
-}
-
-function Centered({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48 }}>
-      {children}
     </div>
   );
 }

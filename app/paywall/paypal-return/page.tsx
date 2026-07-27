@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import HomeLink from "../../HomeLink";
+import { Heading, PageShell, Text } from "@/components/ui";
 
 export default function PaypalReturnPage() {
   return (
@@ -35,29 +36,31 @@ function PaypalReturnInner() {
 
   useEffect(() => {
     if (status === "done") {
-      const t = setTimeout(() => router.push("/roadmap"), 1500);
+      const t = setTimeout(() => router.push("/dashboard"), 1500);
       return () => clearTimeout(t);
     }
   }, [status, router]);
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 48, textAlign: "center" }}>
+    <PageShell style={{ textAlign: "center" }}>
       <HomeLink />
       <div>
         {status === "capturing" && (
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "15px", color: "var(--rb-text-muted)" }}>Confirming your payment…</p>
+          <Text weight={500} size={15} muted>
+            Confirming your payment…
+          </Text>
         )}
         {status === "done" && (
-          <p style={{ fontFamily: "var(--font-spectral)", fontWeight: 600, fontSize: "18px", color: "var(--rb-text)" }}>
-            Payment confirmed — taking you to your roadmap…
-          </p>
+          <Heading as="p" size="sm" style={{ fontSize: 18 }}>
+            Payment confirmed - taking you to your roadmap…
+          </Heading>
         )}
         {status === "error" && (
-          <p style={{ fontFamily: "var(--font-figtree)", fontWeight: 500, fontSize: "15px", color: "var(--rb-orange)" }}>
+          <Text weight={500} size={15} color="var(--rb-orange)">
             Something went wrong confirming your payment. Please contact support.
-          </p>
+          </Text>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -52,7 +52,7 @@ function emailWrapper(content: string, footerText: string) {
 </html>`;
 }
 
-/* Magic link — "Access your roadmap" request. Single-use, short expiry. */
+/* Magic link - "Access your roadmap" request. Single-use, short expiry. */
 export async function sendAccessLinkEmail({
   to,
   accessUrl,
@@ -67,7 +67,7 @@ export async function sendAccessLinkEmail({
     <h1>Access your roadmap</h1>
     <p>Click below to securely sign in to Rutabien. This link works once and expires in ${expiresInMinutes} minutes.</p>
     <a href="${accessUrl}" class="btn">Access my roadmap →</a>
-    <p style="font-size:13px;color:#8a8f92">If you didn't request this, you can safely ignore this email — no one can access your account without it.</p>
+    <p style="font-size:13px;color:#8a8f92">If you didn't request this, you can safely ignore this email - no one can access your account without it.</p>
   `,
     "You received this because you (or someone with this email) requested access to a Rutabien roadmap."
   );
@@ -80,7 +80,7 @@ export async function sendAccessLinkEmail({
   });
 }
 
-/* Step-up verification — required before viewing/downloading a document,
+/* Step-up verification - required before viewing/downloading a document,
    even within an active session. */
 export async function sendStepUpCodeEmail({
   to,
@@ -96,7 +96,7 @@ export async function sendStepUpCodeEmail({
     <h1>Verify it's you</h1>
     <p>Enter this code to view or download your document. It expires in ${expiresInMinutes} minutes.</p>
     <div class="code">${code}</div>
-    <p style="font-size:13px;color:#8a8f92">If you didn't request this, someone may have your Rutabien access link — consider requesting a new one.</p>
+    <p style="font-size:13px;color:#8a8f92">If you didn't request this, someone may have your Rutabien access link - consider requesting a new one.</p>
   `,
     "You received this because a document access request was made on your Rutabien account."
   );
@@ -109,7 +109,7 @@ export async function sendStepUpCodeEmail({
   });
 }
 
-/* Sent immediately after payment, per MVP_Draft.md section 7 point 5 —
+/* Sent immediately after payment, per MVP_Draft.md section 7 point 5 -
    no gap between "I just paid" and "here's how I get back in." */
 export async function sendPostPaymentAccessEmail({
   to,
@@ -124,7 +124,7 @@ export async function sendPostPaymentAccessEmail({
 }) {
   const html = emailWrapper(
     `
-    <h1>Payment confirmed — here's your roadmap</h1>
+    <h1>Payment confirmed - here's your roadmap</h1>
     <p>Your ${planName} plan is active. Click below to access your personalized roadmap now.</p>
     <a href="${accessUrl}" class="btn">Access my roadmap →</a>
     <p style="font-size:13px;color:#8a8f92">This link works once and expires in ${expiresInMinutes} minutes, same as any other Rutabien access link. Request a new one any time from the "Access your roadmap" page.</p>
@@ -135,12 +135,12 @@ export async function sendPostPaymentAccessEmail({
   await getResend().emails.send({
     from: FROM_NOREPLY,
     to,
-    subject: "Payment confirmed — access your Rutabien roadmap",
+    subject: "Payment confirmed - access your Rutabien roadmap",
     html,
   });
 }
 
-/* Reminders — MVP_Draft.md section 8. Every reminder includes the direct
+/* Reminders - MVP_Draft.md section 8. Every reminder includes the direct
    access link, matching the no-password architecture. Sent by lib/reminders.ts,
    never more than the cadence discipline the section calls for. */
 
@@ -154,7 +154,7 @@ export async function sendStalledProgressEmail({
   const html = emailWrapper(
     `
     <h1>Pick up where you left off</h1>
-    <p>You started your Rutabien roadmap a couple of weeks ago — no rush, just a nudge in case it slipped your mind.</p>
+    <p>You started your Rutabien roadmap a couple of weeks ago - no rush, just a nudge in case it slipped your mind.</p>
     <a href="${accessUrl}" class="btn">Continue my roadmap →</a>
   `,
     "You're receiving this because your Rutabien roadmap has been inactive for a while."
@@ -178,7 +178,7 @@ export async function sendUnlockReminderEmail({
   const html = emailWrapper(
     `
     <h1>Your personalized roadmap is ready to unlock</h1>
-    <p>Your roadmap has been generated and is waiting for you — full step detail, document tracking, and reminders unlock with a one-time payment.</p>
+    <p>Your roadmap has been generated and is waiting for you - full step detail, document tracking, and reminders unlock with a one-time payment.</p>
     <a href="${accessUrl}" class="btn">View my roadmap →</a>
   `,
     "One-time reminder about your unlocked Rutabien roadmap."
@@ -206,7 +206,7 @@ export async function sendDocumentExpiringEmail({
     <h1>A document may no longer be valid</h1>
     <p><strong>${documentName}</strong> is approaching or past its validity window for submission. It may need to be re-issued before you use it.</p>
     <a href="${accessUrl}" class="btn">Check my documents →</a>
-    <p style="font-size:13px;color:#8a8f92">Guidance based on officially published requirements — validity windows can vary by consulate.</p>
+    <p style="font-size:13px;color:#8a8f92">Guidance based on officially published requirements - validity windows can vary by consulate.</p>
   `,
     "You're receiving this because a document in your Rutabien vault has a validity window."
   );

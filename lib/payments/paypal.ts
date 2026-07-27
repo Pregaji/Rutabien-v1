@@ -1,5 +1,5 @@
 // Sandbox-only PayPal Orders v2 client. The base URL is hardcoded to the
-// sandbox host regardless of which client id/secret are configured — see
+// sandbox host regardless of which client id/secret are configured - see
 // CLAUDE.md "Do not do yet: do not enable real payment processing outside
 // sandbox/test mode."
 const PAYPAL_SANDBOX_BASE = "https://api-m.sandbox.paypal.com";
