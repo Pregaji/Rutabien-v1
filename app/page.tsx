@@ -108,9 +108,21 @@ function RouteIllustration() {
 
 export default function LandingPage() {
   return (
-    <div style={{ minHeight: "100vh", background: "var(--rb-on-teal)", fontFamily: "var(--font-body)", color: "var(--rb-text)" }}>
-      {/* Hero - solid dark teal band per the approved prototype. */}
-      <div style={{ background: "var(--rb-teal)" }}>
+    <div
+      className="rb-snap-scroll"
+      style={{
+        height: "100vh",
+        overflowY: "auto",
+        scrollSnapType: "y mandatory",
+        background: "var(--rb-on-teal)",
+        fontFamily: "var(--font-body)",
+        color: "var(--rb-text)",
+      }}
+    >
+      {/* Hero - solid dark teal band per the approved prototype. One full
+          viewport per section, snapping into place on scroll/touch - each
+          top-level section below is wrapped in .rb-snap-section. */}
+      <div className="rb-snap-section" style={{ background: "var(--rb-teal)" }}>
         <div className="rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "28px 0" }}>
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 22, color: "var(--rb-on-teal)" }}>Rutabien</span>
@@ -169,7 +181,7 @@ export default function LandingPage() {
       </div>
 
       {/* How it works */}
-      <div id="how-it-works" className="rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "76px 48px" }}>
+      <div id="how-it-works" className="rb-snap-section rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "76px 48px" }}>
         <Text size={13} weight={600} color="var(--rb-orange)" style={{ letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 30px", textAlign: "center" }}>
           How it works
         </Text>
@@ -192,7 +204,7 @@ export default function LandingPage() {
 
       {/* Pricing - shown here, not just buried at the end of the paywall funnel.
           Pulls from lib/pricing.ts so this can never drift from the real price. */}
-      <div id="pricing" className="rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px 76px" }}>
+      <div id="pricing" className="rb-snap-section rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px 76px" }}>
         <Text size={13} weight={600} color="var(--rb-orange)" style={{ letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 12px", textAlign: "center" }}>
           Pricing
         </Text>
@@ -260,7 +272,7 @@ export default function LandingPage() {
       </div>
 
       {/* CTA banner - solid dark teal full-bleed, per the approved prototype. */}
-      <div style={{ background: "var(--rb-teal)", padding: "64px 48px" }}>
+      <div className="rb-snap-section" style={{ background: "var(--rb-teal)", padding: "64px 48px" }}>
         <Text
           size={30}
           weight={600}
@@ -275,7 +287,7 @@ export default function LandingPage() {
       {/* Footer - every link goes to a page that actually exists. No
           fabricated social accounts, careers page, or investor relations -
           those aren't real for Rutabien yet. */}
-      <div style={{ padding: "56px 48px 32px", borderTop: "1px solid var(--rb-border)" }}>
+      <div className="rb-snap-section" style={{ padding: "56px 48px 32px", borderTop: "1px solid var(--rb-border)" }}>
         <div className="rb-footer-grid" style={{ maxWidth: 1160, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap" }}>
           <div style={{ flex: "1 1 220px", maxWidth: 320 }}>
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 18, color: "var(--rb-teal)" }}>Rutabien</span>
