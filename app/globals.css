@@ -202,31 +202,14 @@ input {
   }
 }
 
-/* Landing page - one section per viewport, snapping into place on
-   scroll/touch. .rb-snap-scroll is the scrolling container;
-   .rb-snap-section is each full-viewport section within it. */
-.rb-snap-scroll {
-  scroll-behavior: smooth;
-}
-
-.rb-snap-section {
+/* Landing page - only the hero is held to a full viewport; every section
+   after it flows in normal document order. */
+.rb-landing-hero {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   box-sizing: border-box;
-}
-
-@media (max-width: 680px) {
-  /* Mandatory snap fights with content taller than one small-screen
-     viewport (the footer's link columns, mainly) - proximity still snaps
-     but lets the user finish scrolling through an overflowing section
-     first instead of yanking them to the next one mid-read. */
-  .rb-snap-scroll {
-    scroll-snap-type: y proximity;
-  }
 }
 
 /* ---------------------------------------------------------------------

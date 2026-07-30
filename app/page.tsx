@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Compass, FileText, MapPin, Scale } from "lucide-react";
+import { Check, Compass, FileText, Scale } from "lucide-react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaReddit } from "react-icons/fa6";
 import { PRICING_TIERS } from "@/lib/pricing";
 import { Button, Card, Chip, Heading, Text } from "@/components/ui";
@@ -58,6 +58,19 @@ const FEATURES = [
   },
 ];
 
+// Simplified silhouette of the Sagrada Família's tapered spire cluster,
+// used as the destination marker on the hero route illustration - stands
+// in for "Barcelona" more specifically than a generic pin.
+function SagradaFamiliaMark({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 21V12.4l1-1.15V8.6l.8-.9.8.9v2.65L7.6 12.4V21z" />
+      <path d="M9.3 21V9.6l1.2-1.35V6l1-1.1 1 1.1v2.6l1.2 1.35V21z" />
+      <path d="M15.5 21v-7.6l1-1.1V9.5l.8-.9.8.9v1.8l1 1.1V21z" />
+    </svg>
+  );
+}
+
 function RouteIllustration() {
   return (
     <div
@@ -96,11 +109,11 @@ function RouteIllustration() {
           2
         </span>
         <span className="rb-route-stop rb-route-pin" style={{ position: "absolute", left: "83.2%", top: "5.4%", width: 34, height: 34, borderRadius: "var(--radius-full)", background: "var(--rb-orange)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", animationDelay: "1.7s" }}>
-          <MapPin size={16} strokeWidth={2.25} />
+          <SagradaFamiliaMark size={16} />
         </span>
       </div>
       <p style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 13.5, color: "var(--rb-on-teal-faint)", margin: "12px 0 0", textAlign: "center" }}>
-        From application to arrival - every step in order.
+        From application to Barcelona&apos;s Sagrada Família - every step in order.
       </p>
     </div>
   );
@@ -109,20 +122,16 @@ function RouteIllustration() {
 export default function LandingPage() {
   return (
     <div
-      className="rb-snap-scroll"
       style={{
-        height: "100vh",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
         background: "var(--rb-on-teal)",
         fontFamily: "var(--font-body)",
         color: "var(--rb-text)",
       }}
     >
-      {/* Hero - solid dark teal band per the approved prototype. One full
-          viewport per section, snapping into place on scroll/touch - each
-          top-level section below is wrapped in .rb-snap-section. */}
-      <div className="rb-snap-section" style={{ background: "var(--rb-teal)" }}>
+      {/* Hero - solid dark teal band per the approved prototype. This is the
+          only section held to a full viewport; everything below it flows
+          in normal document order. */}
+      <div className="rb-landing-hero" style={{ background: "var(--rb-teal)" }}>
         <div className="rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "28px 0" }}>
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 22, color: "var(--rb-on-teal)" }}>Rutabien</span>
@@ -181,7 +190,7 @@ export default function LandingPage() {
       </div>
 
       {/* How it works */}
-      <div id="how-it-works" className="rb-snap-section rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "76px 48px" }}>
+      <div id="how-it-works" className="rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "76px 48px" }}>
         <Text size={13} weight={600} color="var(--rb-orange)" style={{ letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 30px", textAlign: "center" }}>
           How it works
         </Text>
@@ -204,7 +213,7 @@ export default function LandingPage() {
 
       {/* Pricing - shown here, not just buried at the end of the paywall funnel.
           Pulls from lib/pricing.ts so this can never drift from the real price. */}
-      <div id="pricing" className="rb-snap-section rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px 76px" }}>
+      <div id="pricing" className="rb-container" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 48px 76px" }}>
         <Text size={13} weight={600} color="var(--rb-orange)" style={{ letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 12px", textAlign: "center" }}>
           Pricing
         </Text>
@@ -272,7 +281,7 @@ export default function LandingPage() {
       </div>
 
       {/* CTA banner - solid dark teal full-bleed, per the approved prototype. */}
-      <div className="rb-snap-section" style={{ background: "var(--rb-teal)", padding: "64px 48px" }}>
+      <div style={{ background: "var(--rb-teal)", padding: "64px 48px" }}>
         <Text
           size={30}
           weight={600}
@@ -287,7 +296,7 @@ export default function LandingPage() {
       {/* Footer - every link goes to a page that actually exists. No
           fabricated social accounts, careers page, or investor relations -
           those aren't real for Rutabien yet. */}
-      <div className="rb-snap-section" style={{ padding: "56px 48px 32px", borderTop: "1px solid var(--rb-border)" }}>
+      <div style={{ padding: "56px 48px 32px", borderTop: "1px solid var(--rb-border)" }}>
         <div className="rb-footer-grid" style={{ maxWidth: 1160, margin: "0 auto", display: "flex", gap: 48, flexWrap: "wrap" }}>
           <div style={{ flex: "1 1 220px", maxWidth: 320 }}>
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 18, color: "var(--rb-teal)" }}>Rutabien</span>
