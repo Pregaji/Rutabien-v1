@@ -8,7 +8,13 @@
   --rb-sidebar: #efeae0;
   --rb-text: #1a1f24;
   --rb-text-secondary: #5a6872;
-  --rb-text-muted: #8a7c64;
+  /* #7a6c54, not the original #8a7c64 - that failed WCAG AA for normal text
+     (3.65:1 against --rb-bg, needs 4.5:1); this hits 4.58:1. */
+  --rb-text-muted: #7a6c54;
+  /* #14181A is deliberate (confirmed with the founder 2026-08-02) - a
+     later, darker revision than the #1B3A3E in CLAUDE.md and
+     design-reference/*.dc.html. Those are stale and should be updated to
+     match; don't "fix" this back to #1B3A3E again. */
   --rb-teal: #14181A;
   --rb-teal-soft: #14181A;
   --rb-orange: #d4562e;
@@ -30,7 +36,9 @@
   /* Secondary neutrals used outside the core text/border scale above. */
   --rb-text-dense: #3a4a54;
   --rb-text-neutral: #6b7a85;
-  --rb-text-faint-link: #b0a188;
+  /* #988970, not the original #b0a188 - that failed WCAG AA outright even
+     for large text (2.26:1 against --rb-bg, needs 3:1); this hits 3.06:1. */
+  --rb-text-faint-link: #988970;
   --rb-dashed-border: #d8cdb8;
   --rb-disabled-bg: #c7cdd0;
   --rb-table-header-bg: #f4f1ec;
@@ -43,9 +51,13 @@
   --rb-gradient-teal: var(--rb-teal);
   --rb-gradient-orange: var(--rb-orange);
 
-  /* Type */
-  --font-display: var(--font-display), Georgia, serif;
-  --font-body: var(--font-body), Helvetica, Arial, sans-serif;
+  /* Type - --font-display/--font-body are set on <html> by next/font
+     (see app/layout.tsx), already including their own fallback stack.
+     Do NOT redeclare them here: a self-referencing var(--font-display)
+     is an invalid circular custom property per the CSS spec, and silently
+     breaks the variable everywhere it's used - confirmed via
+     getComputedStyle() returning "" instead of the real font stack. That
+     was the actual bug, not just the wrong font names being configured. */
 
   /* Spacing scale */
   --space-1: 4px;

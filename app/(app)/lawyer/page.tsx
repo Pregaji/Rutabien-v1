@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Clock, GraduationCap, Lock } from "lucide-react";
 import { Card, Heading, PageShell, Text } from "@/components/ui";
+import { LegalPartnerScene } from "@/components/illustrations/LegalPartnerScene";
 
 type Step = {
   id: string;
@@ -58,6 +59,9 @@ export default function LawyerPage() {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto", padding: "44px 48px 96px" }}>
+      <div style={{ maxWidth: 200, margin: "0 0 4px" }}>
+        <LegalPartnerScene width="100%" height="auto" />
+      </div>
       <Heading size="xl">Talk to a lawyer</Heading>
       <Text size={15.5} style={{ lineHeight: 1.6, margin: "12px 0 0", maxWidth: 560 }}>
         Most of your roadmap you can handle yourself. A few steps have case-specific rules -

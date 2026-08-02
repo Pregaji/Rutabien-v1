@@ -30,7 +30,7 @@
   <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
     <div style="animation:rbfade .4s ease;">
 
-      <div style="background:#1B3A3E;">
+      <div style="background:#14181A;">
         <div style="max-width:1160px;margin:0 auto;padding:0 48px;">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:28px 0;">
             <div style="display:flex;align-items:center;gap:10px;">
@@ -61,8 +61,8 @@
               <svg width="100%" height="260" viewBox="0 0 380 260" fill="none" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;">
                 <path d="M30 220 C 110 220 80 150 170 150 C 260 150 235 70 340 46" stroke="#7FA5A2" stroke-width="2.5" stroke-dasharray="7 8" fill="none"/>
               </svg>
-              <span style="position:absolute;left:14px;top:204px;width:34px;height:34px;border-radius:999px;background:#F5F2EC;color:#1B3A3E;display:flex;align-items:center;justify-content:center;font:600 15px Figtree,sans-serif;">1</span>
-              <span style="position:absolute;left:150px;top:132px;width:34px;height:34px;border-radius:999px;background:#F5F2EC;color:#1B3A3E;display:flex;align-items:center;justify-content:center;font:600 15px Figtree,sans-serif;">2</span>
+              <span style="position:absolute;left:14px;top:204px;width:34px;height:34px;border-radius:999px;background:#F5F2EC;color:#14181A;display:flex;align-items:center;justify-content:center;font:600 15px Figtree,sans-serif;">1</span>
+              <span style="position:absolute;left:150px;top:132px;width:34px;height:34px;border-radius:999px;background:#F5F2EC;color:#14181A;display:flex;align-items:center;justify-content:center;font:600 15px Figtree,sans-serif;">2</span>
               <span style="position:absolute;left:316px;top:14px;">{{ pinIconLg }}</span>
             </div>
           </div>
@@ -73,12 +73,12 @@
         <p style="font:600 13px Figtree,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#D4562E;margin:0 0 30px;text-align:center;">How it works</p>
         <div style="display:flex;gap:28px;justify-content:center;flex-wrap:wrap;">
           <div style="flex:1 1 280px;max-width:320px;background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 18px 40px -26px rgba(27,58,62,.35);">
-            <span style="width:44px;height:44px;border-radius:12px;background:rgba(27,58,62,.07);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:19px;">🧭</span>
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(27,58,62,.07);color:#14181A;display:flex;align-items:center;justify-content:center;font-size:19px;">🧭</span>
             <h3 style="font:600 20px Spectral,serif;color:#1A1F24;margin:20px 0 8px;">Understand your visa path</h3>
             <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:0;">See exactly which visa route applies to your nationality, program and dates.</p>
           </div>
           <div style="flex:1 1 280px;max-width:320px;background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 18px 40px -26px rgba(27,58,62,.35);">
-            <span style="width:44px;height:44px;border-radius:12px;background:rgba(27,58,62,.07);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:19px;">📄</span>
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(27,58,62,.07);color:#14181A;display:flex;align-items:center;justify-content:center;font-size:19px;">📄</span>
             <h3 style="font:600 20px Spectral,serif;color:#1A1F24;margin:20px 0 8px;">Track your documents</h3>
             <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:0;">Every form and file you need, checked off as you gather them.</p>
           </div>
@@ -90,7 +90,7 @@
         </div>
       </div>
 
-      <div style="background:#1B3A3E;padding:64px 48px;">
+      <div style="background:#14181A;padding:64px 48px;">
         <p style="max-width:720px;margin:0 auto;text-align:center;font:600 30px/1.4 Spectral,serif;color:#F5F2EC;letter-spacing:-.3px;">See your personalized roadmap in minutes. Talk to a lawyer only when you actually need one.</p>
       </div>
 
@@ -110,7 +110,7 @@
   <sc-if value="{{ isQuestionnaire }}" hint-placeholder-val="{{ false }}">
     <div style="min-height:100vh;display:flex;animation:rbfade .35s ease;">
       <div style="flex:none;width:260px;background:#EFEAE0;border-right:1px solid rgba(34,48,60,.08);padding:32px 26px;display:flex;flex-direction:column;">
-        <button onClick="{{ back }}" style="align-self:flex-start;background:none;border:none;padding:2px 0 24px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+        <button onClick="{{ back }}" style="align-self:flex-start;background:none;border:none;padding:2px 0 24px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#14181A;">‹ Back</button>
         <div style="flex:1;overflow-y:auto;">
           <sc-for list="{{ railSteps }}" as="rs" hint-placeholder-count="8">
             <div style="display:flex;align-items:center;gap:12px;padding:7px 0;">
@@ -209,7 +209,7 @@
   <sc-if value="{{ isAccess }}" hint-placeholder-val="{{ false }}">
     <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px;">
       <div style="width:100%;max-width:440px;">
-        <button onClick="{{ goLanding }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+        <button onClick="{{ goLanding }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#14181A;">‹ Back</button>
         <h2 style="font:600 30px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Access your roadmap</h2>
         <p style="font:400 15px/1.5 Figtree,sans-serif;color:#8A7C64;margin:12px 0 0;">Enter the email you used before — we'll send a fresh link, no password needed.</p>
         <input type="email" value="{{ accessEmail }}" onInput="{{ onAccessEmail }}" placeholder="you@email.com" style="width:100%;margin-top:22px;padding:16px 18px;border-radius:14px;border:1.5px solid #E2D8C5;background:#fff;font:500 16px Figtree,sans-serif;color:#1A1F24;">
@@ -225,7 +225,7 @@
         <h2 style="font:600 28px Spectral,serif;color:#1A1F24;margin:0;">Check your inbox</h2>
         <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;">We've sent a link to {{ accessEmail }}. It'll take you straight to your roadmap — no password needed.</p>
         <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:22px 0 0;">(Demo mode — click below to continue.)</p>
-        <button onClick="{{ goDashboard }}" style="width:100%;margin-top:14px;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Continue to my roadmap</button>
+        <button onClick="{{ goDashboard }}" style="width:100%;margin-top:14px;background:#14181A;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Continue to my roadmap</button>
       </div>
     </div>
   </sc-if>
@@ -237,7 +237,7 @@
         <h2 style="font:600 28px Spectral,serif;color:#1A1F24;margin:0;">Check your inbox</h2>
         <p style="font:400 15px/1.6 Figtree,sans-serif;color:#5A6872;margin:14px 0 0;">We've sent a verification link to {{ answerEmail }}. It'll take you straight to your EU route — no password needed.</p>
         <p style="font:400 13px Figtree,sans-serif;color:#8A7C64;margin:22px 0 0;">(Demo mode — click below to continue.)</p>
-        <button onClick="{{ goEuChecklist }}" style="width:100%;margin-top:14px;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Continue to my route</button>
+        <button onClick="{{ goEuChecklist }}" style="width:100%;margin-top:14px;background:#14181A;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Continue to my route</button>
       </div>
     </div>
   </sc-if>
@@ -271,8 +271,8 @@
         </div>
 
         <p style="font:400 12.5px Figtree,sans-serif;color:#8A7C64;margin:18px 0 0;text-align:center;">No visa, no TIE card, no consulate appointment needed. We've saved this route to {{ answerEmail }}.</p>
-        <button onClick="{{ goLanding }}" style="width:100%;max-width:440px;margin:22px auto 0;display:block;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Back to homepage</button>
-        <button onClick="{{ goAccess }}" style="width:100%;max-width:440px;margin:10px auto 0;display:block;background:none;border:none;font:600 13px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">Already have a roadmap? Access it here</button>
+        <button onClick="{{ goLanding }}" style="width:100%;max-width:440px;margin:22px auto 0;display:block;background:#14181A;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Back to homepage</button>
+        <button onClick="{{ goAccess }}" style="width:100%;max-width:440px;margin:10px auto 0;display:block;background:none;border:none;font:600 13px Figtree,sans-serif;color:#14181A;cursor:pointer;">Already have a roadmap? Access it here</button>
       </div>
     </div>
   </sc-if>
@@ -288,8 +288,8 @@
           <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Once accepted, request your official acceptance/admission letter.</li>
           <li style="font:400 15px/1.7 Figtree,sans-serif;color:#3A4A54;">Start gathering proof of funds and private health insurance — both take time.</li>
         </ul>
-        <button onClick="{{ goLanding }}" style="width:100%;margin-top:22px;background:#1B3A3E;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Back to homepage</button>
-        <button onClick="{{ goAccess }}" style="width:100%;margin-top:10px;background:none;border:none;font:600 13px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">Already have a roadmap? Access it here</button>
+        <button onClick="{{ goLanding }}" style="width:100%;margin-top:22px;background:#14181A;color:#fff;border:none;border-radius:15px;padding:16px;font:600 15px Figtree,sans-serif;cursor:pointer;">Back to homepage</button>
+        <button onClick="{{ goAccess }}" style="width:100%;margin-top:10px;background:none;border:none;font:600 13px Figtree,sans-serif;color:#14181A;cursor:pointer;">Already have a roadmap? Access it here</button>
       </div>
     </div>
   </sc-if>
@@ -300,7 +300,7 @@
 
       <sc-if value="{{ showTierPicker }}" hint-placeholder-val="{{ true }}">
         <div style="width:100%;max-width:820px;">
-          <button onClick="{{ backFromPaywall }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+          <button onClick="{{ backFromPaywall }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#14181A;">‹ Back</button>
           <h2 style="font:600 30px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Unlock your full roadmap</h2>
           <p style="font:400 14.5px Figtree,sans-serif;color:#8A7C64;margin:10px 0 0;">Both plans are a single payment — no auto-renewal, ever.</p>
 
@@ -309,11 +309,11 @@
               <h3 style="font:600 19px Spectral,serif;color:#1A1F24;margin:0;">Essential</h3>
               <div style="display:flex;align-items:baseline;gap:8px;margin-top:12px;"><span style="font:600 34px Spectral,serif;color:#1A1F24;">€39</span><span style="font:500 13px Figtree,sans-serif;color:#8A7C64;">one-time</span></div>
               <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Full roadmap detail for every step</span></div>
-                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Document tracking for every required file</span></div>
-                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Deadline & document reminders</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#14181A;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Full roadmap detail for every step</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#14181A;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Document tracking for every required file</span></div>
+                <div style="display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#14181A;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:1px;">✓</span><span style="font:400 14px/1.5 Figtree,sans-serif;color:#3A4A54;">Deadline & document reminders</span></div>
               </div>
-              <button onClick="{{ selectEssential }}" style="width:100%;margin-top:24px;background:#fff;border:1.5px solid #1B3A3E;color:#1B3A3E;border-radius:12px;padding:13px;font:600 14.5px Figtree,sans-serif;cursor:pointer;">Choose Essential</button>
+              <button onClick="{{ selectEssential }}" style="width:100%;margin-top:24px;background:#fff;border:1.5px solid #14181A;color:#14181A;border-radius:12px;padding:13px;font:600 14.5px Figtree,sans-serif;cursor:pointer;">Choose Essential</button>
             </div>
 
             <div style="flex:1 1 320px;background:#fff;border:1.5px solid #D4562E;border-radius:20px;padding:28px;position:relative;">
@@ -336,7 +336,7 @@
 
       <sc-if value="{{ showPaymentStep }}" hint-placeholder-val="{{ false }}">
         <div style="width:100%;max-width:460px;">
-          <button onClick="{{ backFromPaywall }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#1B3A3E;">‹ Back</button>
+          <button onClick="{{ backFromPaywall }}" style="background:none;border:none;padding:0 0 18px;cursor:pointer;font:600 15px Figtree,sans-serif;color:#14181A;">‹ Back</button>
           <h2 style="font:600 28px/1.2 Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">{{ selectedTierName }} plan</h2>
           <div style="display:flex;align-items:baseline;gap:10px;margin-top:18px;">
             <span style="font:600 46px Spectral,serif;color:#1A1F24;">€{{ selectedTierPrice }}</span>
@@ -384,7 +384,7 @@
             </button>
           </div>
         </sc-if>
-        <button onClick="{{ toggleHelpMenu }}" style="width:52px;height:52px;border-radius:999px;background:#1B3A3E;color:#F5F2EC;border:none;cursor:pointer;font-size:21px;box-shadow:0 10px 24px -8px rgba(34,48,60,.45);">💬</button>
+        <button onClick="{{ toggleHelpMenu }}" style="width:52px;height:52px;border-radius:999px;background:#14181A;color:#F5F2EC;border:none;cursor:pointer;font-size:21px;box-shadow:0 10px 24px -8px rgba(34,48,60,.45);">💬</button>
       </div>
       <div style="position:sticky;top:0;z-index:5;background:#F5F2EC;border-bottom:1px solid rgba(34,48,60,.09);">
         <div style="max-width:1160px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:76px;">
@@ -416,7 +416,7 @@
           <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:20px;padding:6px 0;margin-top:32px;box-shadow:0 10px 24px -18px rgba(34,48,60,.3);overflow:hidden;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 32px 12px;">
               <span style="font:600 15px Figtree,sans-serif;color:#1A1F24;">Getting started</span>
-              <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;">{{ doneCount }} of {{ totalSteps }} roadmap steps done</span>
+              <span style="font:600 13px Figtree,sans-serif;color:#14181A;">{{ doneCount }} of {{ totalSteps }} roadmap steps done</span>
             </div>
             <sc-for list="{{ checklistItems }}" as="item" hint-placeholder-count="4">
               <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 32px;border-top:1px solid rgba(34,48,60,.06);flex-wrap:wrap;">
@@ -428,10 +428,10 @@
                   </div>
                 </div>
                 <sc-if value="{{ item.showAction }}" hint-placeholder-val="{{ false }}">
-                  <button onClick="{{ item.onAction }}" style="background:none;border:1.5px solid #1B3A3E;color:#1B3A3E;border-radius:10px;padding:9px 16px;font:600 13px Figtree,sans-serif;cursor:pointer;white-space:nowrap;">{{ item.actionLabel }}</button>
+                  <button onClick="{{ item.onAction }}" style="background:none;border:1.5px solid #14181A;color:#14181A;border-radius:10px;padding:9px 16px;font:600 13px Figtree,sans-serif;cursor:pointer;white-space:nowrap;">{{ item.actionLabel }}</button>
                 </sc-if>
                 <sc-if value="{{ item.showDoneTag }}" hint-placeholder-val="{{ false }}">
-                  <span style="font:600 12.5px Figtree,sans-serif;color:#1B3A3E;">Done</span>
+                  <span style="font:600 12.5px Figtree,sans-serif;color:#14181A;">Done</span>
                 </sc-if>
               </div>
             </sc-for>
@@ -447,7 +447,7 @@
                     <h4 style="font:600 15px Figtree,sans-serif;color:#1A1F24;margin:0 0 3px;">{{ rem.title }}</h4>
                     <p style="font:400 13.5px Figtree,sans-serif;color:#5A6872;margin:0;">{{ rem.message }}</p>
                   </div>
-                  <button onClick="{{ rem.onAction }}" style="background:none;border:1.5px solid #1B3A3E;color:#1B3A3E;border-radius:10px;padding:9px 16px;font:600 13px Figtree,sans-serif;cursor:pointer;white-space:nowrap;">{{ rem.ctaLabel }}</button>
+                  <button onClick="{{ rem.onAction }}" style="background:none;border:1.5px solid #14181A;color:#14181A;border-radius:10px;padding:9px 16px;font:600 13px Figtree,sans-serif;cursor:pointer;white-space:nowrap;">{{ rem.ctaLabel }}</button>
                 </div>
               </sc-for>
             </div>
@@ -459,7 +459,7 @@
                 <span style="font:600 11px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#D4562E;">Next up · {{ nextStep.due }}</span>
                 <h3 style="font:600 22px Spectral,serif;color:#1A1F24;margin:8px 0 6px;">{{ nextStep.title }}</h3>
                 <p style="font:400 14.5px/1.55 Figtree,sans-serif;color:#5A6872;margin:0;max-width:640px;">{{ nextStep.what }}</p>
-                <span style="display:inline-block;margin-top:14px;font:600 14px Figtree,sans-serif;color:#1B3A3E;">View in roadmap →</span>
+                <span style="display:inline-block;margin-top:14px;font:600 14px Figtree,sans-serif;color:#14181A;">View in roadmap →</span>
               </div>
             </sc-if>
             <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
@@ -472,7 +472,7 @@
 
           <div style="display:flex;gap:22px;margin-top:22px;flex-wrap:wrap;">
             <div onClick="{{ goRoadmap }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
-              <span style="width:38px;height:38px;border-radius:999px;background:#1B3A3E;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 15px Spectral,serif;">7</span>
+              <span style="width:38px;height:38px;border-radius:999px;background:#14181A;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 15px Spectral,serif;">7</span>
               <h4 style="font:600 18px Spectral,serif;color:#1A1F24;margin:16px 0 4px;">Full roadmap</h4>
               <p style="font:400 14px Figtree,sans-serif;color:#8A7C64;margin:0;">{{ doneCount }} of {{ totalSteps }} steps done</p>
             </div>
@@ -483,7 +483,7 @@
             </div>
             <div onClick="{{ goLawyer }}" style="flex:1 1 260px;background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px;cursor:pointer;box-shadow:0 8px 18px -14px rgba(34,48,60,.28);">
               <div style="display:flex;align-items:center;gap:12px;">
-                <span style="width:38px;height:38px;flex:none;border-radius:999px;background:#1B3A3E;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">IQ</span>
+                <span style="width:38px;height:38px;flex:none;border-radius:999px;background:#14181A;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">IQ</span>
                 <div>
                   <div style="font:600 15px Figtree,sans-serif;color:#1A1F24;">Ida Quintián Pacheco</div>
                   <div style="font:400 12px Figtree,sans-serif;color:#8A7C64;">Immigration lawyer</div>
@@ -568,7 +568,7 @@
                 <li style="font:400 13.5px/1.6 Figtree,sans-serif;color:#3A4A54;">Never wire a deposit before seeing the place in person or on a verified video call.</li>
                 <li style="font:400 13.5px/1.6 Figtree,sans-serif;color:#3A4A54;">Gràcia, Sants, and Poble Sec are popular, well-connected areas within reach of most universities.</li>
               </ul>
-              <a href="https://www.idealista.com/en/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.08);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Browse listings on Idealista ↗</a>
+              <a href="https://www.idealista.com/en/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.08);font:600 13px Figtree,sans-serif;color:#14181A;">Browse listings on Idealista ↗</a>
             </div>
 
             <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:24px 26px;margin-top:14px;">
@@ -579,13 +579,13 @@
             <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:22px 26px;margin-top:14px;">
               <h4 style="font:600 15.5px Spectral,serif;color:#1A1F24;margin:0 0 6px;">Escuela Oficial de Idiomas (EOI)</h4>
               <p style="font:400 14px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 12px;">Spain's public language school system — low-cost structured Spanish and Catalan courses, official certificates, evening schedules that work around studies.</p>
-              <a href="https://www.eoibd.cat/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">EOI Barcelona — course info ↗</a>
+              <a href="https://www.eoibd.cat/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#14181A;">EOI Barcelona — course info ↗</a>
             </div>
 
             <div style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:18px;padding:22px 26px;margin-top:14px;">
               <h4 style="font:600 15.5px Spectral,serif;color:#1A1F24;margin:0 0 6px;">Language exchange (intercambio) groups</h4>
               <p style="font:400 14px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 12px;">Informal, usually free meetups pairing you with locals to practice — often the fastest way to build both language and a social circle at the same time.</p>
-              <a href="https://www.meetup.com/find/?keywords=language%20exchange%20barcelona" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Find intercambio meetups ↗</a>
+              <a href="https://www.meetup.com/find/?keywords=language%20exchange%20barcelona" style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#14181A;">Find intercambio meetups ↗</a>
             </div>
           </sc-if>
           <sc-if value="{{ notCompletePlanActive }}" hint-placeholder-val="{{ true }}">
@@ -633,8 +633,8 @@
         <div style="max-width:900px;margin:0 auto;padding:44px 48px 96px;">
           <sc-if value="{{ showLinkBanner }}" hint-placeholder-val="{{ true }}">
             <div style="background:rgba(27,58,62,.08);border:1px solid rgba(27,58,62,.2);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:26px;flex-wrap:wrap;">
-              <p style="font:500 13.5px Figtree,sans-serif;color:#1B3A3E;margin:0;">No password to remember — request a fresh link to this roadmap anytime from the homepage.</p>
-              <button onClick="{{ dismissBanner }}" style="background:none;border:1px solid rgba(27,58,62,.3);border-radius:8px;padding:7px 13px;font:600 12.5px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">Got it</button>
+              <p style="font:500 13.5px Figtree,sans-serif;color:#14181A;margin:0;">No password to remember — request a fresh link to this roadmap anytime from the homepage.</p>
+              <button onClick="{{ dismissBanner }}" style="background:none;border:1px solid rgba(27,58,62,.3);border-radius:8px;padding:7px 13px;font:600 12.5px Figtree,sans-serif;color:#14181A;cursor:pointer;">Got it</button>
             </div>
           </sc-if>
 
@@ -646,7 +646,7 @@
                 <h4 style="font:600 15px Figtree,sans-serif;color:#1A1F24;margin:0 0 3px;">Arrival is coming up</h4>
                 <p style="font:400 13px Figtree,sans-serif;color:#5A6872;margin:0;">Take a look at the Bienvenido guide — SIM cards, getting into the city, and settling in.</p>
               </div>
-              <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;white-space:nowrap;">Open guide →</span>
+              <span style="font:600 13px Figtree,sans-serif;color:#14181A;white-space:nowrap;">Open guide →</span>
             </div>
           </sc-if>
           <sc-if value="{{ hasFamilyNote }}" hint-placeholder-val="{{ false }}">
@@ -659,7 +659,7 @@
             <div style="flex:1;height:8px;border-radius:999px;background:rgba(34,48,60,.09);overflow:hidden;">
               <div style="{{ roadmapBarStyle }}"></div>
             </div>
-            <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;white-space:nowrap;">{{ doneCount }} of {{ totalSteps }} done</span>
+            <span style="font:600 13px Figtree,sans-serif;color:#14181A;white-space:nowrap;">{{ doneCount }} of {{ totalSteps }} done</span>
           </div>
           <p style="font:400 12.5px/1.5 Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">Guidance based on officially published requirements — not a guarantee of approval. The consulate makes the final decision.</p>
 
@@ -667,7 +667,7 @@
             <sc-for list="{{ phasesB }}" as="phase" hint-placeholder-count="4">
               <div style="display:flex;gap:14px;align-items:center;margin:28px 0 12px;">
                 <span style="{{ phase.dot }}"></span>
-                <span style="font:600 13px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#1B3A3E;">{{ phase.name }}</span>
+                <span style="font:600 13px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#14181A;">{{ phase.name }}</span>
               </div>
               <div style="border-left:2px dashed #C9BCA4;margin-left:9px;padding-left:26px;">
                 <sc-for list="{{ phase.steps }}" as="step" hint-placeholder-count="2">
@@ -680,7 +680,7 @@
                       <h3 style="font:600 19px/1.3 Spectral,serif;color:#1A1F24;margin:9px 0 0;">{{ step.title }}</h3>
                       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
                         <span style="font:500 13px Figtree,sans-serif;color:#8A7C64;">{{ step.docsDone }}/{{ step.docsTotal }} documents ready</span>
-                        <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;">{{ step.toggleLabel }}</span>
+                        <span style="font:600 13px Figtree,sans-serif;color:#14181A;">{{ step.toggleLabel }}</span>
                       </div>
                     </div>
 
@@ -701,7 +701,7 @@
                             <p style="font:600 11px Figtree,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A7C64;margin:18px 0 4px;">Legalization chain</p>
                             <sc-for list="{{ step.legalizationChain }}" as="lc" hint-placeholder-count="3">
                               <div style="display:flex;gap:9px;align-items:flex-start;padding:5px 0;">
-                                <span style="width:20px;height:20px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#1B3A3E;display:flex;align-items:center;justify-content:center;font:600 11px Figtree,sans-serif;">{{ lc.n }}</span>
+                                <span style="width:20px;height:20px;flex:none;border-radius:999px;background:rgba(27,58,62,.12);color:#14181A;display:flex;align-items:center;justify-content:center;font:600 11px Figtree,sans-serif;">{{ lc.n }}</span>
                                 <span style="font:400 13.5px/1.4 Figtree,sans-serif;color:#3A4A54;">{{ lc.text }}</span>
                               </div>
                             </sc-for>
@@ -710,7 +710,7 @@
                           <sc-for list="{{ step.docs }}" as="doc" hint-placeholder-count="3">
                             <div onClick="{{ doc.onToggle }}" style="display:flex;gap:11px;align-items:flex-start;padding:8px 0;cursor:pointer;">
                               <sc-if value="{{ doc.done }}" hint-placeholder-val="{{ false }}">
-                                <span style="width:21px;height:21px;flex:none;border-radius:6px;background:#1B3A3E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;">✓</span>
+                                <span style="width:21px;height:21px;flex:none;border-radius:6px;background:#14181A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;">✓</span>
                               </sc-if>
                               <sc-if value="{{ doc.notDone }}" hint-placeholder-val="{{ true }}">
                                 <span style="width:21px;height:21px;flex:none;border-radius:6px;border:1.5px solid #D8CDB8;background:#fff;margin-top:1px;"></span>
@@ -720,13 +720,13 @@
                           </sc-for>
 
                           <sc-if value="{{ step.hasLink }}" hint-placeholder-val="{{ false }}">
-                            <a href="#" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Official page · {{ step.link }} ↗</a>
+                            <a href="#" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#14181A;">Official page · {{ step.link }} ↗</a>
                           </sc-if>
 
                           <button onClick="{{ step.onCycle }}" style="display:block;width:100%;margin-top:14px;padding:12px;border-radius:12px;border:1.5px solid #E2D8C5;background:#fff;font:600 14px Figtree,sans-serif;color:#1A1F24;cursor:pointer;">Mark as {{ step.nextLabel }}</button>
 
                           <sc-if value="{{ step.lawyer }}" hint-placeholder-val="{{ false }}">
-                            <div style="margin-top:16px;background:#1B3A3E;border-radius:16px;padding:20px;color:#F5F2EC;">
+                            <div style="margin-top:16px;background:#14181A;border-radius:16px;padding:20px;color:#F5F2EC;">
                               <div style="display:flex;align-items:center;gap:12px;">
                                 <span style="width:44px;height:44px;flex:none;border-radius:999px;background:rgba(247,241,232,.16);color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 15px Spectral,serif;">IQ</span>
                                 <div><div style="font:600 15px Figtree,sans-serif;">Ida Quintián Pacheco</div><div style="font:400 12px Figtree,sans-serif;color:#B8CFCC;">Immigration lawyer · ICAB Barcelona</div></div>
@@ -754,10 +754,10 @@
             <div style="flex:1;height:8px;border-radius:999px;background:rgba(34,48,60,.09);overflow:hidden;">
               <div style="{{ docsBarStyle }}"></div>
             </div>
-            <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;white-space:nowrap;">{{ docsDoneTotal }} of {{ docsGrandTotal }} ready</span>
+            <span style="font:600 13px Figtree,sans-serif;color:#14181A;white-space:nowrap;">{{ docsDoneTotal }} of {{ docsGrandTotal }} ready</span>
           </div>
           <p style="font:400 12.5px/1.5 Figtree,sans-serif;color:#8A7C64;margin:14px 0 0;">Guidance based on officially published requirements — not a guarantee of approval. Some documents have validity windows; we'll flag those below.</p>
-          <a href="https://www.exteriores.gob.es/Consulados/Paginas/index.aspx" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Find your nearest Spanish consulate ↗</a>
+          <a href="https://www.exteriores.gob.es/Consulados/Paginas/index.aspx" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#14181A;">Find your nearest Spanish consulate ↗</a>
 
           <div style="margin-top:30px;">
             <sc-for list="{{ steps }}" as="step" hint-placeholder-count="5">
@@ -800,7 +800,7 @@
                             <sc-if value="{{ doc.noUpload }}" hint-placeholder-val="{{ true }}">
                               <label htmlFor="{{ doc.inputId }}" onDragOver="{{ doc.onDragOver }}" onDrop="{{ doc.onDrop }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 16px;border-radius:12px;border:1.5px dashed #D8CDB8;background:#EFEAE0;cursor:pointer;text-align:center;max-width:280px;">
                                 <span style="font-size:20px;line-height:1;">☁️</span>
-                                <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;"><span style="text-decoration:underline;">Choose file</span> or drop here</span>
+                                <span style="font:600 13px Figtree,sans-serif;color:#14181A;"><span style="text-decoration:underline;">Choose file</span> or drop here</span>
                                 <span style="font:400 11.5px Figtree,sans-serif;color:#8A7C64;">PDF, PNG or JPEG · up to 20MB</span>
                               </label>
                               <input type="file" id="{{ doc.inputId }}" style="display:none" onChange="{{ doc.onAttach }}">
@@ -813,7 +813,7 @@
                               </div>
                               <sc-if value="{{ doc.showDeliveryChoice }}" hint-placeholder-val="{{ false }}">
                                 <div style="margin-top:10px;background:rgba(27,58,62,.06);border-radius:11px;padding:14px 16px;">
-                                  <p style="font:600 12px Figtree,sans-serif;color:#1B3A3E;margin:0 0 10px;">This one needs a sworn translation. How should we return it?</p>
+                                  <p style="font:600 12px Figtree,sans-serif;color:#14181A;margin:0 0 10px;">This one needs a sworn translation. How should we return it?</p>
                                   <div style="display:flex;gap:8px;flex-wrap:wrap;">
                                     <button onClick="{{ doc.onSetDownload }}" style="{{ doc.downloadBtnStyle }}">Download in-app</button>
                                     <button onClick="{{ doc.onSetPost }}" style="{{ doc.postBtnStyle }}">Post a copy (+€12)</button>
@@ -855,7 +855,7 @@
               <p style="font:400 13.5px/1.5 Figtree,sans-serif;color:#5A6872;margin:0;">Our translation team prepares a certified Spanish translation.</p>
             </div>
             <div>
-              <span style="width:36px;height:36px;border-radius:999px;background:#1B3A3E;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">03</span>
+              <span style="width:36px;height:36px;border-radius:999px;background:#14181A;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font:600 14px Spectral,serif;">03</span>
               <h4 style="font:600 16px Spectral,serif;color:#1A1F24;margin:12px 0 5px;">Get it back</h4>
               <p style="font:400 13.5px/1.5 Figtree,sans-serif;color:#5A6872;margin:0;">Ready in 2 working days — download it, or have a copy posted to you.</p>
             </div>
@@ -901,7 +901,7 @@
                     </div>
                   </sc-if>
                   <sc-if value="{{ doc.showMarkDelivered }}" hint-placeholder-val="{{ false }}">
-                    <button onClick="{{ doc.onMarkDelivered }}" style="margin-top:12px;background:none;border:1px solid #E2D8C5;border-radius:9px;padding:8px 13px;font:600 12.5px Figtree,sans-serif;color:#1B3A3E;cursor:pointer;">(Demo) Mark as delivered</button>
+                    <button onClick="{{ doc.onMarkDelivered }}" style="margin-top:12px;background:none;border:1px solid #E2D8C5;border-radius:9px;padding:8px 13px;font:600 12.5px Figtree,sans-serif;color:#14181A;cursor:pointer;">(Demo) Mark as delivered</button>
                   </sc-if>
                 </div>
               </sc-for>
@@ -918,11 +918,11 @@
           <sc-if value="{{ noQueueItems }}" hint-placeholder-val="{{ true }}">
             <div style="background:#fff;border:1.5px dashed #D8CDB8;border-radius:14px;padding:26px;text-align:center;">
               <p style="font:400 14px/1.6 Figtree,sans-serif;color:#5A6872;margin:0 0 14px;">No documents attached yet. Open any document in your Documents list and attach a copy — it'll show up here.</p>
-              <button onClick="{{ goDocuments }}" style="background:#1B3A3E;color:#fff;border:none;border-radius:11px;padding:12px 20px;font:600 13.5px Figtree,sans-serif;cursor:pointer;">Go to Documents</button>
+              <button onClick="{{ goDocuments }}" style="background:#14181A;color:#fff;border:none;border-radius:11px;padding:12px 20px;font:600 13.5px Figtree,sans-serif;cursor:pointer;">Go to Documents</button>
             </div>
           </sc-if>
 
-          <a href="https://www.exteriores.gob.es/Consulados/Paginas/index.aspx" style="display:inline-flex;align-items:center;gap:6px;margin-top:28px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#1B3A3E;">Find your nearest Spanish consulate ↗</a>
+          <a href="https://www.exteriores.gob.es/Consulados/Paginas/index.aspx" style="display:inline-flex;align-items:center;gap:6px;margin-top:28px;padding:9px 14px;border-radius:10px;background:rgba(27,58,62,.09);font:600 13px Figtree,sans-serif;color:#14181A;">Find your nearest Spanish consulate ↗</a>
         </div>
       </sc-if>
 
@@ -932,7 +932,7 @@
           <h1 style="font:600 34px Spectral,serif;color:#1A1F24;margin:0;letter-spacing:-.3px;">Talk to a lawyer</h1>
           <p style="font:400 15.5px/1.6 Figtree,sans-serif;color:#5A6872;margin:12px 0 0;max-width:560px;">Most of your roadmap you can handle yourself. A few steps have case-specific rules — that's when it's worth a second opinion.</p>
 
-          <div style="background:#1B3A3E;border-radius:22px;padding:32px;margin-top:30px;color:#F5F2EC;">
+          <div style="background:#14181A;border-radius:22px;padding:32px;margin-top:30px;color:#F5F2EC;">
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">
               <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(247,241,232,.08);border:1px solid rgba(247,241,232,.18);border-radius:8px;padding:8px 14px 8px 10px;font:600 12.5px Figtree,sans-serif;color:#DCE7E5;">🔒 Confidential — only shared with you</span>
               <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(247,241,232,.08);border:1px solid rgba(247,241,232,.18);border-radius:8px;padding:8px 14px 8px 10px;font:600 12.5px Figtree,sans-serif;color:#DCE7E5;">🎓 10 years, student visa cases</span>
@@ -959,7 +959,7 @@
             <div onClick="{{ step.onView }}" style="background:#fff;border:1px solid rgba(34,48,60,.08);border-radius:14px;padding:18px 20px;margin-bottom:12px;cursor:pointer;">
               <div style="display:flex;align-items:center;justify-content:space-between;">
                 <h4 style="font:600 16px Spectral,serif;color:#1A1F24;margin:0;">{{ step.title }}</h4>
-                <span style="font:600 13px Figtree,sans-serif;color:#1B3A3E;">View this step →</span>
+                <span style="font:600 13px Figtree,sans-serif;color:#14181A;">View this step →</span>
               </div>
               <p style="font:400 14px/1.5 Figtree,sans-serif;color:#5A6872;margin:8px 0 0;">{{ step.what }}</p>
             </div>
@@ -1058,7 +1058,7 @@
           <div style="margin-top:26px;background:#fff;border:1px solid #E4DECD;border-radius:12px;padding:22px 24px;">
             <div style="display:flex;align-items:center;justify-content:space-between;">
               <span style="font:600 14px Figtree,sans-serif;color:#1A1F24;">Roadmap progress</span>
-              <span style="font:600 14px Figtree,sans-serif;color:#1B3A3E;">{{ selected.progress }}%</span>
+              <span style="font:600 14px Figtree,sans-serif;color:#14181A;">{{ selected.progress }}%</span>
             </div>
             <div style="height:8px;border-radius:999px;background:rgba(34,48,60,.08);overflow:hidden;margin-top:10px;">
               <div style="{{ selected.barStyle }}"></div>
@@ -1234,21 +1234,21 @@ class Component extends DCLogic {
   nextStatus(st){ return st==='not-started'?'in-progress':st==='in-progress'?'done':'not-started'; }
   labelFor(st){ return st==='not-started'?'Not started':st==='in-progress'?'In progress':'Done'; }
   statusVis(st){
-    if(st==='done') return { label:'Done', chip:{ background:'rgba(27,58,62,.12)', color:'#1B3A3E' } };
+    if(st==='done') return { label:'Done', chip:{ background:'rgba(27,58,62,.12)', color:'#14181A' } };
     if(st==='in-progress') return { label:'In progress', chip:{ background:'rgba(212,86,46,.15)', color:'#D4562E' } };
     return { label:'Not started', chip:{ background:'rgba(34,48,60,.07)', color:'#6B7A85' } };
   }
   chipBase(){ return { display:'inline-flex', alignItems:'center', padding:'4px 11px', borderRadius:'999px', font:'600 11px Figtree,sans-serif', letterSpacing:'.3px', whiteSpace:'nowrap' }; }
   adminStatusChip(label){
     const base = this.chipBase();
-    if(label==='Done') return { ...base, background:'rgba(27,58,62,.12)', color:'#1B3A3E' };
+    if(label==='Done') return { ...base, background:'rgba(27,58,62,.12)', color:'#14181A' };
     if(label==='In progress') return { ...base, background:'rgba(212,86,46,.15)', color:'#D4562E' };
     return { ...base, background:'rgba(34,48,60,.07)', color:'#6B7A85' };
   }
   paymentChipStyle(payment){
     const base = this.chipBase();
     if(payment==='Complete') return { ...base, background:'rgba(212,86,46,.15)', color:'#D4562E' };
-    if(payment==='Essential') return { ...base, background:'rgba(27,58,62,.12)', color:'#1B3A3E' };
+    if(payment==='Essential') return { ...base, background:'rgba(27,58,62,.12)', color:'#14181A' };
     return { ...base, background:'rgba(34,48,60,.07)', color:'#6B7A85' };
   }
 
@@ -1339,7 +1339,7 @@ class Component extends DCLogic {
       return {
         label: stepLabelMap[id]||id, isDone, isCurrent, isUpcoming: !isDone && !isCurrent,
         circleStyle: isDone
-          ? { width:'26px', height:'26px', flex:'none', borderRadius:'999px', background:'#1B3A3E', color:'#F5F2EC', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' }
+          ? { width:'26px', height:'26px', flex:'none', borderRadius:'999px', background:'#14181A', color:'#F5F2EC', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' }
           : isCurrent
           ? { width:'26px', height:'26px', flex:'none', borderRadius:'999px', border:'2px solid #D4562E', background:'rgba(212,86,46,.1)', color:'#D4562E', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px', fontWeight:'700' }
           : { width:'26px', height:'26px', flex:'none', borderRadius:'999px', border:'2px solid #E2D8C5', color:'#B8AB8C', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' },
@@ -1426,17 +1426,17 @@ class Component extends DCLogic {
         const hasUpload = !!upload;
         const uploadStatus = upload ? upload.status : null;
         const deliveryIsPost = !!(upload && upload.delivery==='post');
-        const toggleBtn = (active)=>({ padding:'8px 13px', borderRadius:'9px', border:'1.5px solid '+(active?'#1B3A3E':'#E2D8C5'), background: active?'rgba(27,58,62,.12)':'#fff', font:'600 12.5px Figtree,sans-serif', color: active?'#1B3A3E':'#5A6872', cursor:'pointer' });
+        const toggleBtn = (active)=>({ padding:'8px 13px', borderRadius:'9px', border:'1.5px solid '+(active?'#14181A':'#E2D8C5'), background: active?'rgba(27,58,62,.12)':'#fff', font:'600 12.5px Figtree,sans-serif', color: active?'#14181A':'#5A6872', cursor:'pointer' });
         return {
           label:d.label, note:d.note, done, notDone:!done, open,
           expires:!!d.expires, translation:!!d.translation, hasFlags:!!(d.expires||d.translation),
           expiresChipStyle:{ ...this.chipBase(), background:'rgba(212,86,46,.14)', color:'#D4562E' },
-          translationChipStyle:{ ...this.chipBase(), background:'rgba(27,58,62,.12)', color:'#1B3A3E' },
+          translationChipStyle:{ ...this.chipBase(), background:'rgba(27,58,62,.12)', color:'#14181A' },
           onToggle:()=>this.toggleDoc(key),
           onOpen:()=>this.toggleDocOpen(key),
           onToggleStop:(e)=>{ e.stopPropagation(); this.toggleDoc(key); },
           checkStyle: done
-            ? { width:'22px', height:'22px', flex:'none', borderRadius:'6px', background:'#1B3A3E', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' }
+            ? { width:'22px', height:'22px', flex:'none', borderRadius:'6px', background:'#14181A', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' }
             : { width:'22px', height:'22px', flex:'none', borderRadius:'6px', border:'1.5px solid #D8CDB8', background:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'12px' },
           checkGlyph: done ? '✓' : '',
           chevron: open ? '−' : '+',
@@ -1449,7 +1449,7 @@ class Component extends DCLogic {
           onDrop:(e)=>{ e.preventDefault(); const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f) this.attachFile(key,f.name); },
           onRemove:()=>this.removeAttachment(key),
           uploadStatusLabel: uploadStatus==='ready'?'Ready':uploadStatus==='in-translation'?'In translation':'Attached',
-          uploadChipStyle:{ ...this.chipBase(), ...(uploadStatus==='ready'?{background:'rgba(27,58,62,.12)',color:'#1B3A3E'}:uploadStatus==='in-translation'?{background:'rgba(212,86,46,.15)',color:'#D4562E'}:{background:'rgba(34,48,60,.07)',color:'#6B7A85'}) },
+          uploadChipStyle:{ ...this.chipBase(), ...(uploadStatus==='ready'?{background:'rgba(27,58,62,.12)',color:'#14181A'}:uploadStatus==='in-translation'?{background:'rgba(212,86,46,.15)',color:'#D4562E'}:{background:'rgba(34,48,60,.07)',color:'#6B7A85'}) },
           showDeliveryChoice: !!(d.translation && uploadStatus==='uploaded'),
           deliveryIsPost, deliveryIsDownload:!deliveryIsPost,
           downloadBtnStyle:toggleBtn(!deliveryIsPost), postBtnStyle:toggleBtn(deliveryIsPost),
@@ -1500,7 +1500,7 @@ class Component extends DCLogic {
     const phaseNames = [...new Set(sourceSteps.map(s=>s.phase))];
     const phasesB = phaseNames.map((n,i)=>({
       name:n,
-      dot:{ width:'20px', height:'20px', flex:'none', borderRadius:'999px', background:i===phaseNames.length-1?'#D4562E':'#1B3A3E', boxShadow:'0 0 0 4px #F5F2EC' },
+      dot:{ width:'20px', height:'20px', flex:'none', borderRadius:'999px', background:i===phaseNames.length-1?'#D4562E':'#14181A', boxShadow:'0 0 0 4px #F5F2EC' },
       steps:steps.filter(s=>s.phase===n),
     }));
 
@@ -1523,13 +1523,13 @@ class Component extends DCLogic {
       ...n,
       style:{ padding:'8px 14px', borderRadius:'9px', border:'none', cursor:'pointer', font:'600 14px Figtree,sans-serif',
         background: screen===n.id ? 'rgba(27,58,62,.1)' : 'transparent',
-        color: screen===n.id ? '#1B3A3E' : '#5A6872' },
+        color: screen===n.id ? '#14181A' : '#5A6872' },
     }));
 
     const nationalityLabel = A.nationality==='Other' ? (A.nationalityOther||'Your country') : (A.nationality||'You');
     const lawyerSteps = steps.filter(s=>s.lawyer);
     const pilotBadgeText = isNigeria ? 'Reviewed in detail for Nigerian applicants' : 'General guidance — nationality-specific detail expanding soon';
-    const pilotBadgeStyle = { ...this.chipBase(), padding:'6px 13px', marginTop:'12px', background: isNigeria ? 'rgba(27,58,62,.1)' : 'rgba(34,48,60,.06)', color: isNigeria ? '#1B3A3E' : '#6B7A85' };
+    const pilotBadgeStyle = { ...this.chipBase(), padding:'6px 13px', marginTop:'12px', background: isNigeria ? 'rgba(27,58,62,.1)' : 'rgba(34,48,60,.06)', color: isNigeria ? '#14181A' : '#6B7A85' };
     const showPilotBadge = !isReturning;
     const familyCount = A.familyGate==='Yes' ? (A.familyCount||1) : 0;
     const headerContextLine = isReturning
@@ -1614,7 +1614,7 @@ class Component extends DCLogic {
           showAction: !it.done && !!it.actionLabel,
           showDoneTag: it.done,
           circleStyle: it.done
-            ? { width:'34px', height:'34px', flex:'none', borderRadius:'999px', background:'#1B3A3E', color:'#F5F2EC', display:'flex', alignItems:'center', justifyContent:'center', font:'600 14px Figtree,sans-serif' }
+            ? { width:'34px', height:'34px', flex:'none', borderRadius:'999px', background:'#14181A', color:'#F5F2EC', display:'flex', alignItems:'center', justifyContent:'center', font:'600 14px Figtree,sans-serif' }
             : { width:'34px', height:'34px', flex:'none', borderRadius:'999px', border:'2px solid '+(it.optional?'#D8CDB8':'#D4562E'), color: it.optional?'#8A7C64':'#D4562E', display:'flex', alignItems:'center', justifyContent:'center', font:'600 14px Spectral,serif' },
           circleGlyph: it.done ? '✓' : String(it.n),
         }));
@@ -1650,7 +1650,7 @@ class Component extends DCLogic {
       sendableCount, totalPrice, canSend:sendableCount>0,
       sendForTranslationAction:()=>this.sendForTranslation(),
       isCompletePlan: unlocked==='complete',
-      completePerkChipStyle:{ ...this.chipBase(), display:'inline-flex', marginTop:'12px', padding:'6px 13px', background:'rgba(27,58,62,.1)', color:'#1B3A3E' },
+      completePerkChipStyle:{ ...this.chipBase(), display:'inline-flex', marginTop:'12px', padding:'6px 13px', background:'rgba(27,58,62,.1)', color:'#14181A' },
       isAdminLogin:screen==='admin-login', isAdmin:screen==='admin',
       isAdminList: screen==='admin' && this.state.adminView==='list',
       isAdminDetail: screen==='admin' && this.state.adminView==='detail',

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button, Card, Chip, Heading, PageShell, Text } from "@/components/ui";
 import type { ChipTone } from "@/components/ui/Chip";
+import { TravelScene } from "@/components/illustrations/TravelScene";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 
 type Step = {
   id: string;
@@ -87,10 +89,15 @@ export default function RoadmapPage() {
       body: JSON.stringify({ status }),
     });
     if (res.ok) {
-      setData({
-        ...data,
-        steps: data.steps.map((s) => (s.id === step.id ? { ...s, status } : s)),
-      });
+      const updatedSteps = data.steps.map((s) => (s.id === step.id ? { ...s, status } : s));
+      setData({ ...data, steps: updatedSteps });
+
+      if (status === "done") {
+        trackEvent(ANALYTICS_EVENTS.roadmapStepCompleted, { stepKey: step.stepKey });
+        if (updatedSteps.every((s) => s.status === "done")) {
+          trackEvent(ANALYTICS_EVENTS.roadmapAllStepsCompleted);
+        }
+      }
     }
   }
 
@@ -194,9 +201,12 @@ export default function RoadmapPage() {
       </Text>
 
       {total === 0 && (
-        <Text size={14} muted style={{ marginTop: 24 }}>
-          Your roadmap hasn&apos;t been generated yet.
-        </Text>
+        <div style={{ textAlign: "center", padding: "24px 0" }}>
+          <TravelScene width={220} height={157} className="rb-empty-illustration" />
+          <Text size={14} muted style={{ marginTop: 8 }}>
+            Your roadmap hasn&apos;t been generated yet.
+          </Text>
+        </div>
       )}
 
       {phaseOrder.map((phase) => (

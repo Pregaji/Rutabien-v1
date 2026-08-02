@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FileText } from "lucide-react";
 import { Button, Card, Heading, PageShell, Text } from "@/components/ui";
+import { TravelScene } from "@/components/illustrations/TravelScene";
 
 type Order = {
   id: string;
@@ -99,7 +100,8 @@ export default function TranslationOrdersPage() {
     return (
       <PageShell style={{ textAlign: "center" }}>
         <div>
-          <Text muted weight={500} size={15}>
+          <TravelScene width={220} height={157} className="rb-empty-illustration" />
+          <Text muted weight={500} size={15} style={{ marginTop: 8 }}>
             No translation orders yet.
           </Text>
           <Button variant="secondary" style={{ marginTop: 18 }} href="/translation">

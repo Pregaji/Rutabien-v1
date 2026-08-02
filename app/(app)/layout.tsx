@@ -63,13 +63,21 @@ export default function AppShellLayout({ children }: { children: React.ReactNode
               );
             })}
           </nav>
-          <Button
-            variant="ghost"
-            style={{ border: "none", padding: 0, color: "var(--rb-text-muted)", fontSize: 13 }}
-            onClick={logout}
-          >
-            Log out
-          </Button>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <Link
+              href="/account/security"
+              style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-text-muted)" }}
+            >
+              Account security
+            </Link>
+            <Button
+              variant="ghost"
+              style={{ border: "none", padding: 0, color: "var(--rb-text-muted)", fontSize: 13 }}
+              onClick={logout}
+            >
+              Log out
+            </Button>
+          </div>
         </div>
       </div>
       <div style={{ flex: 1 }}>{children}</div>

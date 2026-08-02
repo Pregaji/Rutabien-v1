@@ -6,6 +6,7 @@ import { stepUpVerifications, users } from "@/db/schema";
 import { generateStepUpCode } from "@/lib/auth";
 import { sendStepUpCodeEmail } from "@/lib/email";
 import { getSession } from "@/lib/session";
+import { rateLimit } from "@/lib/rateLimit";
 
 const STEP_UP_TTL_MINUTES = 10;
 
@@ -17,6 +18,14 @@ export async function POST(req: NextRequest) {
   const session = await getSession(req);
   if (!session) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  const limited = rateLimit(`step-up-request:${session.userId}`, { limit: 5, windowMs: 15 * 60 * 1000 });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again shortly." },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfterSeconds) } }
+    );
   }
 
   const parsed = bodySchema.safeParse(await req.json().catch(() => ({})));

@@ -3,16 +3,24 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { accessTokens, users } from "@/db/schema";
-import { generateAccessToken } from "@/lib/auth";
+import { ACCESS_TOKEN_TTL_MINUTES, generateAccessToken } from "@/lib/auth";
 import { sendAccessLinkEmail } from "@/lib/email";
-
-const ACCESS_TOKEN_TTL_MINUTES = 20;
+import { getClientIp, rateLimit } from "@/lib/rateLimit";
 
 const bodySchema = z.object({
   email: z.string().trim().toLowerCase().email(),
 });
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const limited = rateLimit(`request-access:${ip}`, { limit: 5, windowMs: 15 * 60 * 1000 });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again shortly." },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfterSeconds) } }
+    );
+  }
+
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });

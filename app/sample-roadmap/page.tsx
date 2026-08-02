@@ -3,6 +3,7 @@
 import { useState } from "react";
 import HomeLink from "../HomeLink";
 import { Button, Card, Chip, Heading, Text } from "@/components/ui";
+import { RoadmapReadyScene } from "@/components/illustrations/RoadmapReadyScene";
 
 // Static illustrative content - no login, no real user data. Deliberately
 // NOT claimed as "based on officially published requirements" (that line
@@ -44,6 +45,9 @@ export default function SampleRoadmapPage() {
   return (
     <div className="rb-roadmap-wrap" style={{ maxWidth: 820, margin: "0 auto", padding: "44px 48px 96px" }}>
       <HomeLink />
+      <div style={{ maxWidth: 220, margin: "0 auto 4px" }}>
+        <RoadmapReadyScene width="100%" height="auto" />
+      </div>
       <Chip tone="orange" style={{ letterSpacing: "1px", padding: "6px 14px", fontSize: 12, background: "rgba(212,86,46,.08)", border: "1px solid rgba(212,86,46,.2)" }}>
         Example roadmap
       </Chip>

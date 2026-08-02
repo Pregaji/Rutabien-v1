@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Upload } from "lucide-react";
 import { Button, Card, Chip, Heading, PageShell, Text, TextInput } from "@/components/ui";
+import { DocumentVaultScene } from "@/components/illustrations/DocumentVaultScene";
 
 type Doc = {
   id: string;
   requirementId: string | null;
+  familyMemberId: string | null;
   name: string;
   status: "needed" | "uploaded" | "verified";
   fileRef: string | null;
@@ -17,9 +19,16 @@ type Doc = {
   translationOrderId: string | null;
 };
 
+type FamilyMemberRow = {
+  id: string;
+  name: string;
+  relationship: string;
+};
+
 type DocsData = {
   paymentStatus: "unpaid" | "essential" | "complete";
   documents: Doc[];
+  familyMembers: FamilyMemberRow[];
 };
 
 type Step = {
@@ -41,11 +50,20 @@ export default function DocumentsPage() {
   const [steps, setSteps] = useState<Step[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [stepUpFor, setStepUpFor] = useState<string | null>(null);
+  type StepUpTarget =
+    | { kind: "doc"; id: string }
+    | { kind: "folder"; folderKey: string | null; folderLabel: string };
+  const [stepUpFor, setStepUpFor] = useState<StepUpTarget | null>(null);
   const [code, setCode] = useState("");
   const [stepUpSent, setStepUpSent] = useState(false);
   const [stepUpBusy, setStepUpBusy] = useState(false);
   const [attaching, setAttaching] = useState<string | null>(null);
+  const [zipping, setZipping] = useState<string | null>(null);
+  const [addingMember, setAddingMember] = useState(false);
+  const [newMemberName, setNewMemberName] = useState("");
+  const [newMemberRelationship, setNewMemberRelationship] = useState<"spouse" | "child">("child");
+  const [memberBusy, setMemberBusy] = useState(false);
+  const [memberError, setMemberError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -123,12 +141,71 @@ export default function DocumentsPage() {
       return;
     }
     if (res.status === 403) {
-      setStepUpFor(doc.id);
+      setStepUpFor({ kind: "doc", id: doc.id });
       setStepUpSent(false);
       setCode("");
       return;
     }
     setError("Could not open document.");
+  }
+
+  async function attemptFolderDownload(folderKey: string | null, folderLabel: string) {
+    setError(null);
+    setZipping(folderKey ?? "self");
+    const res = await fetch("/api/documents/download-folder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ familyMemberId: folderKey }),
+    });
+    setZipping(null);
+    if (res.ok) {
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${folderLabel}.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+      return;
+    }
+    if (res.status === 403) {
+      const body = await res.json().catch(() => ({}));
+      if (body.error === "Step-up verification required") {
+        setStepUpFor({ kind: "folder", folderKey, folderLabel });
+        setStepUpSent(false);
+        setCode("");
+        return;
+      }
+    }
+    const body = await res.json().catch(() => ({}));
+    setError(body.error ?? "Could not download folder.");
+  }
+
+  async function addFamilyMember() {
+    setMemberBusy(true);
+    setMemberError(null);
+    const res = await fetch("/api/family-members", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newMemberName, relationship: newMemberRelationship }),
+    });
+    const body = await res.json().catch(() => ({}));
+    setMemberBusy(false);
+    if (res.ok) {
+      setNewMemberName("");
+      setAddingMember(false);
+      // Re-fetch rather than splice in the response - the new member's
+      // generated documents (createFamilyMemberDocuments) live in a
+      // separate response shape than what this endpoint returns.
+      const [docsRes, roadmapRes] = await Promise.all([
+        fetch("/api/documents").then((r) => (r.ok ? r.json() : Promise.reject())),
+        fetch("/api/roadmap").then((r) => (r.ok ? r.json() : Promise.reject())),
+      ]);
+      setData(docsRes);
+      setSteps(roadmapRes.steps ?? []);
+    } else {
+      setMemberError(body.error ?? "Could not add family member.");
+    }
   }
 
   async function requestStepUpCode() {
@@ -151,10 +228,14 @@ export default function DocumentsPage() {
       body: JSON.stringify({ code, purpose: "document_access" }),
     });
     if (res.ok) {
-      const docId = stepUpFor;
+      const target = stepUpFor;
       setStepUpFor(null);
-      const doc = data?.documents.find((d) => d.id === docId);
-      if (doc) await attemptDownload(doc);
+      if (target.kind === "doc") {
+        const doc = data?.documents.find((d) => d.id === target.id);
+        if (doc) await attemptDownload(doc);
+      } else {
+        await attemptFolderDownload(target.folderKey, target.folderLabel);
+      }
     } else {
       setError("Incorrect or expired code.");
     }
@@ -203,13 +284,26 @@ export default function DocumentsPage() {
     );
   }
 
-  const docsByStepKey = new Map<string, Doc[]>();
-  for (const doc of data.documents) {
-    const key = doc.requirementId ?? "unassigned";
-    if (!docsByStepKey.has(key)) docsByStepKey.set(key, []);
-    docsByStepKey.get(key)!.push(doc);
-  }
   const orderedSteps = [...steps].sort((a, b) => a.position - b.position);
+  const hasSpouse = data.familyMembers.some((m) => m.relationship === "spouse");
+
+  // One folder for the user's own documents (familyMemberId null), plus
+  // one per named family member - see db/schema.ts familyMembers comment
+  // for why documents are grouped by person, not just by document type.
+  const folders: { key: string; label: string; relationship: string | null; docs: Doc[] }[] = [
+    {
+      key: "self",
+      label: "My documents",
+      relationship: null,
+      docs: data.documents.filter((d) => !d.familyMemberId),
+    },
+    ...data.familyMembers.map((m) => ({
+      key: m.id,
+      label: m.name,
+      relationship: m.relationship,
+      docs: data.documents.filter((d) => d.familyMemberId === m.id),
+    })),
+  ];
 
   return (
     <div className="rb-roadmap-wrap" style={{ maxWidth: 820, margin: "0 auto", padding: "44px 48px 96px" }}>
@@ -234,15 +328,45 @@ export default function DocumentsPage() {
       )}
 
       <div style={{ marginTop: 30 }}>
-        {orderedSteps.map((step) => {
-          const docs = docsByStepKey.get(step.stepKey) ?? [];
-          if (docs.length === 0) return null;
+        {folders.map((folder) => {
+          if (folder.docs.length === 0) return null;
+          const docsByStepKey = new Map<string, Doc[]>();
+          for (const doc of folder.docs) {
+            const key = doc.requirementId ?? "unassigned";
+            if (!docsByStepKey.has(key)) docsByStepKey.set(key, []);
+            docsByStepKey.get(key)!.push(doc);
+          }
           return (
-            <div key={step.id} style={{ marginBottom: 28 }}>
-              <Heading as="h3" size="sm" style={{ fontSize: 17 }}>
-                {step.stepLabel}
-              </Heading>
-              {docs.map((doc) => (
+            <div key={folder.key} style={{ marginBottom: 40 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, paddingBottom: 8, borderBottom: "1.5px solid var(--rb-border)", flexWrap: "wrap" }}>
+                <Heading as="h2" size="md" style={{ fontSize: 19 }}>
+                  {folder.label}
+                </Heading>
+                {folder.relationship && (
+                  <Chip tone="neutral" style={{ padding: "3px 9px", fontSize: 10.5, textTransform: "capitalize" }}>
+                    {folder.relationship}
+                  </Chip>
+                )}
+                {folder.docs.some((d) => d.fileRef) && (
+                  <Button
+                    variant="ghost"
+                    style={{ ...smallBtnStyle, border: "none", marginLeft: "auto" }}
+                    disabled={zipping === (folder.key === "self" ? "self" : folder.key)}
+                    onClick={() => attemptFolderDownload(folder.key === "self" ? null : folder.key, folder.label)}
+                  >
+                    {zipping === (folder.key === "self" ? "self" : folder.key) ? "Zipping…" : "Download all (zip)"}
+                  </Button>
+                )}
+              </div>
+              {orderedSteps.map((step) => {
+                const docs = docsByStepKey.get(step.stepKey) ?? [];
+                if (docs.length === 0) return null;
+                return (
+                  <div key={step.id} style={{ marginBottom: 28 }}>
+                    <Heading as="h3" size="sm" style={{ fontSize: 17 }}>
+                      {step.stepLabel}
+                    </Heading>
+                    {docs.map((doc) => (
                 <Card key={doc.id} style={{ padding: "16px 20px", marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
                   <div>
                     <div style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 15, color: "var(--rb-text)" }}>{doc.name}</div>
@@ -304,14 +428,74 @@ export default function DocumentsPage() {
                     )}
                   </div>
                 </Card>
-              ))}
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           );
         })}
+
+        {addingMember ? (
+          <Card style={{ padding: "18px 20px", marginTop: 4, marginBottom: 28 }}>
+            <Heading as="h3" size="sm" style={{ fontSize: 15, marginBottom: 12 }}>
+              Add a family member
+            </Heading>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+              <TextInput
+                value={newMemberName}
+                onChange={setNewMemberName}
+                placeholder="Name"
+                style={{ maxWidth: 220 }}
+              />
+              <select
+                value={newMemberRelationship}
+                onChange={(e) => setNewMemberRelationship(e.target.value as "spouse" | "child")}
+                style={{ padding: "10px 12px", borderRadius: "var(--radius-sm)", border: "1.5px solid var(--rb-border)", fontFamily: "var(--font-body)", fontSize: 14, color: "var(--rb-text)" }}
+              >
+                <option value="child">Child</option>
+                {/* Only one spouse allowed - see the same check server-side
+                    in /api/family-members. Any number of children. */}
+                {!hasSpouse && <option value="spouse">Spouse</option>}
+              </select>
+              <Button
+                variant="primary"
+                style={smallBtnStyle}
+                disabled={memberBusy || !newMemberName.trim()}
+                onClick={addFamilyMember}
+              >
+                {memberBusy ? "Adding…" : "Add"}
+              </Button>
+              <Button
+                variant="ghost"
+                style={{ ...smallBtnStyle, border: "none", color: "var(--rb-text-muted)" }}
+                onClick={() => {
+                  setAddingMember(false);
+                  setMemberError(null);
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+            {memberError && (
+              <Text size={13} color="var(--rb-orange)" style={{ marginTop: 10 }}>
+                {memberError}
+              </Text>
+            )}
+          </Card>
+        ) : (
+          <Button variant="outline" style={{ ...smallBtnStyle, marginBottom: 28 }} onClick={() => setAddingMember(true)}>
+            + Add a family member
+          </Button>
+        )}
+
         {data.documents.length === 0 && (
-          <Text muted weight={500} size={15}>
-            No documents in your roadmap yet.
-          </Text>
+          <div style={{ textAlign: "center", padding: "24px 0" }}>
+            <DocumentVaultScene width={220} height={157} className="rb-empty-illustration" />
+            <Text muted weight={500} size={15} style={{ marginTop: 8 }}>
+              No documents in your roadmap yet.
+            </Text>
+          </div>
         )}
       </div>
 

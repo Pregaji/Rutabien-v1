@@ -23,6 +23,7 @@ const PROTECTED_PATHS = [
   "/eu-route",
   "/before-apply",
   "/translation/orders",
+  "/account",
 ];
 
 function isProtected(pathname: string): boolean {
@@ -65,5 +66,6 @@ export const config = {
     "/eu-route/:path*",
     "/before-apply/:path*",
     "/translation/orders/:path*",
+    "/account/:path*",
   ],
 };

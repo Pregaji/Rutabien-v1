@@ -6,7 +6,7 @@ import { users, accessTokens } from "@/db/schema";
 import { getSession } from "@/lib/session";
 import { captureSandboxOrder } from "@/lib/payments/paypal";
 import { PRICING_TIERS, isPlanType } from "@/lib/pricing";
-import { generateAccessToken } from "@/lib/auth";
+import { ACCESS_TOKEN_TTL_MINUTES, generateAccessToken } from "@/lib/auth";
 import { sendPostPaymentAccessEmail } from "@/lib/email";
 
 const bodySchema = z.object({ orderId: z.string(), plan: z.string() });
@@ -35,12 +35,12 @@ export async function POST(req: NextRequest) {
   // No gap between "I just paid" and "here's how I get back in" - see
   // MVP_Draft.md section 7, point 5.
   const token = generateAccessToken();
-  const expiresAt = new Date(Date.now() + 20 * 60 * 1000);
+  const expiresAt = new Date(Date.now() + ACCESS_TOKEN_TTL_MINUTES * 60 * 1000);
   await db.insert(accessTokens).values({ userId: user.id, token, expiresAt });
   await sendPostPaymentAccessEmail({
     to: user.email,
     accessUrl: `${process.env.APP_URL}/api/auth/verify?token=${token}`,
-    expiresInMinutes: 20,
+    expiresInMinutes: ACCESS_TOKEN_TTL_MINUTES,
     planName: tier.name,
   });
 

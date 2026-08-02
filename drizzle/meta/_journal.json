@@ -50,6 +50,20 @@
       "when": 1785188008321,
       "tag": "0006_nervous_the_hunter",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1785655317283,
+      "tag": "0007_next_the_phantom",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1785663574530,
+      "tag": "0008_young_patriot",
+      "breakpoints": true
     }
   ]
 }

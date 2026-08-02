@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import HomeLink from "../../HomeLink";
 import { Heading, PageShell, Text } from "@/components/ui";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 
 export default function PaypalReturnPage() {
   return (
@@ -30,7 +31,10 @@ function PaypalReturnInner() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ orderId, plan }),
     })
-      .then((res) => setStatus(res.ok ? "done" : "error"))
+      .then((res) => {
+        if (res.ok) trackEvent(ANALYTICS_EVENTS.paymentCompleted, { method: "paypal" });
+        setStatus(res.ok ? "done" : "error");
+      })
       .catch(() => setStatus("error"));
   }, [params]);
 

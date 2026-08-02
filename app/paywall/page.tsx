@@ -5,6 +5,9 @@ import { Check } from "lucide-react";
 import { PRICING_TIERS, type PlanType } from "@/lib/pricing";
 import HomeLink from "../HomeLink";
 import { Button, Heading, PageShell, Text } from "@/components/ui";
+import { PaywallTiersScene } from "@/components/illustrations/PaywallTiersScene";
+import { UnlockScene } from "@/components/illustrations/UnlockScene";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 
 const checkIcon = (bg: string, color: string) => ({
   width: 18,
@@ -29,10 +32,13 @@ export default function PaywallPage() {
       <PageShell className="rb-paywall-wrap">
         <HomeLink />
         <div style={{ width: "100%", maxWidth: 820 }}>
-          <Heading size="lg" style={{ fontSize: 30 }}>
+          <div style={{ maxWidth: 260, margin: "0 auto" }}>
+            <PaywallTiersScene width="100%" height="auto" />
+          </div>
+          <Heading size="lg" style={{ fontSize: 30, textAlign: "center", marginTop: 8 }}>
             Unlock your full roadmap
           </Heading>
-          <Text size={14.5} muted style={{ margin: "10px 0 0" }}>
+          <Text size={14.5} muted style={{ margin: "10px 0 0", textAlign: "center" }}>
             Both plans are a single payment - no auto-renewal, ever.
           </Text>
 
@@ -133,6 +139,7 @@ export default function PaywallPage() {
   const tier = PRICING_TIERS[selectedTier];
 
   async function payWithStripe() {
+    trackEvent(ANALYTICS_EVENTS.checkoutStarted, { plan: selectedTier, method: "stripe" });
     setPaying(true);
     setError(null);
     const res = await fetch("/api/checkout/stripe", {
@@ -150,6 +157,7 @@ export default function PaywallPage() {
   }
 
   async function payWithPaypal() {
+    trackEvent(ANALYTICS_EVENTS.checkoutStarted, { plan: selectedTier, method: "paypal" });
     setPaying(true);
     setError(null);
     const res = await fetch("/api/checkout/paypal/create", {
@@ -177,6 +185,9 @@ export default function PaywallPage() {
         >
           ‹ Back
         </Button>
+        <div style={{ maxWidth: 180, marginBottom: 4 }}>
+          <UnlockScene width="100%" height="auto" />
+        </div>
         <Heading size="lg">{tier.name} plan</Heading>
         <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 18 }}>
           <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 46, color: "var(--rb-text)" }}>€{tier.priceEur}</span>

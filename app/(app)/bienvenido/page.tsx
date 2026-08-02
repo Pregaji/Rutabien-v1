@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BIENVENIDO_CONTENT, type Lang } from "@/lib/bienvenidoContent";
 import { Button, Card, Heading, PageShell, Text } from "@/components/ui";
 import { BienvenidoIllustration } from "@/components/BienvenidoIcons";
+import { TravelScene } from "@/components/illustrations/TravelScene";
 
 export default function BienvenidoPage() {
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
@@ -73,7 +74,11 @@ export default function BienvenidoPage() {
         </div>
       </div>
 
-      <Text style={{ margin: "14px 0 0" }}>{content.intro}</Text>
+      <div style={{ marginTop: 20, borderRadius: "var(--radius-xl)", overflow: "hidden" }}>
+        <TravelScene width="100%" height="auto" />
+      </div>
+
+      <Text style={{ margin: "20px 0 0" }}>{content.intro}</Text>
 
       <Card variant="teal" style={{ marginTop: 20, padding: 20 }}>
         <Text

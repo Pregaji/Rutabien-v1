@@ -53,3 +53,14 @@ export async function getDownloadUrl(key: string): Promise<string> {
 export async function deleteObject(key: string): Promise<void> {
   await getClient().send(new DeleteObjectCommand({ Bucket: getBucket(), Key: key }));
 }
+
+// Fetches the actual bytes server-side, for bundling multiple documents
+// into one zip (see /api/documents/download-folder) - unlike
+// getDownloadUrl, this is not a presigned link the browser follows itself.
+// Same step-up requirement applies; enforced at the route level.
+export async function getObjectBytes(key: string): Promise<{ bytes: Uint8Array; contentType?: string }> {
+  const command = new GetObjectCommand({ Bucket: getBucket(), Key: key });
+  const response = await getClient().send(command);
+  const bytes = await response.Body!.transformToByteArray();
+  return { bytes, contentType: response.ContentType };
+}

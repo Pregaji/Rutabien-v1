@@ -3,12 +3,10 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { users, translationOrders, accessTokens } from "@/db/schema";
-import { generateAccessToken } from "@/lib/auth";
+import { ACCESS_TOKEN_TTL_MINUTES, generateAccessToken } from "@/lib/auth";
 import { sendAccessLinkEmail } from "@/lib/email";
 import { computeTranslationTotal } from "@/lib/translationPricing";
 import { getSession } from "@/lib/session";
-
-const ACCESS_TOKEN_TTL_MINUTES = 20;
 
 const bodySchema = z.object({
   email: z.string().trim().toLowerCase().email(),

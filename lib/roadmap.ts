@@ -1,7 +1,8 @@
 import { eq, and, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { users, requirements, documents, roadmapProgress, countryProfiles } from "@/db/schema";
+import { users, requirements, documents, roadmapProgress, familyMembers as familyMembersTable } from "@/db/schema";
 import type { FamilyMember } from "@/lib/intakeTree";
+import { createFamilyMemberDocuments } from "@/lib/familyMembers";
 
 const VISA_TYPE_BY_CASE: Record<string, string> = {
   new_student_visa: "student_visa",
@@ -60,15 +61,24 @@ export async function generateRoadmap(userId: string) {
       )
     );
 
+  const selfApplicable = selfRows.filter(
+    (r) => !r.conditions?.length || r.conditions.every((c) => evalCondition(c, answers))
+  );
+
   // SLF (family-member) document *types* are set by Spanish national law,
   // not per-nationality (see db/schema.ts countryProfiles comment) - so
   // these rows have nationality = null and apply to every nationality.
   // Only fetched at all when the user actually has family accompanying.
+  // These are used for the roadmap CHECKLIST only (one step per type,
+  // e.g. "Gather: Birth certificate (child)" regardless of child count) -
+  // the actual document rows are created per named family member below,
+  // via the same helper /api/family-members uses for a dependent added
+  // after intake (see lib/familyMembers.ts).
   const familyMembers = (answers.familyMembers as FamilyMember[] | undefined) ?? [];
   const hasSpouse = familyMembers.some((m) => m.relationship === "spouse");
   const childCount = familyMembers.filter((m) => m.relationship === "child").length;
 
-  let slfRows: (typeof selfRows)[number][] = [];
+  let slfApplicable: (typeof selfRows)[number][] = [];
   if (hasSpouse || childCount > 0) {
     const rawSlfRows = await db
       .select()
@@ -81,57 +91,103 @@ export async function generateRoadmap(userId: string) {
           eq(requirements.signedOff, true)
         )
       );
-    slfRows = rawSlfRows.filter(
+    const slfRows = rawSlfRows.filter(
       (r) =>
         (r.appliesTo === "spouse" && hasSpouse) ||
         (r.appliesTo === "child" && childCount > 0)
     );
+    slfApplicable = slfRows.filter(
+      (r) => !r.conditions?.length || r.conditions.every((c) => evalCondition(c, answers))
+    );
+  }
 
-    // The one real per-country variable for these rows: is the issuing
-    // country a Hague Apostille signatory. Hague members get the simple,
-    // universally-true "Apostille" path; non-members/unresearched
-    // countries keep whatever legalization chain was actually authored
-    // for that row (or none, rather than inventing one) - see
-    // countryProfiles for why this isn't per-document content.
-    if (slfRows.length > 0) {
-      const [profile] = await db
-        .select()
-        .from(countryProfiles)
-        .where(eq(countryProfiles.nationality, user.nationality))
-        .limit(1);
-      if (profile?.signedOff && profile.isHagueApostilleSignatory === true) {
-        slfRows = slfRows.map((r) => ({ ...r, legalizationChain: "Apostille" }));
-      }
+  const applicable = [...selfApplicable, ...slfApplicable];
+  if (applicable.length === 0) return { documentCount: 0, stepCount: 0 };
+
+  // Idempotency guard (2026-08-02) - this function can legitimately run more
+  // than once for the same user (edited intake answers via
+  // /api/intake/update, a re-triggered /api/roadmap/generate, etc.), and
+  // previously had no cleanup at all: every call blindly inserted a fresh
+  // copy of every step/document on top of whatever already existed,
+  // duplicating without bound (confirmed in production - one account
+  // accumulated 55 roadmap sections). The fix inserts only what's missing
+  // and removes what's no longer applicable, while never touching an
+  // uploaded file (fileRef set) or a step's progress status/dates - editing
+  // your answers should update the checklist, not erase what you'd already
+  // done.
+  const existingSelfDocs = await db
+    .select()
+    .from(documents)
+    .where(and(eq(documents.userId, userId), isNull(documents.familyMemberId)));
+  const existingSelfReqIds = new Set(existingSelfDocs.map((d) => d.requirementId));
+  const applicableSelfReqIds = new Set(selfApplicable.map((r) => r.id));
+
+  const staleSelfDocIds = existingSelfDocs
+    .filter((d) => !d.fileRef && d.requirementId && !applicableSelfReqIds.has(d.requirementId))
+    .map((d) => d.id);
+  if (staleSelfDocIds.length > 0) {
+    for (const id of staleSelfDocIds) {
+      await db.delete(documents).where(eq(documents.id, id));
     }
   }
 
-  const rows = [...selfRows, ...slfRows];
-  const applicable = rows.filter(
-    (r) => !r.conditions?.length || r.conditions.every((c) => evalCondition(c, answers))
-  );
+  const newSelfRows = selfApplicable.filter((r) => !existingSelfReqIds.has(r.id));
+  if (newSelfRows.length > 0) {
+    await db.insert(documents).values(
+      newSelfRows.map((r) => ({
+        userId,
+        requirementId: r.id,
+        name: r.documentName,
+        translationRequired: r.translationRequired,
+        legalizationChain: r.legalizationChain,
+        notarizationRequired: r.notarizationRequired,
+      }))
+    );
+  }
 
-  if (applicable.length === 0) return { documentCount: 0, stepCount: 0 };
+  // Family member rows are created by /api/intake/submit before this runs
+  // (from the spouseIncluded/childCount counts) - generate each one's
+  // actual documents now that the roadmap/requirements are known.
+  // createFamilyMemberDocuments is itself idempotent per member (see
+  // lib/familyMembers.ts), so re-running this for an existing member is safe.
+  let familyDocumentCount = 0;
+  if (hasSpouse || childCount > 0) {
+    const members = await db.select().from(familyMembersTable).where(eq(familyMembersTable.userId, userId));
+    for (const member of members) {
+      familyDocumentCount += await createFamilyMemberDocuments(
+        userId,
+        member.id,
+        member.relationship as "spouse" | "child"
+      );
+    }
+  }
 
-  await db.insert(documents).values(
-    applicable.map((r) => ({
-      userId,
-      requirementId: r.id,
-      name: r.documentName,
-      translationRequired: r.translationRequired,
-      legalizationChain: r.legalizationChain,
-      notarizationRequired: r.notarizationRequired,
-    }))
-  );
+  const existingSteps = await db.select().from(roadmapProgress).where(eq(roadmapProgress.userId, userId));
+  const existingStepKeys = new Set(existingSteps.map((s) => s.stepKey));
+  const applicableStepKeys = new Set(applicable.map((r) => r.id));
 
-  await db.insert(roadmapProgress).values(
-    applicable.map((r, i) => ({
-      userId,
-      stepKey: r.id,
-      stepLabel: `Gather: ${r.documentName}`,
-      phase: r.phase,
-      position: r.sortOrder ?? i,
-    }))
-  );
+  const staleStepIds = existingSteps.filter((s) => !applicableStepKeys.has(s.stepKey)).map((s) => s.id);
+  if (staleStepIds.length > 0) {
+    for (const id of staleStepIds) {
+      await db.delete(roadmapProgress).where(eq(roadmapProgress.id, id));
+    }
+  }
 
-  return { documentCount: applicable.length, stepCount: applicable.length };
+  const newSteps = applicable.filter((r) => !existingStepKeys.has(r.id));
+  if (newSteps.length > 0) {
+    await db.insert(roadmapProgress).values(
+      newSteps.map((r, i) => ({
+        userId,
+        stepKey: r.id,
+        stepLabel: `Gather: ${r.documentName}`,
+        phase: r.phase,
+        position: r.sortOrder ?? i,
+      }))
+    );
+  }
+
+  return {
+    documentCount: newSelfRows.length + familyDocumentCount,
+    stepCount: newSteps.length,
+  };
 }

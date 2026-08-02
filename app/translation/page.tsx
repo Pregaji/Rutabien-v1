@@ -4,6 +4,8 @@ import { useState } from "react";
 import { computeTranslationTotal, POSTAL_DELIVERY_SURCHARGE_EUR, tierPriceFor } from "@/lib/translationPricing";
 import HomeLink from "../HomeLink";
 import { Button, Card, Heading, PageShell, Text, TextInput } from "@/components/ui";
+import { TranslationLandingScene } from "@/components/illustrations/TranslationLandingScene";
+import { CheckInboxScene } from "@/components/illustrations/CheckInboxScene";
 
 const STEPS = [
   { n: "01", title: "Attach", body: "Upload scans of the documents you need translated." },
@@ -46,7 +48,8 @@ export default function TranslationPage() {
       <PageShell>
         <HomeLink />
         <div style={{ textAlign: "center", maxWidth: 420 }}>
-          <Heading size="lg">Check your inbox</Heading>
+          <CheckInboxScene width={220} height={157} className="rb-empty-illustration" />
+          <Heading size="lg" style={{ marginTop: 8 }}>Check your inbox</Heading>
           <Text style={{ margin: "14px 0 0" }}>
             We&apos;ve sent a link to {email} - click it to upload your documents and pay.
           </Text>
@@ -72,6 +75,9 @@ export default function TranslationPage() {
         }}
       >
         <div style={{ flex: "1 1 380px", maxWidth: 420 }}>
+          <div style={{ maxWidth: 200, marginBottom: 4 }}>
+            <TranslationLandingScene width="100%" height="auto" />
+          </div>
           <Heading size="lg" style={{ fontSize: 32 }}>
             Just need a translation?
           </Heading>
@@ -121,14 +127,22 @@ export default function TranslationPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <button
               onClick={() => setDocumentCount((c) => Math.max(1, c - 1))}
+              aria-label="Decrease document count"
               style={stepperBtn}
             >
               −
             </button>
-            <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 20, color: "var(--rb-text)", minWidth: 24, textAlign: "center" }}>
+            <span
+              aria-live="polite"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 20, color: "var(--rb-text)", minWidth: 24, textAlign: "center" }}
+            >
               {documentCount}
             </span>
-            <button onClick={() => setDocumentCount((c) => Math.min(50, c + 1))} style={stepperBtn}>
+            <button
+              onClick={() => setDocumentCount((c) => Math.min(50, c + 1))}
+              aria-label="Increase document count"
+              style={stepperBtn}
+            >
               +
             </button>
             <Text size={13} weight={500} muted>

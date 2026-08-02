@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, Heading, PageShell, Text } from "@/components/ui";
+import { BeforeApplyScene } from "@/components/illustrations/BeforeApplyScene";
 
 const CHECKLIST = [
   "Apply to your chosen Spanish universities and wait for an offer.",
@@ -34,7 +35,8 @@ export default function BeforeApplyPage() {
   return (
     <PageShell style={{ textAlign: "center" }}>
       <div style={{ width: "100%", maxWidth: 480 }}>
-        <Heading size="lg">We&apos;ll be in touch</Heading>
+        <BeforeApplyScene width={220} height={157} className="rb-empty-illustration" />
+        <Heading size="lg" style={{ marginTop: 8 }}>We&apos;ll be in touch</Heading>
         <Text size={15} style={{ lineHeight: 1.6, margin: "14px 0 0" }}>
           We&apos;ve saved {email ?? "your email"} - we&apos;ll follow up once it&apos;s a good
           time to pick this back up. In the meantime:

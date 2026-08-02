@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { users, accessTokens, translationOrders } from "@/db/schema";
 import { getStripe } from "@/lib/payments/stripe";
 import { isPlanType, PRICING_TIERS } from "@/lib/pricing";
-import { generateAccessToken } from "@/lib/auth";
+import { ACCESS_TOKEN_TTL_MINUTES, generateAccessToken } from "@/lib/auth";
 import { sendPostPaymentAccessEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
@@ -44,12 +44,12 @@ export async function POST(req: NextRequest) {
         .returning();
 
       const token = generateAccessToken();
-      const expiresAt = new Date(Date.now() + 20 * 60 * 1000);
+      const expiresAt = new Date(Date.now() + ACCESS_TOKEN_TTL_MINUTES * 60 * 1000);
       await db.insert(accessTokens).values({ userId: user.id, token, expiresAt });
       await sendPostPaymentAccessEmail({
         to: user.email,
         accessUrl: `${process.env.APP_URL}/api/auth/verify?token=${token}`,
-        expiresInMinutes: 20,
+        expiresInMinutes: ACCESS_TOKEN_TTL_MINUTES,
         planName: tier.name,
       });
     }

@@ -4,9 +4,11 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, Clock, MapPin } from "lucide-react";
-import { computePath, getNextStep, type IntakeAnswers, type StepId } from "@/lib/intakeTree";
+import { computePath, estimateTotalPath, getNextStep, type IntakeAnswers, type StepId } from "@/lib/intakeTree";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 import HomeLink from "../HomeLink";
 import { Button, Heading, PageShell, Text, TextInput } from "@/components/ui";
+import { CheckInboxScene } from "@/components/illustrations/CheckInboxScene";
 
 const card = { width: "100%", maxWidth: 560 } as const;
 
@@ -113,6 +115,10 @@ function IntakePageInner() {
   const [loadingCurrent, setLoadingCurrent] = useState(editing);
 
   useEffect(() => {
+    if (!editing) trackEvent(ANALYTICS_EVENTS.intakeStarted);
+  }, [editing]);
+
+  useEffect(() => {
     if (!editing) return;
     fetch("/api/intake/current")
       .then((res) => (res.ok ? res.json() : Promise.reject()))
@@ -151,6 +157,7 @@ function IntakePageInner() {
         if (editing) {
           router.push("/roadmap");
         } else {
+          trackEvent(ANALYTICS_EVENTS.intakeCompleted);
           setSubmitted(true);
         }
       } else {
@@ -185,7 +192,8 @@ function IntakePageInner() {
       <PageShell>
         <HomeLink />
         <div style={{ ...card, textAlign: "center" }}>
-          <Heading>Check your inbox</Heading>
+          <CheckInboxScene width={220} height={157} className="rb-empty-illustration" />
+          <Heading style={{ marginTop: 8 }}>Check your inbox</Heading>
           <Text size={15} muted style={{ lineHeight: 1.5, margin: "12px 0 0" }}>
             We&apos;ve sent a link to {answers.email}. It&apos;ll take you straight to your
             roadmap - no password needed.
@@ -205,7 +213,12 @@ function IntakePageInner() {
 
   const currentPath: StepId[] = computePath(answers).filter((s) => s !== "COMPLETE");
   const currentIndex = Math.max(0, currentPath.findIndex((s) => s === step));
-  const totalSteps = currentPath.length || 1;
+  // estimateTotalPath only counts from the current step onward (getNextStep
+  // skips fields already answered) - add back the steps already passed
+  // (currentIndex of them) to get a real, stable grand total rather than one
+  // that shrinks by exactly 1 every time the numerator grows by 1.
+  const remainingEstimate = estimateTotalPath(answers).filter((s) => s !== "COMPLETE").length;
+  const totalSteps = currentIndex + remainingEstimate;
 
   return (
     <div className="rb-intake-shell">
@@ -281,9 +294,9 @@ function IntakePageInner() {
         </div>
 
         <div className="rb-intake-segments">
-          {currentPath.map((s, i) => (
+          {Array.from({ length: totalSteps }, (_, i) => (
             <span
-              key={s}
+              key={i}
               style={{
                 flex: 1,
                 height: 4,

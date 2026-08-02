@@ -162,6 +162,54 @@ export function computePath(answers: IntakeAnswers): StepId[] {
   return path;
 }
 
+// For any gate not yet answered, which value keeps the user on the longer
+// branch - i.e. the full questionnaire rather than an early exit. Used only
+// to estimate a total step count that's as close to true as what's known so
+// far allows; it only ever gets more precise (shorter) as real answers
+// replace these guesses, never less.
+const LONG_BRANCH_ASSUMPTION: Partial<{ [K in keyof IntakeAnswers]: IntakeAnswers[K] }> = {
+  euEeaCitizen: false,
+  applicantType: "new",
+  // Only reached when the user's real answer is "returning" (the
+  // simulation itself never guesses this branch) - still needs an
+  // assumption or estimateTotalPath throws for every returning applicant.
+  currentPermitType: "placeholder",
+  currentPermitExpiry: "2099-01-01",
+  nationality: "placeholder",
+  hasAcceptanceLetter: true,
+  familyMembersAccompanying: true,
+  spouseIncluded: true,
+  plansPartTimeWork: false,
+  housingStatus: "still_looking",
+  sawHousingGuidance: true,
+  arrivalDate: "2099-01-01",
+  email: "placeholder@rutabien.com",
+};
+
+// Same walk as computePath, but instead of stopping at the first unanswered
+// step, keeps going by assuming the longer branch at each gate - gives the
+// intake UI a real "X of Y" total that narrows toward the truth as the user
+// answers, rather than always reporting the current step as the last one.
+export function estimateTotalPath(answers: IntakeAnswers): StepId[] {
+  const path: StepId[] = [];
+  let sim: IntakeAnswers = { ...answers };
+  for (let guard = 0; guard < STEP_IDS.length + 1; guard++) {
+    const step = getNextStep(sim);
+    path.push(step);
+    if (step === "COMPLETE") break;
+    const keys = STEP_ANSWER_KEYS[step];
+    const unanswered = keys.filter((k) => sim[k] === undefined);
+    for (const k of unanswered) {
+      if (LONG_BRANCH_ASSUMPTION[k] === undefined) {
+        throw new Error(`estimateTotalPath: no LONG_BRANCH_ASSUMPTION for "${k}" (step ${step})`);
+      }
+    }
+    const additions = Object.fromEntries(unanswered.map((k) => [k, LONG_BRANCH_ASSUMPTION[k]]));
+    sim = { ...sim, ...additions };
+  }
+  return path;
+}
+
 export function deriveCaseType(answers: IntakeAnswers): CaseType {
   if (answers.euEeaCitizen === true) return "eu_registration";
   if (answers.applicantType === "returning") return "renewal";

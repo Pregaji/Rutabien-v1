@@ -2,13 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { users, accessTokens } from "@/db/schema";
-import { generateAccessToken } from "@/lib/auth";
+import { users, accessTokens, familyMembers } from "@/db/schema";
+import { ACCESS_TOKEN_TTL_MINUTES, generateAccessToken } from "@/lib/auth";
 import { sendAccessLinkEmail } from "@/lib/email";
 import { deriveUserFields, isComplete } from "@/lib/intakeTree";
 import { generateRoadmap } from "@/lib/roadmap";
-
-const ACCESS_TOKEN_TTL_MINUTES = 20;
 
 const answersSchema = z.object({
   euEeaCitizen: z.boolean().optional(),
@@ -59,6 +57,28 @@ export async function POST(req: NextRequest) {
   const [user] = existing
     ? await db.update(users).set(values).where(eq(users.id, existing.id)).returning()
     : await db.insert(users).values(values).returning();
+
+  // Intake only ever collects family COUNTS (spouseIncluded/childCount),
+  // never names - create placeholder named rows here so generateRoadmap
+  // can produce one real document set per person instead of one ambiguous
+  // shared set per document type (see db/schema.ts familyMembers comment).
+  // Guarded against re-submission duplicating rows a user may have already
+  // renamed/added to via /api/family-members.
+  if (answers.familyMembersAccompanying) {
+    const [existingMember] = await db
+      .select({ id: familyMembers.id })
+      .from(familyMembers)
+      .where(eq(familyMembers.userId, user.id))
+      .limit(1);
+    if (!existingMember) {
+      const rows: { userId: string; name: string; relationship: "spouse" | "child" }[] = [];
+      if (answers.spouseIncluded) rows.push({ userId: user.id, name: "Spouse", relationship: "spouse" });
+      for (let i = 1; i <= (answers.childCount ?? 0); i++) {
+        rows.push({ userId: user.id, name: `Child ${i}`, relationship: "child" });
+      }
+      if (rows.length > 0) await db.insert(familyMembers).values(rows);
+    }
+  }
 
   // Only the two branches with a real visa roadmap generate one - EU/EEA
   // citizens and pre-acceptance applicants land on their own dedicated

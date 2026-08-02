@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Button, Card, Heading, PageShell, Text } from "@/components/ui";
+import { EuRouteScene } from "@/components/illustrations/EuRouteScene";
+import { EuEndpointScene } from "@/components/illustrations/EuEndpointScene";
 
 type RouteData = {
   email: string;
@@ -44,7 +46,10 @@ export default function EuRoutePage() {
 
   return (
     <div style={{ maxWidth: 680, margin: "0 auto", padding: "48px 24px 96px" }}>
-      <Heading size="xl" style={{ textAlign: "center" }}>
+      <div style={{ maxWidth: 260, margin: "0 auto" }}>
+        <EuRouteScene width="100%" height="auto" />
+      </div>
+      <Heading size="xl" style={{ textAlign: "center", marginTop: 8 }}>
         Good news - you don&apos;t need a student visa
       </Heading>
       <Text size={15} style={{ lineHeight: 1.6, margin: "14px 0 0", textAlign: "center" }}>
@@ -84,7 +89,10 @@ export default function EuRoutePage() {
         </Card>
       </div>
 
-      <Text size={12.5} muted style={{ margin: "18px 0 0", textAlign: "center" }}>
+      <div style={{ maxWidth: 160, margin: "24px auto 0" }}>
+        <EuEndpointScene width="100%" height="auto" />
+      </div>
+      <Text size={12.5} muted style={{ margin: "8px 0 0", textAlign: "center" }}>
         No visa, no TIE card, no consulate appointment needed.
         {data?.email ? ` We've saved this route to ${data.email}.` : ""}
       </Text>

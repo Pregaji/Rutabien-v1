@@ -32,7 +32,7 @@ No password field anywhere. But also **not a static, reusable, non-expiring link
 `/design-reference/Rutabien.dc.html` (desktop) and `/design-reference/Rutabien v1 (mobile).dc.html` (mobile) are approved, working prototypes with real design decisions already made. **Translate these into React components matching this project's structure — preserve the exact visual design, layout, and interaction patterns.** Do not reinterpret or simplify the design from a text description; treat the prototypes as ground truth.
 
 Color palette (premium revision, already applied in prototypes):
-- Primary structural: `#1B3A3E` (deep navy-teal)
+- Primary structural: `#14181A` (near-black, darker revision confirmed 2026-08-02 — supersedes the earlier `#1B3A3E` navy-teal)
 - Accent (sparing use only — CTAs, key highlights): `#D4562E` (terracotta)
 - Base/background: `#F5F2EC` (warm stone)
 - Text: `#1A1F24` (charcoal)

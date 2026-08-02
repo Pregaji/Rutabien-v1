@@ -218,6 +218,16 @@ export const users = pgTable("users", {
 
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+
+  // Optional TOTP second factor (2026-08-02) - deliberately app-based
+  // (Google Authenticator/1Password/etc), not email-based: the threat this
+  // protects against is "someone has access to the user's email inbox," so
+  // a second factor that also goes through email wouldn't add anything.
+  // totpSecret stays null until setup is confirmed with a real code (see
+  // /api/auth/2fa/confirm) - a secret alone, unconfirmed, must never flip
+  // totpEnabled.
+  totpSecret: text("totp_secret"),
+  totpEnabled: boolean("totp_enabled").notNull().default(false),
 });
 
 // Short-lived (~15-30 min), single-use magic links requested from the
@@ -266,6 +276,28 @@ export const stepUpVerifications = pgTable("step_up_verifications", {
 });
 
 // ---------------------------------------------------------------------------
+// Family members — named dependents (spouse/child) a user's documents can
+// belong to. Intake only ever collected counts (spouseIncluded/childCount),
+// never names, so these rows are created two ways: in bulk from those
+// counts at intake submit (see /api/intake/submit), and one at a time via
+// /api/family-members for a dependent added after the fact - both paths
+// share createFamilyMemberDocuments (lib/familyMembers.ts) so a
+// post-intake addition gets exactly the same document set an intake-time
+// one would have. Document Vault (this whole feature) is Complete-plan
+// only - see app/(app)/documents/page.tsx's existing paymentStatus gate.
+// ---------------------------------------------------------------------------
+
+export const familyMembers = pgTable("family_members", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  relationship: text("relationship").notNull(), // 'spouse' | 'child'
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// ---------------------------------------------------------------------------
 // Documents — per-user tracking. Requirement fields (translation/legalization/
 // notarization) are snapshotted from `requirements` at roadmap-generation
 // time, since the source requirement content can change later.
@@ -278,6 +310,12 @@ export const documents = pgTable("documents", {
     .references(() => users.id, { onDelete: "cascade" }),
   requirementId: uuid("requirement_id").references(() => requirements.id, {
     onDelete: "set null",
+  }),
+  // null = the user's own document. Set = belongs to that family member -
+  // lets Documents show a folder per dependent instead of one ambiguous
+  // shared "Birth certificate (child)" row no matter how many children.
+  familyMemberId: uuid("family_member_id").references(() => familyMembers.id, {
+    onDelete: "cascade",
   }),
 
   name: text("name").notNull(),

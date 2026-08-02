@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button, Chip, Text } from "@/components/ui";
 import type { ChipTone } from "@/components/ui/Chip";
+import { AdminEmptyScene } from "@/components/illustrations/AdminEmptyScene";
 
 type AdminUserRow = {
   id: string;
@@ -163,9 +164,12 @@ export default function AdminUsersTable() {
           </div>
         ))}
         {visible.length === 0 && (
-          <Text muted style={{ padding: 20 }}>
-            No students yet.
-          </Text>
+          <div style={{ textAlign: "center", padding: "20px 0" }}>
+            <AdminEmptyScene width={160} height={114} className="rb-empty-illustration" />
+            <Text muted style={{ marginTop: 4 }}>
+              No students yet.
+            </Text>
+          </div>
         )}
       </div>
     </div>

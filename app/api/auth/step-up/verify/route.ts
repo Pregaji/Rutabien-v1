@@ -4,6 +4,7 @@ import { and, eq, gt, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { stepUpVerifications } from "@/db/schema";
 import { getSession } from "@/lib/session";
+import { rateLimit } from "@/lib/rateLimit";
 
 const bodySchema = z.object({
   code: z.string().trim().length(6),
@@ -14,6 +15,16 @@ export async function POST(req: NextRequest) {
   const session = await getSession(req);
   if (!session) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  // A 6-digit code is only 1M possibilities - this is the endpoint that
+  // actually needs a tight limit, not just abuse-deterrence.
+  const limited = rateLimit(`step-up-verify:${session.sessionId}`, { limit: 10, windowMs: 15 * 60 * 1000 });
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "Too many attempts. Please request a new code." },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfterSeconds) } }
+    );
   }
 
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
