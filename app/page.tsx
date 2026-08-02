@@ -139,9 +139,9 @@ export default function LandingPage() {
               variant="ghost"
               size="md"
               style={{ background: "transparent", border: "1.5px solid rgba(247,241,232,.4)", color: "var(--rb-on-teal)", padding: "11px 20px", fontSize: 14, borderRadius: "var(--radius-sm)" }}
-              href="/intake"
+              href="/access"
             >
-              Get my roadmap
+              Access your roadmap
             </Button>
           </div>
 
