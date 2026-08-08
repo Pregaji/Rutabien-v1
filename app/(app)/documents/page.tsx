@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Upload } from "lucide-react";
-import { Button, Card, Chip, Heading, PageShell, Text, TextInput } from "@/components/ui";
+import { Upload, ChevronDown } from "lucide-react";
+import { Button, Card, Heading, PageShell, Text, TextInput } from "@/components/ui";
 import { DocumentVaultScene } from "@/components/illustrations/DocumentVaultScene";
+import { DOCUMENT_CATEGORIES } from "@/lib/documentCategories";
 
 type Doc = {
   id: string;
@@ -17,6 +18,7 @@ type Doc = {
   translationRequired: boolean;
   notarizationRequired: boolean;
   translationOrderId: string | null;
+  category: string | null;
 };
 
 type FamilyMemberRow = {
@@ -31,23 +33,50 @@ type DocsData = {
   familyMembers: FamilyMemberRow[];
 };
 
-type Step = {
-  id: string;
-  stepKey: string;
-  stepLabel: string;
-  phase: string | null;
-  position: number;
-};
+// 5 distinct states, each with its own visual treatment - "expiring" reads
+// as amber/urgent-but-calm (terracotta tint), never full alarm red, per the
+// design handoff. Mirrors the reference prototype's docStateInfo logic
+// exactly (Rutabien.dc.html), substituting the core teal/orange tokens for
+// var(--rb-teal)/var(--rb-orange) rather than hardcoding them - see
+// lib/colors.ts for why the *other* literal hexes here (supporting tones,
+// not the 4 core brand colors) are fine as-is.
+function getStatusBadge(doc: Doc): { label: string; glyph: string; background: string; color: string } {
+  const hasUpload = !!doc.fileRef;
+  const daysLeft = doc.validityExpiryDate
+    ? Math.ceil((new Date(doc.validityExpiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null;
 
-const STATUS_LABEL: Record<Doc["status"], string> = {
-  verified: "Verified",
-  uploaded: "Uploaded",
-  needed: "Needed",
-};
+  if (doc.validityExpiryDate && hasUpload && daysLeft !== null && daysLeft <= 0) {
+    return { label: "Expired — re-upload needed", glyph: "!", background: "var(--rb-orange)", color: "var(--rb-bg)" };
+  }
+  if (doc.validityExpiryDate && hasUpload && daysLeft !== null && daysLeft <= 14) {
+    return { label: `Expires in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`, glyph: "⚠", background: "rgba(212,86,46,.16)", color: "#B84420" };
+  }
+  if (doc.status === "verified") {
+    return { label: "Verified", glyph: "✓", background: "rgba(20,24,26,.12)", color: "var(--rb-teal)" };
+  }
+  if (hasUpload) {
+    return { label: "Uploaded, pending review", glyph: "⏳", background: "rgba(212,86,46,.13)", color: "#B84420" };
+  }
+  return { label: "Not yet uploaded", glyph: "—", background: "rgba(34,48,60,.06)", color: "#8A7C64" };
+}
+
+// Urgency ranking used to pick which group starts expanded - expired beats
+// expiring-soon beats never-uploaded; verified/pending-review docs aren't
+// "outstanding" so they don't drive the default at all.
+function urgencyScore(doc: Doc): number {
+  const hasUpload = !!doc.fileRef;
+  const daysLeft = doc.validityExpiryDate
+    ? Math.ceil((new Date(doc.validityExpiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null;
+  if (doc.validityExpiryDate && hasUpload && daysLeft !== null && daysLeft <= 0) return 3;
+  if (doc.validityExpiryDate && hasUpload && daysLeft !== null && daysLeft <= 14) return 2;
+  if (!hasUpload) return 1;
+  return 0;
+}
 
 export default function DocumentsPage() {
   const [data, setData] = useState<DocsData | null>(null);
-  const [steps, setSteps] = useState<Step[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   type StepUpTarget =
@@ -64,19 +93,82 @@ export default function DocumentsPage() {
   const [newMemberRelationship, setNewMemberRelationship] = useState<"spouse" | "child">("child");
   const [memberBusy, setMemberBusy] = useState(false);
   const [memberError, setMemberError] = useState<string | null>(null);
+  const [folderOverrides, setFolderOverrides] = useState<Map<string, boolean>>(new Map());
+  const [categoryOverrides, setCategoryOverrides] = useState<Map<string, boolean>>(new Map());
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/documents").then((res) => (res.ok ? res.json() : Promise.reject())),
-      fetch("/api/roadmap").then((res) => (res.ok ? res.json() : Promise.reject())),
-    ])
-      .then(([docsRes, roadmapRes]) => {
-        setData(docsRes);
-        setSteps(roadmapRes.steps ?? []);
-      })
+    fetch("/api/documents")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then(setData)
       .catch(() => setData(null))
       .finally(() => setLoading(false));
   }, []);
+
+  // Default open/closed state - the folder and category holding the single
+  // most urgent item start expanded, everything else starts collapsed.
+  // Derived from data rather than set in an effect, so a manual toggle
+  // (tracked in the override maps above) always wins over the recomputed
+  // default on a later re-fetch (e.g. after an upload).
+  const defaultExpansion = useMemo(() => {
+    const folders = new Set<string>();
+    const categories = new Set<string>();
+    if (!data) return { folders, categories };
+
+    const spouse = data.familyMembers.filter((m) => m.relationship === "spouse");
+    const child = data.familyMembers.filter((m) => m.relationship === "child");
+    const groups: { key: string; docs: Doc[] }[] = [
+      { key: "self", docs: data.documents.filter((d) => !d.familyMemberId) },
+      ...[...spouse, ...child].map((m) => ({ key: m.id, docs: data.documents.filter((d) => d.familyMemberId === m.id) })),
+    ];
+
+    let bestFolderKey: string | null = null;
+    let bestFolderScore = -1;
+
+    for (const group of groups) {
+      if (group.docs.length === 0) continue;
+      const byCategory = new Map<string, Doc[]>();
+      for (const doc of group.docs) {
+        const key = doc.category ?? "Identity & Travel";
+        if (!byCategory.has(key)) byCategory.set(key, []);
+        byCategory.get(key)!.push(doc);
+      }
+      let bestCategory: string | null = null;
+      let bestCategoryScore = -1;
+      let folderScore = -1;
+      for (const [category, docs] of byCategory) {
+        const score = Math.max(...docs.map(urgencyScore));
+        folderScore = Math.max(folderScore, score);
+        if (score > bestCategoryScore) {
+          bestCategoryScore = score;
+          bestCategory = category;
+        }
+      }
+      if (bestCategory) categories.add(`${group.key}:${bestCategory}`);
+      if (folderScore > bestFolderScore) {
+        bestFolderScore = folderScore;
+        bestFolderKey = group.key;
+      }
+    }
+
+    if (bestFolderKey) folders.add(bestFolderKey);
+    return { folders, categories };
+  }, [data]);
+
+  function isFolderExpanded(key: string): boolean {
+    return folderOverrides.has(key) ? folderOverrides.get(key)! : defaultExpansion.folders.has(key);
+  }
+
+  function isCategoryExpanded(key: string): boolean {
+    return categoryOverrides.has(key) ? categoryOverrides.get(key)! : defaultExpansion.categories.has(key);
+  }
+
+  function toggleFolder(key: string) {
+    setFolderOverrides((prev) => new Map(prev).set(key, !isFolderExpanded(key)));
+  }
+
+  function toggleCategory(key: string) {
+    setCategoryOverrides((prev) => new Map(prev).set(key, !isCategoryExpanded(key)));
+  }
 
   async function handleUpload(doc: Doc, file: File) {
     setError(null);
@@ -194,15 +286,8 @@ export default function DocumentsPage() {
     if (res.ok) {
       setNewMemberName("");
       setAddingMember(false);
-      // Re-fetch rather than splice in the response - the new member's
-      // generated documents (createFamilyMemberDocuments) live in a
-      // separate response shape than what this endpoint returns.
-      const [docsRes, roadmapRes] = await Promise.all([
-        fetch("/api/documents").then((r) => (r.ok ? r.json() : Promise.reject())),
-        fetch("/api/roadmap").then((r) => (r.ok ? r.json() : Promise.reject())),
-      ]);
+      const docsRes = await fetch("/api/documents").then((r) => (r.ok ? r.json() : Promise.reject()));
       setData(docsRes);
-      setSteps(roadmapRes.steps ?? []);
     } else {
       setMemberError(body.error ?? "Could not add family member.");
     }
@@ -284,20 +369,21 @@ export default function DocumentsPage() {
     );
   }
 
-  const orderedSteps = [...steps].sort((a, b) => a.position - b.position);
   const hasSpouse = data.familyMembers.some((m) => m.relationship === "spouse");
 
-  // One folder for the user's own documents (familyMemberId null), plus
-  // one per named family member - see db/schema.ts familyMembers comment
-  // for why documents are grouped by person, not just by document type.
+  // Person order: You -> Spouse -> Child(ren), per the design handoff -
+  // always this order, never alphabetical or by creation date.
+  const spouseMembers = data.familyMembers.filter((m) => m.relationship === "spouse");
+  const childMembers = data.familyMembers.filter((m) => m.relationship === "child");
+
   const folders: { key: string; label: string; relationship: string | null; docs: Doc[] }[] = [
     {
       key: "self",
-      label: "My documents",
+      label: "You",
       relationship: null,
       docs: data.documents.filter((d) => !d.familyMemberId),
     },
-    ...data.familyMembers.map((m) => ({
+    ...[...spouseMembers, ...childMembers].map((m) => ({
       key: m.id,
       label: m.name,
       relationship: m.relationship,
@@ -307,7 +393,9 @@ export default function DocumentsPage() {
 
   return (
     <div className="rb-roadmap-wrap" style={{ maxWidth: 820, margin: "0 auto", padding: "44px 48px 96px" }}>
-      <Heading size="xl">Documents</Heading>
+      <Heading size="xl" style={{ fontSize: 32 }}>
+        Documents
+      </Heading>
       <Text size={13.5} muted style={{ margin: "10px 0 0" }}>
         Encrypted at rest. Each file is stored and downloaded individually - never merged.
         Viewing or downloading requires a fresh verification code.
@@ -330,22 +418,23 @@ export default function DocumentsPage() {
       <div style={{ marginTop: 30 }}>
         {folders.map((folder) => {
           if (folder.docs.length === 0) return null;
-          const docsByStepKey = new Map<string, Doc[]>();
+          const docsByCategory = new Map<string, Doc[]>();
           for (const doc of folder.docs) {
-            const key = doc.requirementId ?? "unassigned";
-            if (!docsByStepKey.has(key)) docsByStepKey.set(key, []);
-            docsByStepKey.get(key)!.push(doc);
+            const key = doc.category ?? "Identity & Travel";
+            if (!docsByCategory.has(key)) docsByCategory.set(key, []);
+            docsByCategory.get(key)!.push(doc);
           }
+          const folderExpanded = isFolderExpanded(folder.key);
           return (
             <div key={folder.key} style={{ marginBottom: 40 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, paddingBottom: 8, borderBottom: "1.5px solid var(--rb-border)", flexWrap: "wrap" }}>
-                <Heading as="h2" size="md" style={{ fontSize: 19 }}>
+                <Heading as="h2" style={{ fontSize: 24, fontWeight: 700 }}>
                   {folder.label}
                 </Heading>
                 {folder.relationship && (
-                  <Chip tone="neutral" style={{ padding: "3px 9px", fontSize: 10.5, textTransform: "capitalize" }}>
+                  <Text size={12} muted style={{ textTransform: "capitalize" }}>
                     {folder.relationship}
-                  </Chip>
+                  </Text>
                 )}
                 {folder.docs.some((d) => d.fileRef) && (
                   <Button
@@ -357,78 +446,133 @@ export default function DocumentsPage() {
                     {zipping === (folder.key === "self" ? "self" : folder.key) ? "Zipping…" : "Download all (zip)"}
                   </Button>
                 )}
+                <button
+                  onClick={() => toggleFolder(folder.key)}
+                  aria-label={folderExpanded ? `Collapse ${folder.label}` : `Expand ${folder.label}`}
+                  aria-expanded={folderExpanded}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 4,
+                    display: "inline-flex",
+                    marginLeft: folder.docs.some((d) => d.fileRef) ? 0 : "auto",
+                    color: "var(--rb-text-muted)",
+                  }}
+                >
+                  <ChevronDown
+                    size={18}
+                    strokeWidth={2}
+                    style={{ transform: folderExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform .15s ease" }}
+                  />
+                </button>
               </div>
-              {orderedSteps.map((step) => {
-                const docs = docsByStepKey.get(step.stepKey) ?? [];
+              {folderExpanded &&
+                DOCUMENT_CATEGORIES.map((category) => {
+                const docs = docsByCategory.get(category) ?? [];
                 if (docs.length === 0) return null;
+                const categoryKey = `${folder.key}:${category}`;
+                const categoryExpanded = isCategoryExpanded(categoryKey);
                 return (
-                  <div key={step.id} style={{ marginBottom: 28 }}>
-                    <Heading as="h3" size="sm" style={{ fontSize: 17 }}>
-                      {step.stepLabel}
-                    </Heading>
-                    {docs.map((doc) => (
-                <Card key={doc.id} style={{ padding: "16px 20px", marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
-                  <div>
-                    <div style={{ fontFamily: "var(--font-body)", fontWeight: 500, fontSize: 15, color: "var(--rb-text)" }}>{doc.name}</div>
-                    <div style={{ display: "flex", gap: 6, marginTop: 6, flexWrap: "wrap" }}>
-                      <Chip tone="neutral" style={{ padding: "3px 9px", fontSize: 10.5 }}>
-                        {STATUS_LABEL[doc.status]}
-                      </Chip>
-                      {doc.translationRequired && (
-                        <Chip tone="orange" style={{ padding: "3px 9px", fontSize: 10.5 }}>
-                          Translation required
-                        </Chip>
-                      )}
-                      {doc.validityExpiryDate && (
-                        <Chip tone="orange" style={{ padding: "3px 9px", fontSize: 10.5 }}>
-                          Time-sensitive
-                        </Chip>
-                      )}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                    {doc.fileRef && (
-                      <>
-                        <Button variant="outline" style={smallBtnStyle} onClick={() => attemptDownload(doc)}>
-                          View / Download
-                        </Button>
-                        <Button variant="outline" style={{ ...smallBtnStyle, color: "var(--rb-orange)" }} onClick={() => handleDelete(doc)}>
-                          Remove
-                        </Button>
-                        {doc.translationRequired &&
-                          (doc.translationOrderId ? (
-                            <Chip tone="teal" style={{ padding: "6px 12px" }}>
-                              Attached for translation
-                            </Chip>
-                          ) : (
-                            <Button
-                              variant="ghost"
-                              style={{ ...smallBtnStyle, border: "none", color: "var(--rb-orange)" }}
-                              disabled={attaching === doc.id}
-                              onClick={() => attachForTranslation(doc)}
-                            >
-                              {attaching === doc.id ? "Attaching…" : "Send it for translation"}
-                            </Button>
-                          ))}
-                      </>
-                    )}
-                    {!doc.fileRef && (
-                      <label style={{ ...smallBtnStyle, border: "1.5px dashed var(--rb-dashed-border)", background: "var(--rb-sidebar)", color: "var(--rb-teal)", display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
-                        <Upload size={13} strokeWidth={1.75} />
-                        Choose file or drop here
-                        <input
-                          type="file"
-                          style={{ display: "none" }}
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) handleUpload(doc, file);
-                          }}
+                  <div key={category} style={{ marginBottom: 24 }}>
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}
+                      onClick={() => toggleCategory(categoryKey)}
+                    >
+                      <Heading as="h3" style={{ fontSize: 18, fontWeight: 600 }}>
+                        {category}
+                      </Heading>
+                      <button
+                        aria-label={categoryExpanded ? `Collapse ${category}` : `Expand ${category}`}
+                        aria-expanded={categoryExpanded}
+                        style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "inline-flex", marginLeft: "auto", color: "var(--rb-text-muted)" }}
+                      >
+                        <ChevronDown
+                          size={16}
+                          strokeWidth={2}
+                          style={{ transform: categoryExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform .15s ease" }}
                         />
-                      </label>
+                      </button>
+                    </div>
+                    {categoryExpanded && (
+                    <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 16 }}>
+                      {docs.map((doc) => {
+                        const badge = getStatusBadge(doc);
+                        return (
+                          <Card key={doc.id} style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+                            <div>
+                              <div style={{ fontFamily: "var(--font-body)", fontWeight: 400, fontSize: 15, color: "var(--rb-text)" }}>{doc.name}</div>
+                              <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap", alignItems: "center" }}>
+                                <span
+                                  style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: 5,
+                                    padding: "3px 9px",
+                                    borderRadius: "var(--radius-full)",
+                                    fontFamily: "var(--font-body)",
+                                    fontWeight: 600,
+                                    fontSize: 12,
+                                    background: badge.background,
+                                    color: badge.color,
+                                  }}
+                                >
+                                  <span aria-hidden="true">{badge.glyph}</span>
+                                  {badge.label}
+                                </span>
+                                {doc.translationRequired && (
+                                  <span style={{ ...metaChipStyle, background: "rgba(212,86,46,.12)", color: "var(--rb-orange)" }}>
+                                    Translation required
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                              {doc.fileRef && (
+                                <>
+                                  <Button variant="outline" style={smallBtnStyle} onClick={() => attemptDownload(doc)}>
+                                    View / Download
+                                  </Button>
+                                  <Button variant="outline" style={{ ...smallBtnStyle, color: "var(--rb-orange)" }} onClick={() => handleDelete(doc)}>
+                                    Remove
+                                  </Button>
+                                  {doc.translationRequired &&
+                                    (doc.translationOrderId ? (
+                                      <span style={{ ...metaChipStyle, background: "rgba(20,24,26,.1)", color: "var(--rb-teal)" }}>
+                                        Attached for translation
+                                      </span>
+                                    ) : (
+                                      <Button
+                                        variant="ghost"
+                                        style={{ ...smallBtnStyle, border: "none", color: "var(--rb-orange)" }}
+                                        disabled={attaching === doc.id}
+                                        onClick={() => attachForTranslation(doc)}
+                                      >
+                                        {attaching === doc.id ? "Attaching…" : "Send it for translation"}
+                                      </Button>
+                                    ))}
+                                </>
+                              )}
+                              {!doc.fileRef && (
+                                <label style={{ ...smallBtnStyle, border: "1.5px dashed var(--rb-dashed-border)", background: "var(--rb-sidebar)", color: "var(--rb-teal)", display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+                                  <Upload size={13} strokeWidth={1.75} />
+                                  Choose file or drop here
+                                  <input
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) handleUpload(doc, file);
+                                    }}
+                                  />
+                                </label>
+                              )}
+                            </div>
+                          </Card>
+                        );
+                      })}
+                    </div>
                     )}
-                  </div>
-                </Card>
-                    ))}
                   </div>
                 );
               })}
@@ -554,4 +698,14 @@ const smallBtnStyle: React.CSSProperties = {
   padding: "8px 14px",
   borderRadius: "var(--radius-sm)",
   fontSize: 12.5,
+};
+
+const metaChipStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  padding: "3px 9px",
+  borderRadius: "var(--radius-full)",
+  fontFamily: "var(--font-body)",
+  fontWeight: 600,
+  fontSize: 12,
 };

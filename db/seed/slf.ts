@@ -14,6 +14,7 @@ import { requirements, countryProfiles } from "@/db/schema";
 const slfRows = [
   {
     documentName: "Marriage certificate",
+    category: "Identity & Travel",
     appliesTo: "spouse" as const,
     sortOrder: 1,
     translationRequired: true,
@@ -22,6 +23,7 @@ const slfRows = [
   },
   {
     documentName: "Birth certificate (child)",
+    category: "Identity & Travel",
     appliesTo: "child" as const,
     sortOrder: 2,
     translationRequired: true,
@@ -30,6 +32,7 @@ const slfRows = [
   },
   {
     documentName: "Notarized guardian authorization",
+    category: "Identity & Travel",
     appliesTo: "child" as const,
     sortOrder: 3,
     translationRequired: true,
@@ -42,6 +45,7 @@ const slfRows = [
   },
   {
     documentName: "Criminal record check",
+    category: "Health & Legal",
     appliesTo: "spouse" as const,
     sortOrder: 4,
     translationRequired: true,
@@ -52,6 +56,7 @@ const slfRows = [
   },
   {
     documentName: "Medical certificate",
+    category: "Health & Legal",
     appliesTo: "spouse" as const,
     sortOrder: 5,
     translationRequired: true,
@@ -60,6 +65,7 @@ const slfRows = [
   },
   {
     documentName: "Medical certificate (child)",
+    category: "Health & Legal",
     appliesTo: "child" as const,
     sortOrder: 5,
     translationRequired: true,

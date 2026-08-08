@@ -30,6 +30,20 @@ type RoadmapData = {
 
 const STEP_ROUTE = "/roadmap";
 
+// "2 months since arrival" check-in reminder, per the design handoff -
+// auto-generates once Date.now() >= arrivalDate + 60 days, linking to
+// Bienvenido. A dashboard banner (computed at render time), not a
+// scheduled email like lib/reminders.ts - this is about surfacing the
+// nudge the moment the user is actually looking at the dashboard, not
+// about proactively reaching them the way the email reminders are.
+const CHECK_IN_AFTER_DAYS = 60;
+
+function isCheckInDue(arrivalDate: string | null): boolean {
+  if (!arrivalDate) return false;
+  const daysSinceArrival = (Date.now() - new Date(arrivalDate).getTime()) / (1000 * 60 * 60 * 24);
+  return daysSinceArrival >= CHECK_IN_AFTER_DAYS;
+}
+
 export default function DashboardPage() {
   const [data, setData] = useState<RoadmapData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -214,6 +228,28 @@ export default function DashboardPage() {
           </Heading>
           <Text size={14.5} style={{ lineHeight: 1.55 }}>
             Every step on your roadmap is marked done. Check back before your renewal window opens.
+          </Text>
+        </Card>
+      )}
+
+      {isCheckInDue(data.arrivalDate) && (
+        <Card
+          onClick={() => (window.location.href = "/bienvenido")}
+          style={{ background: "rgba(20,24,26,.05)", border: "1.5px solid var(--rb-border)", boxShadow: "none", padding: "20px 26px", marginTop: 18, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}
+        >
+          <div>
+            <Text size={11} weight={600} muted style={{ letterSpacing: ".5px", textTransform: "uppercase" }}>
+              Checking in
+            </Text>
+            <Heading as="h4" size="sm" style={{ margin: "6px 0 4px", fontSize: 16 }}>
+              You&apos;ve been in Barcelona a couple of months now
+            </Heading>
+            <Text size={13.5} muted>
+              The Bienvenido guide has settling-in tips - language exchanges, culture adjustment, and more.
+            </Text>
+          </div>
+          <Text size={13.5} weight={600} color="var(--rb-teal)" style={{ whiteSpace: "nowrap" }}>
+            Open guide
           </Text>
         </Card>
       )}

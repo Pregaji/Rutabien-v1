@@ -26,6 +26,7 @@ type Doc = {
   notarizationRequired: boolean;
   validityWindowDays: number | null;
   officialSourceLink: string | null;
+  appliesTo: string | null;
 };
 
 type RoadmapData = {
@@ -150,7 +151,7 @@ export default function RoadmapPage() {
   return (
     <div className="rb-roadmap-wrap" style={{ maxWidth: 820, margin: "0 auto", padding: "44px 48px 96px" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <Heading size="xl">Your roadmap</Heading>
+        <Heading size="xl" style={{ fontSize: 32 }}>Your roadmap</Heading>
         <Link href="/intake?edit=1" style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)" }}>
           Edit my answers
         </Link>
@@ -232,9 +233,20 @@ export default function RoadmapPage() {
                   style={{ padding: "18px 22px 16px", cursor: isLocked ? "default" : "pointer" }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                    <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 11, letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
-                      Step {i + 1}
-                    </span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 11, letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
+                        Step {i + 1}
+                      </span>
+                      {/* Person-chip - only steps generated from an SLF
+                          (family-member) requirement row have appliesTo set
+                          to spouse/child; self steps are 'self' and get no
+                          chip, matching the reference prototype exactly. */}
+                      {(doc?.appliesTo === "spouse" || doc?.appliesTo === "child") && (
+                        <Chip tone="neutral" style={{ padding: "2px 8px", fontSize: 10.5, textTransform: "capitalize" }}>
+                          {doc.appliesTo}
+                        </Chip>
+                      )}
+                    </div>
                     <Chip tone={STATUS_TONE[step.status]}>{STATUS_LABEL[step.status]}</Chip>
                   </div>
                   <Heading as="h3" size="sm" style={{ fontSize: 19, lineHeight: 1.3, margin: "9px 0 0" }}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button, Chip, Text } from "@/components/ui";
 import type { ChipTone } from "@/components/ui/Chip";
 import { AdminEmptyScene } from "@/components/illustrations/AdminEmptyScene";
@@ -41,6 +42,7 @@ function filterPillStyle(active: boolean): React.CSSProperties {
 }
 
 export default function AdminUsersTable() {
+  const router = useRouter();
   const [rows, setRows] = useState<AdminUserRow[] | null>(null);
   const [filterFlagged, setFilterFlagged] = useState(false);
   const [filterCase, setFilterCase] = useState("All");
@@ -141,12 +143,14 @@ export default function AdminUsersTable() {
         {visible.map((u) => (
           <div
             key={u.id}
+            onClick={() => router.push(`/admin/students/${u.id}`)}
             style={{
               display: "grid",
               gridTemplateColumns: "2fr 1.3fr 1fr 1fr 1.2fr .9fr",
               padding: "14px 20px",
               borderTop: "1px solid var(--rb-table-row-border)",
               alignItems: "center",
+              cursor: "pointer",
             }}
           >
             <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 14, color: "var(--rb-text)" }}>{u.name}</span>

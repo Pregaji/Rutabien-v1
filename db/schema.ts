@@ -85,6 +85,14 @@ export const requirements = pgTable("requirements", {
   // label is a content decision, not a UI one.
   phase: text("phase"),
 
+  // Fixed document taxonomy for the Documents (Vault) page, distinct from
+  // `phase` above (which groups the Roadmap's chronological steps). Always
+  // one of exactly 4 values, always rendered in this order, per the design
+  // handoff (2026-08-04): 'Identity & Travel' | 'Academic' | 'Financial' |
+  // 'Health & Legal'. Authored content like phase - a category assignment
+  // is a content decision, not inferred in code.
+  category: text("category"),
+
   // Who this document applies to — the applicant themself (SLU) or an
   // accompanying family member (SLF). Schema support only; no SLF content
   // has been drafted yet pending real source material / Ida's input.
@@ -403,6 +411,10 @@ export const supportMessages = pgTable("support_messages", {
     .references(() => users.id, { onDelete: "cascade" }),
   from: text("from").notNull(), // 'user' | 'team'
   text: text("text").notNull(),
+  // Set on a 'user' row when it matched neither the escalation trigger nor
+  // the FAQ responder - i.e. it needs an actual human reply, not a canned
+  // one. Cleared (on every open row for that user) once a human replies.
+  needsHumanReply: boolean("needs_human_reply").notNull().default(false),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

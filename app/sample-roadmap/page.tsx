@@ -9,7 +9,7 @@ import { RoadmapReadyScene } from "@/components/illustrations/RoadmapReadyScene"
 // NOT claimed as "based on officially published requirements" (that line
 // is reserved for the real roadmap, backed by signed-off Requirements-table
 // content) since this is example copy, not real guidance for anyone's case.
-const SAMPLE_STEPS = [
+const SAMPLE_STEPS_NON_EU = [
   {
     name: "Valid passport",
     detail: "A passport valid for the full length of your stay, with at least two blank pages.",
@@ -37,10 +37,38 @@ const SAMPLE_STEPS = [
   },
 ];
 
+// Mirrors the real EU/EEA registration path (see app/(app)/eu-route/page.tsx)
+// - deliberately shorter than the non-EU list, since that's the actual
+// point: no visa, just a short registration route.
+const SAMPLE_STEPS_EU = [
+  {
+    name: "Register your address (empadronamiento)",
+    detail: "Register at your local town hall - you'll need this for almost every next step.",
+    chips: ["Within 2 weeks of arrival"],
+  },
+  {
+    name: "Register with the Oficina de Extranjeros",
+    detail: "Bring your passport/ID, proof of address, and proof of funds or enrollment. You'll receive a Certificado de Registro.",
+    chips: ["Within 90 days of arrival"],
+  },
+  {
+    name: "Get academic credentials recognized",
+    detail: "Your diploma and transcripts usually need a certified Spanish translation, even for EU credentials.",
+    chips: ["Translation required"],
+  },
+];
+
+const TABS = [
+  { key: "non-eu" as const, label: "Non-EU student visa", steps: SAMPLE_STEPS_NON_EU },
+  { key: "eu" as const, label: "EU/EEA registration", steps: SAMPLE_STEPS_EU },
+];
+
 export default function SampleRoadmapPage() {
-  const [done, setDone] = useState<Record<number, boolean>>({});
-  const doneCount = Object.values(done).filter(Boolean).length;
-  const pct = Math.round((doneCount / SAMPLE_STEPS.length) * 100);
+  const [tab, setTab] = useState<"non-eu" | "eu">("non-eu");
+  const [done, setDone] = useState<Record<string, boolean>>({});
+  const activeSteps = TABS.find((t) => t.key === tab)!.steps;
+  const doneCount = activeSteps.filter((_, i) => done[`${tab}-${i}`]).length;
+  const pct = Math.round((doneCount / activeSteps.length) * 100);
 
   return (
     <div className="rb-roadmap-wrap" style={{ maxWidth: 820, margin: "0 auto", padding: "44px 48px 96px" }}>
@@ -49,61 +77,86 @@ export default function SampleRoadmapPage() {
         <RoadmapReadyScene width="100%" height="auto" />
       </div>
       <Chip tone="orange" style={{ letterSpacing: "1px", padding: "6px 14px", fontSize: 12, background: "rgba(212,86,46,.08)", border: "1px solid rgba(212,86,46,.2)" }}>
-        Example roadmap
+        Sample roadmap
       </Chip>
       <Heading size="xl" style={{ margin: "14px 0 0" }}>
-        Non-EU student visa - illustrative example
+        See what your roadmap could look like
       </Heading>
       <Text size={13.5} muted style={{ lineHeight: 1.6, margin: "10px 0 0", maxWidth: 560 }}>
         This is a static example to show what a generated roadmap looks like - not real guidance
         for your case. Answer the real questionnaire to get your own.
       </Text>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 24 }}>
+      <div style={{ display: "flex", gap: 6, marginTop: 22 }}>
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            style={{
+              padding: "9px 16px",
+              borderRadius: "var(--radius-full)",
+              border: tab === t.key ? "1.5px solid var(--rb-teal)" : "1.5px solid var(--rb-border)",
+              background: tab === t.key ? "rgba(20,24,26,.08)" : "#fff",
+              fontFamily: "var(--font-body)",
+              fontWeight: 600,
+              fontSize: 13,
+              color: "var(--rb-teal)",
+              cursor: "pointer",
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 20 }}>
         <div style={{ flex: 1, height: 8, borderRadius: "var(--radius-full)", background: "rgba(34,48,60,.09)", overflow: "hidden" }}>
           <div style={{ width: `${pct}%`, height: "100%", background: "var(--rb-gradient-orange)", borderRadius: "var(--radius-full)", transition: "width .4s ease" }} />
         </div>
         <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--rb-teal)", whiteSpace: "nowrap" }}>
-          {doneCount} of {SAMPLE_STEPS.length} done
+          {doneCount} of {activeSteps.length} done
         </span>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "28px 0 14px" }}>
         <span style={{ width: 8, height: 8, borderRadius: "var(--radius-full)", background: "var(--rb-orange)" }} />
         <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, letterSpacing: ".5px", textTransform: "uppercase", color: "var(--rb-teal)" }}>
-          Before you fly
+          {tab === "eu" ? "Your registration route" : "Before you fly"}
         </span>
       </div>
 
-      {SAMPLE_STEPS.map((step, i) => (
-        <Card
-          key={step.name}
-          onClick={() => setDone((d) => ({ ...d, [i]: !d[i] }))}
-          style={{ marginBottom: 14, padding: "18px 22px" }}
-        >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 11, letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
-              Step {i + 1}
-            </span>
-            <Chip tone={done[i] ? "teal" : "neutral"}>{done[i] ? "Done" : "Not started"}</Chip>
-          </div>
-          <Heading as="h3" size="sm" style={{ fontSize: 19, margin: "9px 0 4px" }}>
-            {step.name}
-          </Heading>
-          <Text size={13.5} style={{ lineHeight: 1.5, margin: "0 0 8px" }}>
-            {step.detail}
-          </Text>
-          {step.chips.length > 0 && (
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {step.chips.map((c) => (
-                <Chip key={c} tone="orange" style={{ padding: "2px 8px", fontSize: 10.5 }}>
-                  {c}
-                </Chip>
-              ))}
+      {activeSteps.map((step, i) => {
+        const key = `${tab}-${i}`;
+        return (
+          <Card
+            key={key}
+            onClick={() => setDone((d) => ({ ...d, [key]: !d[key] }))}
+            style={{ marginBottom: 14, padding: "18px 22px" }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+              <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 11, letterSpacing: ".3px", textTransform: "uppercase", color: "var(--rb-text-muted)" }}>
+                Step {i + 1}
+              </span>
+              <Chip tone={done[key] ? "teal" : "neutral"}>{done[key] ? "Done" : "Not started"}</Chip>
             </div>
-          )}
-        </Card>
-      ))}
+            <Heading as="h3" size="sm" style={{ fontSize: 19, margin: "9px 0 4px" }}>
+              {step.name}
+            </Heading>
+            <Text size={13.5} style={{ lineHeight: 1.5, margin: "0 0 8px" }}>
+              {step.detail}
+            </Text>
+            {step.chips.length > 0 && (
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {step.chips.map((c) => (
+                  <Chip key={c} tone="orange" style={{ padding: "2px 8px", fontSize: 10.5 }}>
+                    {c}
+                  </Chip>
+                ))}
+              </div>
+            )}
+          </Card>
+        );
+      })}
 
       <Button variant="primary" style={{ marginTop: 12 }} href="/intake">
         Get my real roadmap

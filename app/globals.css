@@ -311,6 +311,32 @@ input {
   }
 }
 
+/* App shell nav (app/(app)/layout.tsx) - a left sidebar on desktop
+   (collapsible: icon+label expanded, icon-only collapsed), swapped for a
+   hamburger toggle + dropdown panel below 900px so the link list never
+   wraps across lines on a phone. */
+.rb-app-sidebar-desktop {
+  display: flex;
+}
+.rb-app-topbar-mobile {
+  display: none;
+}
+.rb-app-nav-mobile-toggle {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .rb-app-sidebar-desktop {
+    display: none !important;
+  }
+  .rb-app-topbar-mobile {
+    display: block !important;
+  }
+  .rb-app-nav-mobile-toggle {
+    display: flex !important;
+  }
+}
+
 @media (max-width: 680px) {
   .rb-intake-form-header {
     padding: 20px 20px 0;

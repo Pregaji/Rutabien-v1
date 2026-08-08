@@ -1,0 +1,1 @@
+ALTER TABLE "support_messages" ADD COLUMN "needs_human_reply" boolean DEFAULT false NOT NULL;

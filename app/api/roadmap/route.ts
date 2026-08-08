@@ -32,6 +32,12 @@ export async function GET(req: NextRequest) {
       notarizationRequired: documents.notarizationRequired,
       validityWindowDays: requirements.validityWindowDays,
       officialSourceLink: requirements.officialSourceLink,
+      // 'self' | 'spouse' | 'child' - every document sharing a requirement
+      // row (and therefore a roadmap step's stepKey) has the same value
+      // here, so one representative doc per step is enough to know whether
+      // that step involves a family member (see app/(app)/roadmap/page.tsx
+      // person-chip).
+      appliesTo: requirements.appliesTo,
     })
     .from(documents)
     .leftJoin(requirements, eq(documents.requirementId, requirements.id))

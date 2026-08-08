@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import * as Sentry from "@sentry/nextjs";
 import sharp from "sharp";
+import { RUTABIEN_COLORS } from "@/lib/colors";
 
 let _resend: Resend | null = null;
 
@@ -34,13 +35,12 @@ async function send(params: Parameters<Resend["emails"]["send"]>[0]) {
   }
 }
 
-// Rutabien palette (see CLAUDE.md "Design system") - #14181A, not the
-// earlier #1B3A3E navy-teal, matches the app-wide color fix confirmed
-// 2026-08-02.
-const COLOR_PRIMARY = "#14181A";
-const COLOR_ACCENT = "#D4562E";
-const COLOR_BG = "#F5F2EC";
-const COLOR_TEXT = "#1A1F24";
+// Rutabien palette - see lib/colors.ts for why this can't be var(--rb-teal)
+// etc. here (email HTML has no access to the app's stylesheet).
+const COLOR_PRIMARY = RUTABIEN_COLORS.primary;
+const COLOR_ACCENT = RUTABIEN_COLORS.accent;
+const COLOR_BG = RUTABIEN_COLORS.bg;
+const COLOR_TEXT = RUTABIEN_COLORS.text;
 
 // Just the icon/glow portion of illustrations/18-email-header.svg -
 // rasterized to a small PNG and inlined as a data URI (email clients
@@ -51,15 +51,15 @@ const COLOR_TEXT = "#1A1F24";
 // portable. Memoized since it never changes between sends.
 const EMAIL_HEADER_ICON_SVG = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
   <radialGradient id="glowE" cx="60%" cy="50%" r="70%">
-    <stop offset="0%" stop-color="#D4562E" stop-opacity="0.45"/>
-    <stop offset="100%" stop-color="#D4562E" stop-opacity="0"/>
+    <stop offset="0%" stop-color="${RUTABIEN_COLORS.accent}" stop-opacity="0.45"/>
+    <stop offset="100%" stop-color="${RUTABIEN_COLORS.accent}" stop-opacity="0"/>
   </radialGradient>
   <rect width="120" height="120" fill="url(#glowE)"/>
   <g transform="translate(48,60)">
-    <path d="M0 -34 a20 20 0 0 1 20 20 c0 14 -20 34 -20 34 s-20 -20 -20 -34 a20 20 0 0 1 20 -20z" fill="#D4562E"/>
-    <circle cy="-14" r="8" fill="#F5F2EC"/>
+    <path d="M0 -34 a20 20 0 0 1 20 20 c0 14 -20 34 -20 34 s-20 -20 -20 -34 a20 20 0 0 1 20 -20z" fill="${RUTABIEN_COLORS.accent}"/>
+    <circle cy="-14" r="8" fill="${RUTABIEN_COLORS.bg}"/>
   </g>
-  <g fill="#D4562E">
+  <g fill="${RUTABIEN_COLORS.accent}">
     <circle cx="90" cy="80" r="4" opacity="0.8"/>
     <circle cx="100" cy="72" r="4" opacity="0.55"/>
   </g>
@@ -97,20 +97,20 @@ function rasterizeIcon(svg: string, size: number): Promise<string> {
 const DOCUMENT_EXPIRING_ICON_SVG = `<svg viewBox="230 160 220 190" xmlns="http://www.w3.org/2000/svg">
   <rect x="230" y="160" width="220" height="190" fill="none"/>
   <g>
-    <rect x="290" y="220" width="120" height="150" rx="8" fill="#F5F2EC" stroke="#1A1F24" stroke-width="3"/>
-    <line x1="306" y1="244" x2="365" y2="244" stroke="#1A1F24" stroke-width="4"/>
-    <line x1="306" y1="260" x2="350" y2="260" stroke="#1A1F24" stroke-width="4"/>
-    <line x1="306" y1="276" x2="360" y2="276" stroke="#1A1F24" stroke-width="4"/>
+    <rect x="290" y="220" width="120" height="150" rx="8" fill="${RUTABIEN_COLORS.bg}" stroke="${RUTABIEN_COLORS.text}" stroke-width="3"/>
+    <line x1="306" y1="244" x2="365" y2="244" stroke="${RUTABIEN_COLORS.text}" stroke-width="4"/>
+    <line x1="306" y1="260" x2="350" y2="260" stroke="${RUTABIEN_COLORS.text}" stroke-width="4"/>
+    <line x1="306" y1="276" x2="360" y2="276" stroke="${RUTABIEN_COLORS.text}" stroke-width="4"/>
   </g>
   <g transform="translate(420,300)">
-    <path d="M-16 -22 h32 v6 l-14 16 14 16 v6 h-32 v-6 l14 -16 -14 -16z" fill="none" stroke="#1A1F24" stroke-width="5" stroke-linejoin="round"/>
-    <path d="M-11 -16 h22 l-11 13z" fill="#D4562E"/>
-    <path d="M-6 18 h12 v-6 l-6 -6 -6 6z" fill="#D4562E"/>
+    <path d="M-16 -22 h32 v6 l-14 16 14 16 v6 h-32 v-6 l14 -16 -14 -16z" fill="none" stroke="${RUTABIEN_COLORS.text}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-11 -16 h22 l-11 13z" fill="${RUTABIEN_COLORS.accent}"/>
+    <path d="M-6 18 h12 v-6 l-6 -6 -6 6z" fill="${RUTABIEN_COLORS.accent}"/>
   </g>
   <g transform="translate(300,220)">
-    <circle r="20" fill="#D4562E"/>
-    <line x1="0" y1="-8" x2="0" y2="2" stroke="#F5F2EC" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="0" cy="9" r="2.4" fill="#F5F2EC"/>
+    <circle r="20" fill="${RUTABIEN_COLORS.accent}"/>
+    <line x1="0" y1="-8" x2="0" y2="2" stroke="${RUTABIEN_COLORS.bg}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="0" cy="9" r="2.4" fill="${RUTABIEN_COLORS.bg}"/>
   </g>
 </svg>`;
 

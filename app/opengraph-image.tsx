@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { RUTABIEN_COLORS } from "@/lib/colors";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -15,8 +16,8 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px 96px",
-          background: "#1B3A3E",
-          color: "#F5F2EC",
+          background: RUTABIEN_COLORS.primary,
+          color: RUTABIEN_COLORS.bg,
           fontFamily: "Georgia, serif",
         }}
       >
@@ -26,7 +27,7 @@ export default function OpengraphImage() {
             fontWeight: 700,
             letterSpacing: 2,
             textTransform: "uppercase",
-            color: "#F0A98C",
+            color: RUTABIEN_COLORS.onDark.accent,
             marginBottom: 28,
           }}
         >
@@ -38,7 +39,7 @@ export default function OpengraphImage() {
           style={{
             fontSize: 30,
             marginTop: 40,
-            color: "#DCE7E5",
+            color: RUTABIEN_COLORS.onDark.body,
             maxWidth: 820,
             fontFamily: "sans-serif",
             fontWeight: 400,

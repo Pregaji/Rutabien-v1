@@ -14,18 +14,21 @@ const FUNDS_FORMULA =
 const rows = [
   {
     documentName: "Valid passport",
+    category: "Identity & Travel",
     sortOrder: 1,
     notarizationRequired: false,
     translationRequired: false,
   },
   {
     documentName: "University acceptance letter",
+    category: "Academic",
     sortOrder: 2,
     translationRequired: true,
     legalizationChain: LEGALIZATION_CHAIN,
   },
   {
     documentName: "Academic transcript",
+    category: "Academic",
     sortOrder: 3,
     translationRequired: true,
     legalizationChain: LEGALIZATION_CHAIN,
@@ -33,6 +36,7 @@ const rows = [
   },
   {
     documentName: "Police certificate",
+    category: "Health & Legal",
     sortOrder: 4,
     translationRequired: true,
     legalizationChain: LEGALIZATION_CHAIN,
@@ -43,6 +47,7 @@ const rows = [
   },
   {
     documentName: "Medical certificate",
+    category: "Health & Legal",
     sortOrder: 5,
     translationRequired: true,
     validityWindowDays: 90,
@@ -50,6 +55,7 @@ const rows = [
   },
   {
     documentName: "Birth certificate",
+    category: "Identity & Travel",
     sortOrder: 6,
     translationRequired: true,
     legalizationChain: LEGALIZATION_CHAIN,
@@ -57,12 +63,14 @@ const rows = [
   },
   {
     documentName: "Proof of funds",
+    category: "Financial",
     sortOrder: 7,
     fundsFormula: FUNDS_FORMULA,
     translationRequired: false,
   },
   {
     documentName: "Proof of accommodation",
+    category: "Identity & Travel",
     sortOrder: 8,
     translationRequired: false,
   },

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { db } from "@/db";
 import { users, roadmapProgress, documents, supportEscalationLog } from "@/db/schema";
 import { getCurrentAdmin } from "@/lib/adminAuth";
@@ -20,10 +20,14 @@ export async function GET() {
         .select()
         .from(documents)
         .where(eq(documents.userId, user.id));
+      // Was previously unfiltered - "flagged" meant "has ever had any
+      // escalation, resolved or not," so resolving one on the student
+      // detail page (app/admin/students/[id]) had no effect on the flag
+      // here. A student is only flagged while something is actually open.
       const [openEscalation] = await db
         .select()
         .from(supportEscalationLog)
-        .where(eq(supportEscalationLog.userId, user.id))
+        .where(and(eq(supportEscalationLog.userId, user.id), ne(supportEscalationLog.status, "resolved")))
         .limit(1);
 
       const progress = steps.length
